@@ -14,7 +14,7 @@
 文件准备：
     本脚本同文件夹需放置：
     - cfets_nex_omo_data_with_shibor.xlsx   （旧数据表）
-    - 资金面监控交互面板.html                （旧交互页面，作为模板）
+    - liquidity.html                        （旧交互页面，作为模板）
 
 依赖安装（首次运行前执行一次）：
     pip install requests beautifulsoup4 pandas openpyxl
@@ -39,7 +39,7 @@ from bs4 import BeautifulSoup
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FILE_NAME = "cfets_nex_omo_data_with_shibor.xlsx"
 FILE_PATH = os.path.join(BASE_DIR, FILE_NAME)
-HTML_NAME = "资金面监控交互面板.html"
+HTML_NAME = "liquidity.html"
 HTML_PATH = os.path.join(BASE_DIR, HTML_NAME)
 OLD_DIR = os.path.join(BASE_DIR, "old data")
 
