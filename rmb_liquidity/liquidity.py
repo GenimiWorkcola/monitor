@@ -7,18 +7,26 @@
 2. 从 CFETS-NEX 每日简报页按时间倒序增量抓取「每日市场动态」，
    遇到 Excel 已有日期即停止；自动跳过只有晨报的日期和节假日
 3. 合并去重后写回 cfets_nex_omo_data_with_shibor.xlsx
-4. 旧文件自动移入同文件夹下的 old data 子文件夹（同名自动覆盖）
+4. 用更新后的数据重新生成内嵌最新数据的 HTML 交互页面
+   （替换页面中的 EMBEDDED_DATA 常量，图表打开即最新）
+5. 旧的 Excel 和 HTML 自动移入同文件夹下的 old data 子文件夹（同名自动覆盖）
+
+文件准备：
+    本脚本同文件夹需放置：
+    - cfets_nex_omo_data_with_shibor.xlsx   （旧数据表）
+    - 资金面监控交互面板.html                （旧交互页面，作为模板）
 
 依赖安装（首次运行前执行一次）：
     pip install requests beautifulsoup4 pandas openpyxl
 
 运行：
-    python 更新央行资金面数据.py
+    python liquidity.py
 """
 
 import os
 import re
 import sys
+import json
 import time
 import shutil
 import datetime as dt
@@ -31,6 +39,8 @@ from bs4 import BeautifulSoup
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FILE_NAME = "cfets_nex_omo_data_with_shibor.xlsx"
 FILE_PATH = os.path.join(BASE_DIR, FILE_NAME)
+HTML_NAME = "资金面监控交互面板.html"
+HTML_PATH = os.path.join(BASE_DIR, HTML_NAME)
 OLD_DIR = os.path.join(BASE_DIR, "old data")
 
 BASE_URL = "https://www.cfets-nex.com.cn/Market/marketOverview/marketOverview/?PageIndex={}"
@@ -108,6 +118,46 @@ def fetch_page(sess, page):
     return None
 
 
+# ---------- HTML 更新 ----------
+def regenerate_html(merged):
+    """用最新数据替换 HTML 中的 EMBEDDED_DATA 常量，旧文件归档到 old data"""
+    if not os.path.exists(HTML_PATH):
+        print(f"\n未找到 {HTML_NAME}，跳过 HTML 更新（Excel 已正常更新）。")
+        return
+
+    records = merged.where(pd.notna(merged), None).to_dict(orient="records")
+    # Int64 转普通 int/float，保证 JSON 序列化干净
+    for r in records:
+        for k, v in r.items():
+            if hasattr(v, "item"):
+                v = v.item()
+            r[k] = v
+    data_json = json.dumps(records, ensure_ascii=False)
+
+    with open(HTML_PATH, "r", encoding="utf-8") as f:
+        html = f.read()
+    new_html, n = re.subn(
+        r"const EMBEDDED_DATA = \[.*?\];",
+        "const EMBEDDED_DATA = " + data_json + ";",
+        html, count=1, flags=re.S,
+    )
+    if n == 0:
+        print("\nHTML 中未找到 EMBEDDED_DATA 常量，跳过 HTML 更新（请确认是同一份交互页面文件）。")
+        return
+
+    # 旧 HTML 归档（自动覆盖）
+    os.makedirs(OLD_DIR, exist_ok=True)
+    old_html_target = os.path.join(OLD_DIR, HTML_NAME)
+    if os.path.exists(old_html_target):
+        os.remove(old_html_target)
+    shutil.move(HTML_PATH, old_html_target)
+
+    with open(HTML_PATH, "w", encoding="utf-8") as f:
+        f.write(new_html)
+    print(f"HTML 已内嵌最新数据（{len(records)} 条）: {HTML_PATH}")
+    print(f"旧 HTML 已移至: {old_html_target}")
+
+
 # ---------- 主流程 ----------
 def main():
     if not os.path.exists(FILE_PATH):
@@ -154,7 +204,7 @@ def main():
     for c in ["央行逆回购投放(亿)", "逆回购到期(亿)", "净投放(亿)"]:
         merged[c] = merged[c].astype(float).round(0).astype("Int64")
 
-    # 旧文件移入 old data（自动覆盖同名旧文件）
+    # 旧 Excel 移入 old data（自动覆盖同名旧文件）
     os.makedirs(OLD_DIR, exist_ok=True)
     old_target = os.path.join(OLD_DIR, FILE_NAME)
     if os.path.exists(old_target):
@@ -169,6 +219,10 @@ def main():
     print(f"新文件: {FILE_PATH}")
     print(f"旧文件已移至: {old_target}")
     print("提示：节假日（如端午）无数据属正常，不算缺失。")
+
+    # 用最新数据重新生成 HTML 交互页面
+    print("\n正在更新 HTML 交互页面内嵌数据...")
+    regenerate_html(merged)
 
 
 if __name__ == "__main__":
