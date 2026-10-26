@@ -1,0 +1,17 @@
+ 
+git init
+
+ 
+git add .
+
+ 
+git commit -m "Initial commit: setup macro monitor system"
+ 
+git branch -M main
+
+ 
+git remote add origin https://github.com/GenimiWorkcola/monitor.git
+ 
+git push -u origin main
+
+ 
