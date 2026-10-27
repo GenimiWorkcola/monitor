@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>资金面情绪指数分析终端 - 专业版</title>
+  <style>
+    :root {
+      --bg-dark: #090d16;
+      --bg-card: #131a29;
+      --bg-input: #0b101d;
+      --border-color: #233047;
+      --border-highlight: #384c70;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --accent-blue: #3b82f6;
+      --accent-green: #10b981;
+      --accent-purple: #a855f7;
+      --accent-rose: #f43f5e;
+      --accent-amber: #f59e0b;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { 
+      background-color: var(--bg-dark); 
+      color: var(--text-main); 
+      font-family: var(--font-family); 
+      line-height: 1.5; 
+      padding: 20px; 
+    }
+    .container { max-width: 1440px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+    
+    /* 顶部 Source Link 导航与 Header */
+    header { 
+      background-color: var(--bg-card); 
+      border: 1px solid var(--border-color); 
+      padding: 16px 24px; 
+      border-radius: 12px; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .source-link-bar {
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.25);
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+    }
+    .source-link-bar a {
+      color: var(--accent-blue);
+      text-decoration: none;
+      word-break: break-all;
+      font-weight: 500;
+    }
+    .source-link-bar a:hover {
+      text-decoration: underline;
+    }
+
+    .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+    .card-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; flex-wrap: wrap; gap: 10px; }
+    .card-title { font-size: 16px; font-weight: 600; color: #fff; display: flex; align-items: center; gap: 8px; }
+    .btn-group { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .btn { background: var(--bg-dark); border: 1px solid var(--border-color); color: var(--text-main); padding: 6px 14px; border-radius: 6px; font-size: 12px; cursor: pointer; transition: all 0.2s; }
+    .btn:hover { border-color: var(--accent-blue); color: #fff; background: rgba(59, 130, 246, 0.1); }
+    .btn-primary { background: var(--accent-blue); border: none; font-weight: 500; color: #fff; }
+    .btn-primary:hover { background: #2563eb; }
+    .btn-emerald { background: var(--accent-green); border: none; font-weight: 500; color: #fff; }
+    .btn-emerald:hover { background: #059669; }
+    
+    .legend-box { display: flex; gap: 14px; font-size: 12px; margin-right: 12px; flex-wrap: wrap; }
+    .legend-item { display: flex; align-items: center; gap: 6px; color: var(--text-muted); cursor: pointer; user-select: none; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+    textarea { width: 100%; height: 110px; background: var(--bg-input); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; color: var(--text-main); font-family: var(--font-mono); font-size: 12px; resize: vertical; }
+    textarea:focus { outline: none; border-color: var(--accent-blue); }
+    
+    .parse-log { background: var(--bg-input); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); max-height: 100px; overflow-y: auto; white-space: pre-wrap; display: none; }
+    
+    .chart-container { position: relative; width: 100%; height: 380px; }
+    canvas { width: 100%; height: 100%; display: block; }
+    .chart-tooltip { position: absolute; display: none; pointer-events: none; background: rgba(15, 23, 42, 0.95); border: 1px solid var(--border-highlight); border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #ffffff; box-shadow: 0 10px 25px rgba(0,0,0,0.6); z-index: 10; font-family: var(--font-mono); min-width: 170px; backdrop-filter: blur(4px); }
+
+    /* 拖拽文件 overlay 提示 */
+    .drag-over-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(59, 130, 246, 0.15);
+      border: 2px dashed var(--accent-blue);
+      border-radius: 12px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      pointer-events: none;
+      z-index: 20;
+    }
+
+    /* 底部双向时间选择滑块控件 */
+    .range-control-bar {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--border-color);
+    }
+    .range-title-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+    
+    /* 双滑块视觉控制容器 */
+    .range-slider-wrapper {
+      position: relative;
+      width: 100%;
+      height: 28px;
+      display: flex;
+      align-items: center;
+    }
+    .range-track-bg {
+      position: absolute;
+      width: 100%;
+      height: 6px;
+      background: var(--bg-input);
+      border-radius: 3px;
+      border: 1px solid var(--border-color);
+    }
+    .range-track-fill {
+      position: absolute;
+      height: 6px;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+      border-radius: 3px;
+    }
+    .range-slider-wrapper input[type="range"] {
+      position: absolute;
+      width: 100%;
+      pointer-events: none;
+      -webkit-appearance: none;
+      background: none;
+      height: 100%;
+      top: 0;
+      margin: 0;
+      z-index: 5;
+    }
+    .range-slider-wrapper input[type="range"]::-webkit-slider-thumb {
+      pointer-events: auto;
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #ffffff;
+      cursor: grab;
+      border: 2px solid var(--accent-blue);
+      box-shadow: 0 0 6px rgba(0,0,0,0.5);
+      transition: transform 0.1s;
+    }
+    .range-slider-wrapper input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+    .range-slider-wrapper input[type="range"]::-webkit-slider-thumb:active {
+      cursor: grabbing;
+      background: var(--accent-blue);
+    }
+
+    .table-wrapper { overflow-x: auto; border: 1px solid var(--border-color); border-radius: 8px; max-height: 360px; overflow-y: auto; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 12px; }
+    th { background: var(--bg-dark); color: var(--text-muted); padding: 10px 14px; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 2; font-weight: 600; }
+    td { padding: 9px 14px; border-bottom: 1px solid rgba(35, 48, 71, 0.5); font-family: var(--font-mono); }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+    .num-col { text-align: right; }
+    .status-msg { font-size: 12px; padding: 8px 12px; border-radius: 6px; display: none; }
+    .status-msg.success { background: rgba(16, 185, 129, 0.15); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .status-msg.error { background: rgba(244, 63, 94, 0.15); color: var(--accent-rose); border: 1px solid rgba(244, 63, 94, 0.3); }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- 1. 顶部 Link 导航 -->
+  <div class="source-link-bar">
+    <span>🔗 官方实时数据源链接：</span>
+    <a href="https://www.cfets-nex.com.cn/Market/marketData/money" target="_blank" rel="noopener noreferrer">
+      https://www.cfets-nex.com.cn/Market/marketData/money
+    </a>
+  </div>
+
+  <header>
+    <div>
+      <h1 style="font-size: 20px; font-weight: 700; color: #fff;">人民币资金面情绪指数分析终端</h1>
+      <p style="font-size: 12px; color: var(--text-muted);">实时监测金融市场资金供求与流动性情绪</p>
+    </div>
+    <div id="data-count-badge" style="font-size: 13px; font-family: var(--font-mono); color: var(--accent-blue); background: rgba(59, 130, 246, 0.1); padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(59, 130, 246, 0.2);">
+      已加载数据: 0条
+    </div>
+  </header>
+
+  <!-- 2 & 3. 资金面情绪指数走势图 & 双向拖动区间选择器 & CSV文件拖入画图 -->
+  <div class="card" id="drop-zone" style="position: relative;">
+    <div class="drag-over-overlay" id="drag-overlay">📥 释放文件以导入 CSV 数据并画图</div>
+    
+    <div class="card-header">
+      <div class="card-title">
+        <span>📈 资金面情绪走势曲线</span>
+        <span style="font-size: 11px; font-weight: normal; color: var(--text-muted); margin-left: 8px;">(支持直接拖入 CSV 导入)</span>
+      </div>
+      <div class="btn-group">
+        <div class="legend-box">
+          <div class="legend-item" onclick="toggleLine('total')"><div class="legend-dot" style="background:#ffffff"></div>整体</div>
+          <div class="legend-item" onclick="toggleLine('large')"><div class="legend-dot" style="background:var(--accent-green)"></div>大行</div>
+          <div class="legend-item" onclick="toggleLine('medium')"><div class="legend-dot" style="background:var(--accent-blue)"></div>中小行</div>
+          <div class="legend-item" onclick="toggleLine('nonbank')"><div class="legend-dot" style="background:var(--accent-purple)"></div>非银</div>
+        </div>
+        <button class="btn" onclick="setQuickRange('all')">全量数据</button>
+        <button class="btn" onclick="setQuickRange(30)">近30条</button>
+        <button class="btn" onclick="setQuickRange(60)">近60条</button>
+      </div>
+    </div>
+    
+    <!-- 图表 Canvas 容器 -->
+    <div class="chart-container" id="chart-container">
+      <canvas id="financial-canvas"></canvas>
+      <div id="chart-tooltip" class="chart-tooltip"></div>
+    </div>
+
+    <!-- 3. 图表底部可双向拖动的时间区间选择器 -->
+    <div class="range-control-bar">
+      <div class="range-title-info">
+        <span>⏱️ 锁定时间区间：<b id="time-range-text" style="color:var(--text-main);">-- 至 --</b></span>
+        <span>展示节点：<b id="points-count-text" style="color:var(--accent-blue);">0</b> / <span id="total-count-text">0</span> 条</span>
+      </div>
+      <div class="range-slider-wrapper">
+        <div class="range-track-bg"></div>
+        <div class="range-track-fill" id="slider-track-fill"></div>
+        <input type="range" id="range-min" min="0" max="100" value="0" oninput="handleRangeSliderChange('min')">
+        <input type="range" id="range-max" min="0" max="100" value="100" oninput="handleRangeSliderChange('max')">
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. 智能源码解析追加引擎 -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">⚙️ HTML / TXT 网页源码智能解析追加引擎</div>
+    </div>
+    <textarea id="source-input" placeholder="在此粘贴网页源码（包含 var FXSIData = { timeList: [...], dataList: [...] }）或类似文本数据..."></textarea>
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+      <div style="display:flex; gap:8px;">
+        <button class="btn btn-emerald" onclick="parseAndAppendData()">智能解析并追加数据</button>
+        <button class="btn" onclick="document.getElementById('source-input').value='';">清空输入框</button>
+      </div>
+      <div id="parse-status-msg" class="status-msg"></div>
+    </div>
+    <div id="parse-debug-log" class="parse-log"></div>
+  </div>
+
+  <!-- 6. 历史数据表格与导出 CSV -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">📋 历史数据明细表</div>
+      <button class="btn btn-primary" onclick="exportToCSV()">📥 导出明细 CSV</button>
+    </div>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>时间 (Time)</th>
+            <th class="num-col">整体情绪指数</th>
+            <th class="num-col">大型银行</th>
+            <th class="num-col">中小银行</th>
+            <th class="num-col">非银机构</th>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  // 核心内置初始数据集
+  const initialRawData = {
+    "timeList": ['2026-09-04 16:00','2026-09-07 08:45','2026-09-07 10:15','2026-09-07 14:30','2026-09-07 16:00','2026-09-08 08:45','2026-09-08 10:15','2026-09-08 14:30','2026-09-08 16:00','2026-09-09 08:45','2026-09-09 10:15','2026-09-09 14:30','2026-09-09 16:00','2026-09-10 08:45','2026-09-10 10:15','2026-09-10 14:30','2026-09-10 16:00','2026-09-11 08:45','2026-09-11 10:15','2026-09-11 14:30','2026-09-11 16:00','2026-09-14 08:45','2026-09-14 10:15','2026-09-14 14:30','2026-09-14 16:00','2026-09-15 08:45','2026-09-15 10:15','2026-09-15 14:30','2026-09-15 16:00','2026-09-16 08:45','2026-09-16 10:15','2026-09-16 14:30','2026-09-16 16:00','2026-09-17 08:45','2026-09-17 10:15','2026-09-17 14:30','2026-09-17 16:00','2026-09-18 08:45','2026-09-18 10:15','2026-09-18 14:30','2026-09-18 16:00','2026-09-20 08:45','2026-09-20 10:15','2026-09-20 14:30','2026-09-21 08:45','2026-09-21 10:15','2026-09-21 14:30','2026-09-21 16:00','2026-09-22 08:45','2026-09-22 10:15','2026-09-22 14:30','2026-09-22 16:00','2026-09-23 08:45','2026-09-23 10:15','2026-09-23 14:30','2026-09-23 16:00','2026-09-24 08:45','2026-09-24 10:15','2026-09-24 14:30','2026-09-24 16:00','2026-09-28 08:45','2026-09-28 10:15','2026-09-28 14:30','2026-09-28 16:00','2026-09-29 08:45','2026-09-29 10:15','2026-09-29 14:30','2026-09-29 16:00','2026-09-30 08:45','2026-09-30 10:15','2026-09-30 14:30','2026-09-30 16:00','2026-10-08 08:45','2026-10-08 10:15','2026-10-08 14:30','2026-10-08 16:00','2026-10-09 08:45','2026-10-09 10:15','2026-10-09 14:30','2026-10-09 16:00','2026-10-10 08:45','2026-10-10 10:15','2026-10-10 14:30','2026-10-12 08:45','2026-10-12 10:15','2026-10-12 14:30','2026-10-12 16:00','2026-10-13 08:45','2026-10-13 10:15','2026-10-13 14:30','2026-10-13 16:00','2026-10-14 08:45','2026-10-14 10:15','2026-10-14 14:30','2026-10-14 16:00','2026-10-15 08:45','2026-10-15 10:15','2026-10-15 14:30','2026-10-15 16:00','2026-10-16 08:45','2026-10-16 10:15','2026-10-16 14:30','2026-10-16 16:00','2026-10-19 08:45','2026-10-19 10:15','2026-10-19 14:30','2026-10-19 16:00','2026-10-20 08:45','2026-10-20 10:15','2026-10-20 14:30','2026-10-20 16:00','2026-10-21 08:45','2026-10-21 10:15','2026-10-21 14:30','2026-10-21 16:00','2026-10-22 08:45','2026-10-22 10:15','2026-10-22 14:30','2026-10-22 16:00','2026-10-23 08:45'],
+    "dataList": [
+      {value:49.00, single: [48.00,50.00,48.00]},{value:48.00, single: [47.00,49.00,47.00]},{value:49.00, single: [48.00,50.00,48.00]},{value:48.00, single: [47.00,49.00,47.00]},{value:47.00, single: [46.00,48.00,46.00]},{value:48.00, single: [47.00,49.00,47.00]},{value:48.00, single: [47.00,49.00,47.00]},{value:49.00, single: [48.00,50.00,48.00]},{value:48.00, single: [47.00,49.00,47.00]},{value:48.00, single: [47.00,49.00,47.00]},{value:51.00, single: [50.00,52.00,50.00]},{value:52.00, single: [51.00,54.00,50.00]},{value:49.00, single: [48.00,50.00,48.00]},{value:52.00, single: [51.00,54.00,50.00]},{value:50.00, single: [49.00,51.00,49.00]},{value:50.00, single: [49.00,51.00,49.00]},{value:48.00, single: [47.00,49.00,47.00]},{value:50.00, single: [49.00,51.00,49.00]},{value:51.00, single: [50.00,52.00,50.00]},{value:50.00, single: [49.00,51.00,49.00]},{value:49.00, single: [48.00,50.00,48.00]},{value:51.00, single: [50.00,52.00,50.00]},{value:50.00, single: [49.00,51.00,49.00]},{value:50.00, single: [49.00,51.00,49.00]},{value:50.00, single: [49.00,51.00,49.00]},{value:50.00, single: [49.00,51.00,49.00]},{value:52.00, single: [51.00,54.00,51.00]},{value:51.00, single: [50.00,52.00,50.00]},{value:50.00, single: [49.00,51.00,49.00]},{value:51.00, single: [50.00,52.00,50.00]},{value:53.00, single: [52.00,55.00,51.00]},{value:50.00, single: [49.00,51.00,49.00]},{value:52.00, single: [51.00,54.00,50.00]},{value:53.00, single: [52.00,55.00,51.00]},{value:53.00, single: [52.00,55.00,51.00]},{value:48.00, single: [47.00,49.00,47.00]},{value:49.00, single: [48.00,50.00,48.00]},{value:52.00, single: [51.00,53.00,51.00]},{value:51.00, single: [50.00,52.00,50.00]},{value:48.00, single: [47.00,49.00,47.00]},{value:48.00, single: [47.00,49.00,47.00]},{value:47.00, single: [46.00,48.00,46.00]},{value:47.00, single: [46.00,48.00,46.00]},{value:45.00, single: [44.00,46.00,44.00]},{value:53.00, single: [51.00,54.00,53.00]},{value:46.00, single: [44.00,47.00,46.00]},{value:48.00, single: [46.00,49.00,48.00]},{value:50.00, single: [48.00,51.00,50.00]},{value:48.00, single: [46.00,49.00,48.00]},{value:48.00, single: [46.00,49.00,48.00]},{value:51.00, single: [49.00,52.00,51.00]},{value:51.00, single: [49.00,52.00,51.00]},{value:49.00, single: [47.00,50.00,49.00]},{value:49.00, single: [47.00,50.00,49.00]},{value:52.00, single: [50.00,53.00,52.00]},{value:50.00, single: [48.00,51.00,50.00]},{value:50.00, single: [47.00,50.00,52.00]},{value:49.00, single: [46.00,49.00,51.00]},{value:47.00, single: [44.00,47.00,49.00]},{value:46.00, single: [43.00,46.00,48.00]},{value:50.00, single: [47.00,50.00,52.00]},{value:48.00, single: [45.00,48.00,50.00]},{value:48.00, single: [45.00,48.00,50.00]},{value:47.00, single: [44.00,47.00,49.00]},{value:48.00, single: [45.00,48.00,50.00]},{value:47.00, single: [44.00,47.00,49.00]},{value:48.00, single: [45.00,48.00,50.00]},{value:46.00, single: [43.00,46.00,48.00]},{value:50.00, single: [47.00,50.00,52.00]},{value:49.00, single: [46.00,49.00,51.00]},{value:51.00, single: [48.00,51.00,53.00]},{value:48.00, single: [45.00,48.00,50.00]},{value:50.00, single: [47.00,50.00,52.00]},{value:50.00, single: [47.00,50.00,52.00]},{value:49.00, single: [46.00,49.00,51.00]},{value:47.00, single: [44.00,47.00,49.00]},{value:50.00, single: [47.00,50.00,52.00]},{value:47.00, single: [44.00,47.00,49.00]},{value:45.00, single: [42.00,45.00,47.00]},{value:46.00, single: [43.00,46.00,48.00]},{value:47.00, single: [44.00,47.00,49.00]},{value:46.00, single: [43.00,46.00,48.00]},{value:45.00, single: [42.00,45.00,47.00]},{value:47.00, single: [44.00,47.00,49.00]},{value:47.00, single: [44.00,47.00,49.00]},{value:47.00, single: [44.00,47.00,49.00]},{value:49.00, single: [46.00,49.00,51.00]},{value:46.00, single: [43.00,46.00,48.00]},{value:46.00, single: [43.00,46.00,48.00]},{value:47.00, single: [44.00,47.00,49.00]},{value:47.00, single: [44.00,47.00,49.00]},{value:46.00, single: [43.00,46.00,48.00]},{value:46.00, single: [43.00,46.00,48.00]},{value:46.00, single: [43.00,46.00,48.00]},{value:46.00, single: [43.00,46.00,48.00]},{value:46.00, single: [43.00,46.00,48.00]},{value:45.00, single: [42.00,45.00,47.00]},{value:46.00, single: [43.00,46.00,48.00]},{value:46.00, single: [43.00,46.00,48.00]},{value:46.00, single: [43.00,46.00,48.00]},{value:46.00, single: [43.00,46.00,48.00]},{value:46.00, single: [43.00,46.00,48.00]},{value:48.00, single: [45.00,48.00,50.00]},{value:47.00, single: [44.00,47.00,49.00]},{value:46.00, single: [43.00,46.00,48.00]},{value:46.00, single: [43.00,46.00,48.00]},{value:43.00, single: [40.00,43.00,45.00]},{value:44.00, single: [41.00,44.00,46.00]},{value:43.00, single: [40.00,43.00,45.00]},{value:42.00, single: [39.00,42.00,44.00]},{value:42.00, single: [39.00,42.00,44.00]},{value:43.00, single: [40.00,43.00,45.00]},{value:43.00, single: [40.00,43.00,45.00]},{value:48.00, single: [45.00,48.00,50.00]},{value:49.00, single: [46.00,49.00,51.00]},{value:47.00, single: [44.00,47.00,49.00]},{value:50.00, single: [47.00,50.00,52.00]},{value:50.00, single: [47.00,50.00,52.00]},{value:48.00, single: [45.00,48.00,50.00]},{value:48.00, single: [45.00,48.00,50.00]}
+    ]
+  };
+
+  // 状态维护
+  let dataStore = [];
+  let startIndex = 0;
+  let endIndex = 0;
+  let mouseX = null, mouseY = null;
+  let visibleLines = { total: true, large: true, medium: true, nonbank: true };
+
+  function toggleLine(key) {
+    visibleLines[key] = !visibleLines[key];
+    renderChart();
+  }
+
+  function normalizeData(raw) {
+    if (!raw || !raw.timeList || !raw.dataList) return;
+    const len = Math.min(raw.timeList.length, raw.dataList.length);
+    const map = new Map();
+    dataStore.forEach(d => map.set(d.time, d));
+
+    for (let i = 0; i < len; i++) {
+      const item = raw.dataList[i] || {};
+      const single = item.single || [0,0,0];
+      const time = String(raw.timeList[i]).trim();
+      map.set(time, {
+        time: time,
+        total: Number(item.value || 0),
+        large: Number(single[0] || 0),
+        medium: Number(single[1] || 0),
+        nonbank: Number(single[2] || 0)
+      });
+    }
+
+    dataStore = Array.from(map.values()).sort((a,b) => new Date(a.time.replace(/-/g,'/')) - new Date(b.time.replace(/-/g,'/')));
+  }
+
+  // 5. 智能解析追加引擎
+  function parseAndAppendData() {
+    const rawInput = document.getElementById('source-input').value;
+    const logEl = document.getElementById('parse-debug-log');
+
+    if (!rawInput.trim()) {
+      showMsg('请先在文本框粘贴包含 FXSIData 的网页源码！', 'error');
+      return;
+    }
+
+    let parsedTimes = [];
+    let parsedDatas = [];
+    let logs = [];
+
+    logs.push(`[开始解析] 输入长度: ${rawInput.length} 字符`);
+
+    try {
+      const tMatch = rawInput.match(/timeList\s*:\s*(\[[^\]]+\])/);
+      if (tMatch) parsedTimes = eval('(' + tMatch[1] + ')');
+
+      const dMatch = rawInput.match(/dataList\s*:\s*(\[\s*\{[\s\S]*?\}\s*\])/);
+      if (dMatch) parsedDatas = eval('(' + dMatch[1] + ')');
+    } catch (e) {
+      logs.push(`策略一标准提取解析提示: ${e.message}`);
+    }
+
+    // 备用通用提取策略
+    if (parsedTimes.length === 0 || parsedDatas.length === 0) {
+      logs.push(`启动通用正则识别模式...`);
+      parsedTimes = rawInput.match(/\b20\d{2}[-/]\d{2}[-/]\d{2}\s+\d{2}:\d{2}\b/g) || [];
+      const objRegex = /\{\s*value\s*:\s*([\d.]+)\s*,\s*single\s*:\s*\[\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)\s*\]\s*\}/g;
+      let m;
+      while ((m = objRegex.exec(rawInput)) !== null) {
+        parsedDatas.push({ value: parseFloat(m[1]), single: [parseFloat(m[2]), parseFloat(m[3]), parseFloat(m[4])] });
+      }
+    }
+
+    logEl.style.display = 'block';
+    logs.push(`扫描结果 -> 时间节点: ${parsedTimes.length} 项, 数据对象: ${parsedDatas.length} 项`);
+    logEl.innerText = logs.join('\n');
+
+    if (parsedTimes.length === 0 || parsedDatas.length === 0) {
+      showMsg('未发现符合结构的资金面情绪数据，请检查源码格式！', 'error');
+      return;
+    }
+
+    const count = Math.min(parsedTimes.length, parsedDatas.length);
+    normalizeData({ timeList: parsedTimes.slice(0, count), dataList: parsedDatas.slice(0, count) });
+    
+    syncSlidersMax();
+    setQuickRange('all');
+    updateUI();
+    showMsg(`解析追加成功！已更新并去重，当前总数据卡片: ${dataStore.length} 条`, 'success');
+  }
+
+  function showMsg(txt, type) {
+    const el = document.getElementById('parse-status-msg');
+    el.className = 'status-msg ' + type;
+    el.innerText = txt;
+    el.style.display = 'block';
+  }
+
+  // 4. CSV 拖入画布直接导入画图
+  function initDragAndDrop() {
+    const dropZone = document.getElementById('drop-zone');
+    const overlay = document.getElementById('drag-overlay');
+
+    ['dragenter', 'dragover'].forEach(evtName => {
+      dropZone.addEventListener(evtName, e => {
+        e.preventDefault(); e.stopPropagation();
+        overlay.style.display = 'flex';
+      }, false);
+    });
+
+    ['dragleave', 'drop'].forEach(evtName => {
+      dropZone.addEventListener(evtName, e => {
+        e.preventDefault(); e.stopPropagation();
+        overlay.style.display = 'none';
+      }, false);
+    });
+
+    dropZone.addEventListener('drop', e => {
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        const file = files[0];
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          parseCSVText(evt.target.result);
+        };
+        reader.readAsText(file, 'UTF-8');
+      }
+    });
+  }
+
+  function parseCSVText(csvText) {
+    const lines = csvText.split(/\r\n|\n/);
+    const times = [];
+    const datas = [];
+
+    for (let i = 1; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (!line) continue;
+      const cols = line.split(',').map(c => c.replace(/"/g, '').trim());
+      if (cols.length >= 5) {
+        times.push(cols[0]);
+        datas.push({
+          value: parseFloat(cols[1]) || 0,
+          single: [parseFloat(cols[2]) || 0, parseFloat(cols[3]) || 0, parseFloat(cols[4]) || 0]
+        });
+      }
+    }
+
+    if (times.length > 0) {
+      normalizeData({ timeList: times, dataList: datas });
+      syncSlidersMax();
+      setQuickRange('all');
+      updateUI();
+      showMsg(`成功从拖入的 CSV 文件导入 ${times.length} 条数据记录！`, 'success');
+    }
+  }
+
+  // 3. 底部双向 Slider 时间区间控制器
+  function syncSlidersMax() {
+    const maxIdx = Math.max(0, dataStore.length - 1);
+    const rMin = document.getElementById('range-min');
+    const rMax = document.getElementById('range-max');
+    rMin.max = maxIdx;
+    rMax.max = maxIdx;
+  }
+
+  function updateSliderFillTrack() {
+    const maxIdx = Math.max(1, dataStore.length - 1);
+    const fillTrack = document.getElementById('slider-track-fill');
+    const leftPct = (startIndex / maxIdx) * 100;
+    const rightPct = (endIndex / maxIdx) * 100;
+    fillTrack.style.left = leftPct + '%';
+    fillTrack.style.width = (rightPct - leftPct) + '%';
+  }
+
+  function handleRangeSliderChange(type) {
+    const rMin = document.getElementById('range-min');
+    const rMax = document.getElementById('range-max');
+    let vMin = parseInt(rMin.value);
+    let vMax = parseInt(rMax.value);
+
+    if (vMin > vMax) {
+      if (type === 'min') rMax.value = vMin;
+      else rMin.value = vMax;
+    }
+
+    startIndex = parseInt(rMin.value);
+    endIndex = parseInt(rMax.value);
+    updateSliderFillTrack();
+    updateUI();
+  }
+
+  function setQuickRange(range) {
+    const total = dataStore.length;
+    if (total === 0) return;
+
+    if (range === 'all') {
+      startIndex = 0;
+      endIndex = total - 1;
+    } else if (typeof range === 'number') {
+      startIndex = Math.max(0, total - range);
+      endIndex = total - 1;
+    }
+
+    document.getElementById('range-min').value = startIndex;
+    document.getElementById('range-max').value = endIndex;
+    updateSliderFillTrack();
+    updateUI();
+  }
+
+  // 2. 资金面情绪指数 Canvas 高精度画图引擎
+  function renderChart() {
+    const container = document.getElementById('chart-container');
+    const canvas = document.getElementById('financial-canvas');
+    const tooltipEl = document.getElementById('chart-tooltip');
+    if (!canvas || !container) return;
+
+    const ctx = canvas.getContext('2d');
+    const rect = container.getBoundingClientRect();
+    const width = rect.width, height = rect.height;
+
+    if (width === 0 || height === 0) return;
+
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, width, height);
+
+    const data = dataStore.slice(startIndex, endIndex + 1);
+    
+    document.getElementById('total-count-text').innerText = dataStore.length;
+    if (data.length > 0) {
+      document.getElementById('time-range-text').innerText = `${data[0].time}  至  ${data[data.length - 1].time}`;
+      document.getElementById('points-count-text').innerText = data.length;
+    } else {
+      document.getElementById('time-range-text').innerText = '-- 至 --';
+      document.getElementById('points-count-text').innerText = 0;
+      return;
+    }
+
+    const pad = { top: 25, right: 35, bottom: 40, left: 45 };
+    const w = width - pad.left - pad.right;
+    const h = height - pad.top - pad.bottom;
+    const minY = 35, maxY = 60;
+
+    // 网格线 & Y 轴
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = '#1e293b';
+    ctx.fillStyle = '#64748b';
+    ctx.font = '11px sans-serif';
+
+    for (let v = minY; v <= maxY; v += 5) {
+      const y = pad.top + h - ((v - minY) / (maxY - minY)) * h;
+      ctx.beginPath();
+      ctx.moveTo(pad.left, y);
+      ctx.lineTo(pad.left + w, y);
+      ctx.stroke();
+      ctx.fillText(v, 16, y + 4);
+    }
+
+    // 50 均衡参考线
+    const y50 = pad.top + h - ((50 - minY) / (maxY - minY)) * h;
+    ctx.strokeStyle = '#f59e0b';
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.moveTo(pad.left, y50);
+    ctx.lineTo(pad.left + w, y50);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#f59e0b';
+    ctx.fillText('50 宽松/紧张均衡线', pad.left + w - 105, y50 - 5);
+
+    const getX = i => pad.left + (i / Math.max(1, data.length - 1)) * w;
+    const getY = val => pad.top + h - ((val - minY) / (maxY - minY)) * h;
+
+    // X 轴时间刻度
+    ctx.fillStyle = '#64748b';
+    const step = Math.max(1, Math.floor(data.length / 8));
+    data.forEach((d, i) => {
+      if (i % step === 0 || i === data.length - 1) {
+        const x = getX(i);
+        const parts = d.time.split(' ');
+        const label = (parts[0] ? parts[0].substring(5) : '') + ' ' + (parts[1] || '');
+        ctx.fillText(label, x - 22, height - 12);
+      }
+    });
+
+    function drawLine(key, color, lineWidth, isDashed = false) {
+      if (!visibleLines[key]) return;
+      ctx.beginPath();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = lineWidth;
+      if (isDashed) ctx.setLineDash([3, 3]); else ctx.setLineDash([]);
+
+      data.forEach((d, i) => {
+        const x = getX(i);
+        const y = getY(d[key]);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    drawLine('large', '#10b981', 1.5, true);
+    drawLine('medium', '#3b82f6', 1.5, true);
+    drawLine('nonbank', '#a855f7', 1.5, true);
+    drawLine('total', '#ffffff', 2.5, false);
+
+    // Hover 交互 Crosshair 指针 & Tooltip
+    if (mouseX !== null && mouseX >= pad.left && mouseX <= pad.left + w) {
+      const idx = Math.round(((mouseX - pad.left) / w) * (data.length - 1));
+      const item = data[idx];
+      if (item) {
+        const hX = getX(idx);
+
+        ctx.strokeStyle = '#475569';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(hX, pad.top);
+        ctx.lineTo(hX, pad.top + h);
+        ctx.stroke();
+
+        tooltipEl.style.display = 'block';
+        tooltipEl.style.left = (hX + 15 > width - 180 ? hX - 180 : hX + 15) + 'px';
+        tooltipEl.style.top = (mouseY > height - 130 ? mouseY - 110 : mouseY + 10) + 'px';
+        tooltipEl.innerHTML = `
+          <div style="font-weight:bold; color:var(--accent-blue); margin-bottom:6px;">${item.time}</div>
+          <div style="display:flex; justify-content:space-between; gap:12px;"><span>整体情绪:</span> <b style="color:#fff">${item.total.toFixed(2)}</b></div>
+          <div style="display:flex; justify-content:space-between; gap:12px;"><span>大型银行:</span> <b style="color:var(--accent-green)">${item.large.toFixed(2)}</b></div>
+          <div style="display:flex; justify-content:space-between; gap:12px;"><span>中小银行:</span> <b style="color:var(--accent-blue)">${item.medium.toFixed(2)}</b></div>
+          <div style="display:flex; justify-content:space-between; gap:12px;"><span>非银机构:</span> <b style="color:var(--accent-purple)">${item.nonbank.toFixed(2)}</b></div>
+        `;
+      }
+    } else {
+      tooltipEl.style.display = 'none';
+    }
+  }
+
+  // 6. 数据表格渲染
+  function renderTable() {
+    const tbody = document.getElementById('table-body');
+    tbody.innerHTML = '';
+    const sliceData = dataStore.slice(startIndex, endIndex + 1).slice().reverse();
+    sliceData.forEach(d => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td style="font-weight:500;">${d.time}</td>
+        <td class="num-col" style="color:${d.total > 50 ? 'var(--accent-rose)':'var(--accent-green)'}; font-weight:bold;">${d.total.toFixed(2)}</td>
+        <td class="num-col" style="color:var(--accent-green);">${d.large.toFixed(2)}</td>
+        <td class="num-col" style="color:var(--accent-blue);">${d.medium.toFixed(2)}</td>
+        <td class="num-col" style="color:var(--accent-purple);">${d.nonbank.toFixed(2)}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+    document.getElementById('data-count-badge').innerText = `已加载数据: ${dataStore.length}条`;
+  }
+
+  // 导出 CSV 功能
+  function exportToCSV() {
+    let csv = '\uFEFF时间,整体情绪指数,大型银行,中小银行,非银机构\n';
+    dataStore.forEach(d => { csv += `"${d.time}",${d.total},${d.large},${d.medium},${d.nonbank}\n`; });
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `人民币资金面情绪指数_${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+  }
+
+  function updateUI() {
+    renderChart();
+    renderTable();
+  }
+
+  function initEvents() {
+    const container = document.getElementById('chart-container');
+    const tooltipEl = document.getElementById('chart-tooltip');
+
+    window.addEventListener('resize', renderChart);
+
+    container.addEventListener('mousemove', e => {
+      const rect = container.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+      renderChart();
+    });
+
+    container.addEventListener('mouseleave', () => {
+      mouseX = null;
+      mouseY = null;
+      tooltipEl.style.display = 'none';
+      renderChart();
+    });
+  }
+
+  window.onload = () => {
+    normalizeData(initialRawData);
+    initEvents();
+    initDragAndDrop();
+    syncSlidersMax();
+    setQuickRange(30);
+    updateUI();
+  };
+</script>
+</body>
+</html>

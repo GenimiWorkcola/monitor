@@ -1,0 +1,10 @@
+删除了git hub上相关文件
+
+git pull 
+
+先同步本地 
+再push 
+
+git add .
+git commit -m "说明你这次更新了什么内容"
+git push
