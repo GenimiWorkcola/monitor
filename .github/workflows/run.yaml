@@ -24,8 +24,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install requests beautifulsoup4 pandas openpyxl
 
-    - name: Run specific python script
-      run: python rmb_liquidity/liquidity.py
+    - name: Run Python scripts
+      run: |
+        python rmb_liquidity/update_moneyindex.py
+        python rmb_liquidity/liquidity.py
 
     - name: Commit and push changes back
       run: |
