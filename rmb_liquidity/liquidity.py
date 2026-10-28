@@ -1,228 +1,351 @@
 # -*- coding: utf-8 -*-
 """
-央行资金面数据更新脚本
-======================
-功能：
-1. 读取本脚本同文件夹下的 cfets_nex_omo_data_with_shibor.xlsx
-2. 从 CFETS-NEX 每日简报页按时间倒序增量抓取「每日市场动态」，
-   遇到 Excel 已有日期即停止；自动跳过只有晨报的日期和节假日
-3. 合并去重后写回 cfets_nex_omo_data_with_shibor.xlsx
-4. 用更新后的数据重新生成内嵌最新数据的 HTML 交互页面
-   （替换页面中的 EMBEDDED_DATA 常量，图表打开即最新）
-5. 旧的 Excel 和 HTML 自动移入同文件夹下的 old data 子文件夹（同名自动覆盖）
-
-文件准备：
-    本脚本同文件夹需放置：
-    - cfets_nex_omo_data_with_shibor.xlsx   （旧数据表）
-    - liquidity.html                        （旧交互页面，作为模板）
-
-依赖安装（首次运行前执行一次）：
-    pip install requests beautifulsoup4 pandas openpyxl
-
-运行：
-    python liquidity.py
+央行资金面数据与交互页面一键更新（支持R001/R007成交量比值双轴、OMO 1D/7D利率及自定义输入）。
 """
+from __future__ import annotations
 
+import datetime as dt
+import io
+import json
 import os
 import re
-import sys
-import json
-import time
 import shutil
-import datetime as dt
+import time
+from datetime import date, timedelta
+from pathlib import Path
 
-import requests
+import numpy as np
+import openpyxl
 import pandas as pd
+import requests
 from bs4 import BeautifulSoup
 
-# ---------- 配置 ----------
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-FILE_NAME = "cfets_nex_omo_data_with_shibor.xlsx"
-FILE_PATH = os.path.join(BASE_DIR, FILE_NAME)
-HTML_NAME = "liquidity.html"
-HTML_PATH = os.path.join(BASE_DIR, HTML_NAME)
-OLD_DIR = os.path.join(BASE_DIR, "old data")
+BASE_DIR = Path(__file__).resolve().parent
+DATA_PATH = BASE_DIR / "liquidity_data.xlsx"
+HTML_PATH = BASE_DIR / "liquidity.html"
+INDEX_PATH = BASE_DIR / "index.html"
+OLD_DIR = BASE_DIR / "old data"
+SHEET_NAME = "资金面数据"
 
-BASE_URL = "https://www.cfets-nex.com.cn/Market/marketOverview/marketOverview/?PageIndex={}"
-MAX_PAGES = 40          # 最多翻页数（防止异常死循环）
-RETRY = 5               # 每页被反爬拦截时的重试次数
-
+OMO_BASE_URL = "https://www.cfets-nex.com.cn/Market/marketOverview/marketOverview/?PageIndex={}"
+REPO_BASE_URL = "https://www.chinamoney.com.cn/dqs/rest/cm-u-dlrp/PrDlyBltnExcel"
+MAX_PAGES = 40
+RETRY = 5
+TARGETS = ("R001", "R007", "DR001", "DR007")
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
                   "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36"
 }
+OMO_FIELDS = [
+    "央行逆回购投放(亿)", "逆回购到期(亿)", "净投放(亿)", "资金面概况",
+    "隔夜Shibor", "7天Shibor", "3个月Shibor", "OMO_1D", "OMO_7D"
+]
+REPO_FIELDS = [
+    "开盘利率(%)", "收盘利率(%)", "加权利率(%)", "加权平均利率(利率债)(%)",
+    "平均回购期限(天)", "成交笔数(笔)", "成交量(亿元)",
+]
+ALL_COLUMNS = (
+    ["日期"] + OMO_FIELDS + ["OMO数据来源", "OMO来源链接"]
+    + [f"{symbol}_{field}" for symbol in TARGETS for field in REPO_FIELDS]
+    + ["回购数据来源", "回购来源链接", "R001_R007_成交量比值", "R001_DR001_价差BP"]
+)
+
+# 7天期逆回购利率的历次生效节点；新调整只需在此追加一行。
+OMO_7D_STEPS = [
+    (dt.date(2020, 1, 1), 2.50),
+    (dt.date(2020, 2, 3), 2.40),
+    (dt.date(2020, 3, 30), 2.20),
+    (dt.date(2022, 1, 17), 2.10),
+    (dt.date(2022, 8, 15), 2.00),
+    (dt.date(2023, 6, 13), 1.90),
+    (dt.date(2023, 8, 15), 1.80),
+    (dt.date(2024, 7, 22), 1.70),
+    (dt.date(2024, 9, 27), 1.50),
+    (dt.date(2025, 5, 8), 1.40),
+]
 
 
-# ---------- 解析 ----------
-def parse_page(html):
-    """解析一页简报列表，返回 [(日期, 每日市场动态正文), ...]（晨报自动忽略）"""
+def get_omo_rates(day_str: str) -> tuple[float | None, float | None]:
+    """返回 OMO_1D、OMO_7D；1D 指临时隔夜正回购利率（利率走廊下限）。"""
+    day = dt.datetime.strptime(day_str, "%Y-%m-%d").date()
+    effective_rates = [rate for effective, rate in OMO_7D_STEPS if day >= effective]
+    if not effective_rates:
+        return None, None
+    rate_7d = effective_rates[-1]
+    if day < dt.date(2024, 7, 8):
+        return None, rate_7d  # 临时隔夜正、逆回购机制自该日起设立
+    spread = 0.25 if day >= dt.date(2026, 6, 17) else 0.20
+    return round(rate_7d - spread, 3), round(rate_7d, 3)
+
+
+def timestamped_target(path: Path) -> Path:
+    stamp = dt.datetime.now().strftime("%Y%m%d_%H%M%S")
+    target = OLD_DIR / f"{path.stem}_{stamp}{path.suffix}"
+    counter = 1
+    while target.exists():
+        target = OLD_DIR / f"{path.stem}_{stamp}_{counter}{path.suffix}"
+        counter += 1
+    return target
+
+
+def archive_file(path: Path) -> Path | None:
+    if not path.exists():
+        return None
+    OLD_DIR.mkdir(parents=True, exist_ok=True)
+    target = timestamped_target(path)
+    shutil.move(str(path), str(target))
+    print(f"旧文件已移至：{target}")
+    return target
+
+
+def read_data() -> pd.DataFrame:
+    if not DATA_PATH.exists():
+        raise FileNotFoundError(f"未找到 {DATA_PATH.name}")
+    df = pd.read_excel(DATA_PATH, sheet_name=SHEET_NAME)
+    for column in ALL_COLUMNS:
+        if column not in df.columns:
+            df[column] = None
+    df = df[ALL_COLUMNS]
+    df["日期"] = pd.to_datetime(df["日期"]).dt.strftime("%Y-%m-%d")
+    return df.drop_duplicates(subset="日期", keep="last").sort_values("日期").reset_index(drop=True)
+
+
+def merge_updates(df: pd.DataFrame, updates: list[dict]) -> pd.DataFrame:
+    records = {row["日期"]: row for row in df.to_dict(orient="records")}
+    for update in updates:
+        row = records.setdefault(update["日期"], {"日期": update["日期"]})
+        row.update(update)
+    
+    merged = pd.DataFrame([records[key] for key in sorted(records)])
+    for column in ALL_COLUMNS:
+        if column not in merged.columns:
+            merged[column] = None
+    merged = merged[ALL_COLUMNS]
+    
+    # 衍生指标：比值遇到零分母或缺失值时留空，禁止 Infinity／NaN 进入 JSON。
+    r001_vol = pd.to_numeric(merged["R001_成交量(亿元)"], errors="coerce")
+    r007_vol = pd.to_numeric(merged["R007_成交量(亿元)"], errors="coerce")
+    ratio = r001_vol.div(r007_vol.mask(r007_vol.eq(0)))
+    merged["R001_R007_成交量比值"] = ratio.where(np.isfinite(ratio)).round(3)
+
+    r001_rate = pd.to_numeric(merged["R001_加权利率(%)"], errors="coerce")
+    dr001_rate = pd.to_numeric(merged["DR001_加权利率(%)"], errors="coerce")
+    merged["R001_DR001_价差BP"] = ((r001_rate - dr001_rate) * 100).round(3)
+
+    # 自动补全历史OMO利率
+    for idx, row in merged.iterrows():
+        r1, r7 = get_omo_rates(row["日期"])
+        if pd.isna(row.get("OMO_1D")):
+            merged.at[idx, "OMO_1D"] = r1
+        if pd.isna(row.get("OMO_7D")):
+            merged.at[idx, "OMO_7D"] = r7
+
+    for column in ["央行逆回购投放(亿)", "逆回购到期(亿)", "净投放(亿)"]:
+        merged[column] = pd.to_numeric(merged[column], errors="coerce").round(0).astype("Int64")
+    return merged
+
+
+def write_data(df: pd.DataFrame) -> None:
+    archive_file(DATA_PATH)
+    temp_path = DATA_PATH.with_name(DATA_PATH.stem + ".tmp.xlsx")
+    df.to_excel(temp_path, sheet_name=SHEET_NAME, index=False)
+    os.replace(temp_path, DATA_PATH)
+    print(f"合并数据表已更新：{DATA_PATH}（{len(df)} 个日期）")
+
+
+def parse_page(html: str) -> list[tuple[str, str]]:
     soup = BeautifulSoup(html, "html.parser")
     out = []
     for block in soup.select(".has-date"):
-        d_el = block.select_one(".date")
-        if not d_el:
+        date_element = block.select_one(".date")
+        if not date_element:
             continue
-        date_str = d_el.get_text(strip=True)
+        day = date_element.get_text(strip=True)
         for box in block.select(".report-box"):
-            h4 = box.select_one("h4")
-            p = box.select_one("p")
+            h4, p = box.select_one("h4"), box.select_one("p")
             if h4 and p and "每日市场动态" in h4.get_text():
-                out.append((date_str, p.get_text(strip=True)))
+                out.append((day, p.get_text(strip=True)))
     return out
 
 
-def parse_summary(text):
-    """从每日市场动态正文中提取结构化字段"""
-    # 投放：对「开展……逆回购操作」段中所有“XX亿”求和（兼容7天期/隔夜期/14天期等多品种）
-    m = re.search(r"开展(.*?)逆回购操作", text)
-    invest = None
-    if m:
-        invest = sum(float(x) for x in re.findall(r"(\d+(?:\.\d+)?)亿", m.group(1)))
-    m2 = re.search(r"逆回购到期(\d+(?:\.\d+)?)亿", text)
-    mature = float(m2.group(1)) if m2 else None
-    net = (invest - mature) if invest is not None and mature is not None else None
+def parse_summary(text: str) -> dict:
+    match = re.search(r"开展(.*?)逆回购操作", text)
+    invest = sum(float(x) for x in re.findall(r"(\d+(?:\.\d+)?)亿", match.group(1))) if match else None
+    match = re.search(r"逆回购到期(\d+(?:\.\d+)?)亿", text)
+    mature = float(match.group(1)) if match else None
+    net = invest - mature if invest is not None and mature is not None else None
 
     def shibor(name):
-        mm = re.search(name + r"品种报\s*(\d+\.\d+)\s*%", text)
-        return float(mm.group(1)) if mm else None
+        found = re.search(name + r"品种报\s*(\d+\.\d+)\s*%", text)
+        return float(found.group(1)) if found else None
 
-    # 资金面概况：取含“资金面”的那句话，去掉“今日”“资金面”字样
-    sent = ""
-    for s in re.split(r"。", text):
-        if "资金面" in s:
-            sent = s
-    sent = re.sub(r"^今日", "", sent).replace("资金面", "").strip("，,。 ")
-    return invest, mature, net, sent, shibor("隔夜"), shibor("7天"), shibor("3个月")
+    condition = ""
+    for sentence in re.split(r"。", text):
+        if "资金面" in sentence:
+            condition = sentence
+    condition = re.sub(r"^今日", "", condition).replace("资金面", "").strip("，,。 ")
+    
+    res = {
+        "央行逆回购投放(亿)": invest, "逆回购到期(亿)": mature, "净投放(亿)": net,
+        "资金面概况": condition, "隔夜Shibor": shibor("隔夜"),
+        "7天Shibor": shibor("7天"), "3个月Shibor": shibor("3个月"),
+        "OMO数据来源": "CFETS-NEX", "OMO来源链接": OMO_BASE_URL.format(1),
+    }
+    return res
 
 
-def fetch_page(sess, page):
-    """带反爬重试的抓取；成功返回条目列表，失败返回 None"""
-    url = BASE_URL.format(page)
+def fetch_omo_page(session: requests.Session, page: int):
     for attempt in range(RETRY):
         try:
-            resp = sess.get(url, timeout=30)
-            resp.encoding = "utf-8"
-        except Exception as e:
-            print(f"  第{page}页 第{attempt+1}次请求异常: {e}")
+            response = session.get(OMO_BASE_URL.format(page), timeout=30)
+            response.encoding = "utf-8"
+        except requests.RequestException as exc:
+            print(f"OMO 第 {page} 页第 {attempt + 1} 次请求异常：{exc}")
             time.sleep(3)
             continue
-        if "aliyun_waf" in resp.text:          # 阿里云WAF拦截页
+        if "aliyun_waf" in response.text:
             wait = 5 * (attempt + 1)
-            print(f"  第{page}页 触发反爬，{wait}秒后重试 ({attempt+1}/{RETRY})")
+            print(f"OMO 第 {page} 页触发反爬，{wait} 秒后重试")
             time.sleep(wait)
             continue
-        items = parse_page(resp.text)
+        items = parse_page(response.text)
         if items:
             return items
         time.sleep(2)
     return None
 
 
-# ---------- HTML 更新 ----------
-def regenerate_html(merged):
-    """用最新数据替换 HTML 中的 EMBEDDED_DATA 常量，旧文件归档到 old data"""
-    if not os.path.exists(HTML_PATH):
-        print(f"\n未找到 {HTML_NAME}，跳过 HTML 更新（Excel 已正常更新）。")
-        return
-
-    records = merged.where(pd.notna(merged), None).to_dict(orient="records")
-    # Int64 转普通 int/float，保证 JSON 序列化干净
-    for r in records:
-        for k, v in r.items():
-            if hasattr(v, "item"):
-                v = v.item()
-            r[k] = v
-    data_json = json.dumps(records, ensure_ascii=False)
-
-    with open(HTML_PATH, "r", encoding="utf-8") as f:
-        html = f.read()
-    new_html, n = re.subn(
-        r"const EMBEDDED_DATA = \[.*?\];",
-        "const EMBEDDED_DATA = " + data_json + ";",
-        html, count=1, flags=re.S,
-    )
-    if n == 0:
-        print("\nHTML 中未找到 EMBEDDED_DATA 常量，跳过 HTML 更新（请确认是同一份交互页面文件）。")
-        return
-
-    # 旧 HTML 归档（自动覆盖）
-    os.makedirs(OLD_DIR, exist_ok=True)
-    old_html_target = os.path.join(OLD_DIR, HTML_NAME)
-    if os.path.exists(old_html_target):
-        os.remove(old_html_target)
-    shutil.move(HTML_PATH, old_html_target)
-
-    with open(HTML_PATH, "w", encoding="utf-8") as f:
-        f.write(new_html)
-    print(f"HTML 已内嵌最新数据（{len(records)} 条）: {HTML_PATH}")
-    print(f"旧 HTML 已移至: {old_html_target}")
-
-
-# ---------- 主流程 ----------
-def main():
-    if not os.path.exists(FILE_PATH):
-        print(f"未找到 {FILE_NAME}，请把它放到本脚本同一文件夹后重试。")
-        sys.exit(1)
-
-    df = pd.read_excel(FILE_PATH)
-    df["日期"] = pd.to_datetime(df["日期"]).dt.strftime("%Y-%m-%d")
-    latest = dt.datetime.strptime(df["日期"].max(), "%Y-%m-%d").date()
-    print(f"现有数据 {len(df)} 条，最新日期 {latest}，开始增量抓取...\n")
-
-    sess = requests.Session()
-    sess.headers.update(HEADERS)
-
-    new_rows, stop = [], False
-    page = 1
+def update_omo(df: pd.DataFrame) -> list[dict]:
+    omo_dates = df.loc[df["隔夜Shibor"].notna() | df["净投放(亿)"].notna(), "日期"]
+    if omo_dates.empty:
+        raise ValueError("合并表中没有可用于增量判断的 OMO／Shibor 历史数据")
+    latest = dt.datetime.strptime(omo_dates.max(), "%Y-%m-%d").date()
+    session = requests.Session()
+    session.headers.update(HEADERS)
+    updates, stop, page = [], False, 1
     while not stop and page <= MAX_PAGES:
-        items = fetch_page(sess, page)
+        items = fetch_omo_page(session, page)
         if items is None:
-            print(f"第{page}页多次重试仍被拦截，提前结束（已抓到的部分不受影响）")
             break
-        for date_str, txt in items:
-            d = dt.datetime.strptime(date_str, "%Y-%m-%d").date()
-            if d <= latest:
+        for day, text in items:
+            current = dt.datetime.strptime(day, "%Y-%m-%d").date()
+            if current <= latest:
                 stop = True
                 break
-            inv, mat, net, cond, on, d7, m3 = parse_summary(txt)
-            new_rows.append({
-                "日期": date_str, "央行逆回购投放(亿)": inv, "逆回购到期(亿)": mat,
-                "净投放(亿)": net, "资金面概况": cond,
-                "隔夜Shibor": on, "7天Shibor": d7, "3个月Shibor": m3,
-            })
-        print(f"第{page}页: {items[0][0]} ~ {items[-1][0]}" + ("  -> 到达已有日期，停止" if stop else ""))
+            r1, r7 = get_omo_rates(day)
+            d_dict = parse_summary(text)
+            d_dict["OMO_1D"] = r1
+            d_dict["OMO_7D"] = r7
+            updates.append({"日期": day, **d_dict})
         page += 1
-        time.sleep(1.5)  # 控制频率，降低触发反爬概率
+        if not stop:
+            time.sleep(1.5)
+    return updates
 
-    if not new_rows:
-        print("\n没有新数据，Excel 已是最新，文件未改动。")
-        return
 
-    new_df = pd.DataFrame(new_rows)
-    merged = pd.concat([df, new_df], ignore_index=True)
-    merged = merged.drop_duplicates(subset="日期", keep="last").sort_values("日期").reset_index(drop=True)
-    for c in ["央行逆回购投放(亿)", "逆回购到期(亿)", "净投放(亿)"]:
-        merged[c] = merged[c].astype(float).round(0).astype("Int64")
+def download_repo_day(session: requests.Session, day: date) -> list[dict]:
+    url = f"{REPO_BASE_URL}?lang=cn&searchDate={day.isoformat()}&publishedTime=2200"
+    last_error = None
+    for attempt in range(3):
+        try:
+            response = session.get(url, timeout=30)
+            response.raise_for_status()
+            if not response.content.startswith(b"PK"):
+                raise ValueError("服务器返回的不是有效 Excel 文件")
+            workbook = openpyxl.load_workbook(io.BytesIO(response.content), read_only=True, data_only=True)
+            sheet = workbook[workbook.sheetnames[0]]
+            found = {}
+            for row in sheet.iter_rows(values_only=True):
+                if len(row) >= 10 and row[1] in TARGETS:
+                    found[row[1]] = row[2:9]
+            workbook.close()
+            return [
+                {"日期": day.isoformat(), "品种": symbol, **dict(zip(REPO_FIELDS, found[symbol])),
+                 "数据来源": "中国货币网", "来源链接": url}
+                for symbol in TARGETS if symbol in found
+            ]
+        except (requests.RequestException, ValueError, OSError) as exc:
+            last_error = exc
+            if attempt < 2:
+                time.sleep(1.5 * (attempt + 1))
+    raise RuntimeError(f"{day} 回购数据下载失败：{last_error}")
 
-    # 旧 Excel 移入 old data（自动覆盖同名旧文件）
-    os.makedirs(OLD_DIR, exist_ok=True)
-    old_target = os.path.join(OLD_DIR, FILE_NAME)
-    if os.path.exists(old_target):
-        os.remove(old_target)
-    shutil.move(FILE_PATH, old_target)
 
-    merged.to_excel(FILE_PATH, index=False)
+def update_repo(df: pd.DataFrame) -> list[dict]:
+    rate_columns = [f"{symbol}_加权利率(%)" for symbol in TARGETS]
+    repo_dates = df.loc[df[rate_columns].notna().any(axis=1), "日期"]
+    end = date.today()
+    start = dt.datetime.strptime(repo_dates.max(), "%Y-%m-%d").date() if not repo_dates.empty else end - timedelta(days=13)
+    if start > end:
+        return []
+    session = requests.Session()
+    session.headers.update({"User-Agent": HEADERS["User-Agent"], "Referer": "https://www.chinamoney.com.cn/"})
+    updates = []
+    day = start
+    while day <= end:
+        try:
+            daily = download_repo_day(session, day)
+            if daily:
+                wide = {"日期": day.isoformat(), "回购数据来源": "中国货币网", "回购来源链接": daily[0]["来源链接"]}
+                for record in daily:
+                    for field in REPO_FIELDS:
+                        wide[f"{record['品种']}_{field}"] = record[field]
+                updates.append(wide)
+        except RuntimeError:
+            pass
+        day += timedelta(days=1)
+    return updates
 
-    dates = sorted(r["日期"] for r in new_rows)
-    print(f"\n更新完成：新增 {len(new_rows)} 条（{dates[-1]} ~ {dates[0]} 之间的新日期）")
-    print(f"新表共 {len(merged)} 条，最新日期 {merged['日期'].max()}")
-    print(f"新文件: {FILE_PATH}")
-    print(f"旧文件已移至: {old_target}")
-    print("提示：节假日（如端午）无数据属正常，不算缺失。")
 
-    # 用最新数据重新生成 HTML 交互页面
-    print("\n正在更新 HTML 交互页面内嵌数据...")
+def json_value(value):
+    if value is None or pd.isna(value):
+        return None
+    if hasattr(value, "item"):
+        value = value.item()
+    if isinstance(value, (pd.Timestamp, dt.date, dt.datetime)):
+        value = value.strftime("%Y-%m-%d")
+    elif isinstance(value, float):
+        return round(value, 4) if np.isfinite(value) else None
+    return value
+
+
+def replace_constant(html: str, pattern: str, replacement: str, label: str) -> str:
+    new_html, count = re.subn(pattern, lambda _: replacement, html, count=1, flags=re.S)
+    if count != 1:
+        raise ValueError(f"当前 liquidity.html 中未找到 {label}")
+    return new_html
+
+
+def regenerate_html(df: pd.DataFrame) -> None:
+    if not HTML_PATH.exists():
+        raise FileNotFoundError("未找到 liquidity.html")
+    records = [{key: json_value(value) for key, value in row.items()} for row in df.to_dict(orient="records")]
+    data_json = json.dumps(records, ensure_ascii=False, allow_nan=False, separators=(",", ":"))
+    generated_at = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    html = HTML_PATH.read_text(encoding="utf-8")
+    html = replace_constant(html, r"const EMBEDDED_DATA = \[.*?\];",
+                            "const EMBEDDED_DATA = " + data_json + ";", "EMBEDDED_DATA")
+    html = replace_constant(html, r'const GENERATED_AT = "[^"]*";',
+                            f'const GENERATED_AT = "{generated_at}";', "GENERATED_AT")
+    archive_file(HTML_PATH)
+    temp_path = HTML_PATH.with_name(HTML_PATH.stem + ".tmp.html")
+    temp_path.write_text(html, encoding="utf-8")
+    os.replace(temp_path, HTML_PATH)
+    # 网页预览入口与正式页面保持完全一致；它不参与模板读取或历史归档。
+    index_temp = INDEX_PATH.with_name(INDEX_PATH.stem + ".tmp.html")
+    index_temp.write_text(html, encoding="utf-8")
+    os.replace(index_temp, INDEX_PATH)
+    print(f"HTML 已更新：{HTML_PATH}")
+
+
+def main() -> None:
+    df = read_data()
+    updates = update_omo(df) + update_repo(df)
+    merged = merge_updates(df, updates)
+    # 即使两个数据源均无新增，也保存衍生指标和新增字段的重新计算结果。
+    write_data(merged)
     regenerate_html(merged)
+    print("全部更新完成。")
 
 
 if __name__ == "__main__":
