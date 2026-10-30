@@ -23,7 +23,6 @@ from bs4 import BeautifulSoup
 BASE_DIR = Path(__file__).resolve().parent
 DATA_PATH = BASE_DIR / "liquidity_data.xlsx"
 HTML_PATH = BASE_DIR / "liquidity.html"
-INDEX_PATH = BASE_DIR / "index.html"
 OLD_DIR = BASE_DIR / "old data"
 SHEET_NAME = "资金面数据"
 
@@ -331,10 +330,6 @@ def regenerate_html(df: pd.DataFrame) -> None:
     temp_path = HTML_PATH.with_name(HTML_PATH.stem + ".tmp.html")
     temp_path.write_text(html, encoding="utf-8")
     os.replace(temp_path, HTML_PATH)
-    # 网页预览入口与正式页面保持完全一致；它不参与模板读取或历史归档。
-    index_temp = INDEX_PATH.with_name(INDEX_PATH.stem + ".tmp.html")
-    index_temp.write_text(html, encoding="utf-8")
-    os.replace(index_temp, INDEX_PATH)
     print(f"HTML 已更新：{HTML_PATH}")
 
 
