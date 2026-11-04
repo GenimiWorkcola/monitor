@@ -24,7 +24,7 @@ FRED + USD.CNY 隐含利率综合数据表更新脚本
 
 默认读取脚本同目录：
     FRED rates.csv
-    外币隐含利率曲线历史数据.xlsx
+    imply.xlsx
     usd_liquidity.html
 
 默认输出：
@@ -72,7 +72,7 @@ TENOR_COLUMNS = {"1D": IMP1D_COL, "3M": IMP3M_COL}
 
 BASE_DIR = Path(__file__).resolve().parent
 DEFAULT_BASE_PATH = BASE_DIR / "FRED rates.csv"
-DEFAULT_IMPLIED_PATH = BASE_DIR / "外币隐含利率曲线历史数据.xlsx"
+DEFAULT_IMPLIED_PATH = BASE_DIR / "imply.xlsx"
 DEFAULT_HTML_PATH = BASE_DIR / "usd_liquidity.html"
 OLD_DIR = BASE_DIR / "old data"
 
@@ -435,7 +435,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("base", nargs="?", default=str(DEFAULT_BASE_PATH),
                         help="基准 FRED 表，默认读取脚本同目录的 FRED rates.csv")
     parser.add_argument("--implied", default=str(DEFAULT_IMPLIED_PATH),
-                        help="隐含利率历史表，默认读取脚本同目录的 外币隐含利率曲线历史数据.xlsx")
+                        help="隐含利率历史表，默认读取脚本同目录的 imply.xlsx")
     parser.add_argument("--html", default=str(DEFAULT_HTML_PATH),
                         help="交互页面模板，默认更新脚本同目录的 usd_liquidity.html")
     parser.add_argument("--sheet", default=None, help="指定读取的工作表")
