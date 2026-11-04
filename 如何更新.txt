@@ -1,9 +1,16 @@
-删除了git hub上相关文件
+1.删除了git hub上相关文件
 
 git pull 
 
 先同步本地 
 再push 
+
+2. 本地删除和更新了文件
+git add -A
+git commit -m "sync"
+git push
+
+
 
 git add .
 git commit -m "说明你这次更新了什么内容"

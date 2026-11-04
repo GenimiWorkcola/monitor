@@ -1,7 +1,9 @@
 name: Run Script in Cloud
 
 on:
-  workflow_dispatch: # 這會讓 GitHub 網頁上出現一個手動執行的按鈕
+  workflow_dispatch: # 允許在 GitHub 網頁上手動觸發執行
+  schedule:
+    - cron: '50 23 * * *' # UTC 時間 23:50，對應北京時間 (UTC+8) 每天早上 07:50
 
 permissions:
   contents: write
@@ -26,8 +28,7 @@ jobs:
 
     - name: Run Python scripts
       run: |
-        python rmb_liquidity/update_moneyindex.py
-        python rmb_liquidity/liquidity.py
+        python run_all.py
 
     - name: Commit and push changes back
       run: |
