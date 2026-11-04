@@ -28,7 +28,7 @@ jobs:
 
     - name: Run Python scripts
       run: |
-        python run_all.py
+        python .github/workflows/run_all.py
 
     - name: Commit and push changes back
       run: |

@@ -5,11 +5,14 @@ import os
 def main():
     print("=== 開始執行宏觀經濟數據更新任務 ===")
     
-    # 定義要依序執行的腳本列表
+    # 獲取專案根目錄路徑（即 workflows 的上兩層）
+    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+    
+    # 定義要依序執行的腳本相對路徑
     scripts = [
-        os.path.join("rmb_liquidity", "update_moneyindex.py"),
-        os.path.join("rmb_liquidity", "liquidity.py"),
-        os.path.join("usd_liquidity", "usd_liquidity.py")
+        os.path.join(base_dir, "rmb_liquidity", "update_moneyindex.py"),
+        os.path.join(base_dir, "rmb_liquidity", "liquidity.py"),
+        os.path.join(base_dir, "usd_liquidity", "usd_liquidity.py")
     ]
     
     for script_path in scripts:
