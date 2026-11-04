@@ -2,4 +2,9 @@ requests
 beautifulsoup4
 pandas
 openpyxl
+pandas-datareader
+feedparser
+deep-translator
+
+
 
