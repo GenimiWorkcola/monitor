@@ -1,9 +1,15 @@
+从github拉回更新的文件到本地
+
+git pull 
+
+
+
 1.删除了git hub上相关文件
 
 git pull 
 
 先同步本地 
-再push 
+再push （本地推上github）
 
 2. 本地删除和更新了文件
 git add -A
@@ -11,7 +17,7 @@ git commit -m "sync"
 git push
 
 
-
+更好用这个
 git add .
-git commit -m "说明你这次更新了什么内容"
+git commit -m "说明你这次更新了什么内容 scmp"
 git push

@@ -3,9 +3,9 @@ import os
 import re
 from datetime import datetime
 import feedparser
-from deep_translator import GoogleTranslator
+from deep_translator import MyMemoryTranslator
 
-# 【关键修改】确保无论在哪执行，工作目录都切换到该脚本所在的文件夹（即 scmp 文件夹）
+# 确保无论在哪执行，工作目录都切换到该脚本所在的文件夹（即 scmp 文件夹）
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # 订阅源列表（自动去重）
@@ -49,25 +49,35 @@ def is_relevant_article(title, summary):
     return False
 
 def translate_text(text):
+    """使用 MyMemoryTranslator 进行稳定翻译，完美支持云端服务器 IP"""
     if not text:
         return ""
     try:
-        translator = GoogleTranslator(source='auto', target='zh-CN')
-        if len(text) <= 2500:
-            return translator.translate(text)
+        translator = MyMemoryTranslator(source='en', target='zh-CN')
+        if len(text) <= 450:
+            result = translator.translate(text)
+            return result if result else text
         
-        paragraphs = text.split('\n')
-        translated_p = []
-        for p in paragraphs:
-            p_str = p.strip()
-            if p_str:
-                if len(p_str) > 2500:
-                    p_str = p_str[:2500]
-                translated_p.append(translator.translate(p_str))
-        return '\n'.join(translated_p)
+        chunks = [text[i:i+400] for i in range(0, len(text), 400)]
+        translated_chunks = []
+        for chunk in chunks:
+            res = translator.translate(chunk)
+            if res:
+                translated_chunks.append(res)
+            else:
+                translated_chunks.append(chunk)
+            time.sleep(0.3)
+        return ' '.join(translated_chunks)
     except Exception as e:
         print(f"[警告] 翻译失败 ({e})，保留原文。")
         return text
+
+def format_pub_date(raw_date):
+    """将发布时间精简，仅保留日期部分（如 Wed, 04 Nov 2026），去掉具体时分秒和时区"""
+    if not raw_date:
+        return datetime.now().strftime('%a, %d %b %Y')
+    cleaned = re.sub(r'\s+\d{2}:\d{2}:\d{2}.*', '', raw_date)
+    return cleaned.strip()
 
 def fetch_and_process():
     processed_links = set()
@@ -90,12 +100,14 @@ def fetch_and_process():
                 if is_relevant_article(title, summary):
                     print(f" -> 匹配文章: {title[:50]}...")
                     summary_zh = translate_text(summary)
+                    raw_date = getattr(entry, 'published', datetime.now().strftime('%a, %d %b %Y %H:%M:%S +0000'))
+                    pub_date_clean = format_pub_date(raw_date)
                     
                     article_item = {
                         "link": link,
                         "title_en": title,
                         "summary_zh": summary_zh,
-                        "pub_date": getattr(entry, 'published', datetime.now().strftime('%Y-%m-%d %H:%M'))
+                        "pub_date": pub_date_clean
                     }
                     new_articles.append(article_item)
         except Exception as e:
@@ -109,27 +121,26 @@ def update_daily_txt(articles):
         return
         
     today_str = datetime.now().strftime('%Y-%m-%d')
-    # 因为前面加了 os.chdir，这里直接生成的文件就会保存在当前 scmp 文件夹内
     filename = f"scmp_{today_str}.txt"
     
-    existing_links = set()
+    existing_titles = set()
     if os.path.exists(filename):
         with open(filename, 'r', encoding='utf-8') as f:
             existing_content = f.read()
-            existing_links = set(re.findall(r'原文链接：(https?://\S+)', existing_content))
+            # 读取已有的标题用于去重
+            existing_titles = set(re.findall(r'【Title】(.*)', existing_content))
 
     added_count = 0
     new_txt_buffer = ""
     
     for art in articles:
-        if art['link'] in existing_links:
+        if art['title_en'] in existing_titles:
             continue
             
         added_count += 1
         new_txt_buffer += f"========================================\n"
         new_txt_buffer += f"【Title】{art['title_en']}\n"
         new_txt_buffer += f"【时间】{art['pub_date']}\n"
-        new_txt_buffer += f"【链接】原文链接：{art['link']}\n"
         new_txt_buffer += f"----------------------------------------\n"
         new_txt_buffer += f"【中文正文】\n{art['summary_zh']}\n\n"
 
