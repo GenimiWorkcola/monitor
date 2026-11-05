@@ -5,7 +5,7 @@ from datetime import datetime
 import feedparser
 from deep_translator import MyMemoryTranslator
 
-# 确保无论在哪执行，工作目录都切换到该脚本所在的文件夹（即 scmp 文件夹）
+# 确保工作目录切换到 scmp 文件夹
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # 订阅源列表（自动去重）
@@ -32,14 +32,20 @@ EXCLUDE_KEYWORDS = [
 ]
 
 def clean_html(raw_html):
+    """彻底清除 HTML 标签，保留纯文本结构"""
     if not raw_html:
         return ""
+    # 将换行标签转为真实换行，方便后续分段
+    raw_html = re.sub(r'</p>|<br\s*/?>', '\n', raw_html)
     clean_re = re.compile('<.*?>')
     text = re.sub(clean_re, '', raw_html)
-    return text.strip()
+    # 清理多余空行
+    lines = [line.strip() for line in text.split('\n') if line.strip()]
+    return '\n'.join(lines)
 
-def is_relevant_article(title, summary):
-    combined_text = f"{title} {summary}".lower()
+def is_relevant_article(title, content):
+    """筛选逻辑：必须包含目标国家关键词，且不能包含排除关键词"""
+    combined_text = f"{title} {content}".lower()
     for ex_kw in EXCLUDE_KEYWORDS:
         if re.search(r'\b' + re.escape(ex_kw) + r'\b', combined_text):
             return False
@@ -49,31 +55,40 @@ def is_relevant_article(title, summary):
     return False
 
 def translate_text(text):
-    """使用 MyMemoryTranslator 进行稳定翻译，完美支持云端服务器 IP"""
+    """强力分段翻译，确保全文完整转换为中文"""
     if not text:
         return ""
     try:
         translator = MyMemoryTranslator(source='en', target='zh-CN')
-        if len(text) <= 450:
-            result = translator.translate(text)
-            return result if result else text
+        paragraphs = text.split('\n')
+        translated_paragraphs = []
         
-        chunks = [text[i:i+400] for i in range(0, len(text), 400)]
-        translated_chunks = []
-        for chunk in chunks:
-            res = translator.translate(chunk)
-            if res:
-                translated_chunks.append(res)
+        for p in paragraphs:
+            p = p.strip()
+            if not p:
+                continue
+            
+            # 如果段落较长，按 300 字符安全切块
+            if len(p) > 300:
+                chunks = [p[i:i+300] for i in range(0, len(p), 300)]
+                chunk_res = []
+                for chunk in chunks:
+                    res = translator.translate(chunk)
+                    chunk_res.append(res if res else chunk)
+                    time.sleep(0.4) # 稳定延时
+                translated_paragraphs.append(" ".join(chunk_res))
             else:
-                translated_chunks.append(chunk)
-            time.sleep(0.3)
-        return ' '.join(translated_chunks)
+                res = translator.translate(p)
+                translated_paragraphs.append(res if res else p)
+                time.sleep(0.4)
+                
+        return '\n\n'.join(translated_paragraphs)
     except Exception as e:
-        print(f"[警告] 翻译失败 ({e})，保留原文。")
+        print(f"[警告] 翻译过程出现异常: {e}")
         return text
 
 def format_pub_date(raw_date):
-    """将发布时间精简，仅保留日期部分（如 Wed, 04 Nov 2026），去掉具体时分秒和时区"""
+    """精简时间格式，仅保留日期（如 Wed, 04 Nov 2026）"""
     if not raw_date:
         return datetime.now().strftime('%a, %d %b %Y')
     cleaned = re.sub(r'\s+\d{2}:\d{2}:\d{2}.*', '', raw_date)
@@ -83,7 +98,7 @@ def fetch_and_process():
     processed_links = set()
     new_articles = []
     
-    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 开始抓取 RSS...")
+    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 开始深度抓取 RSS 全文...")
     for url in RSS_URLS:
         try:
             feed = feedparser.parse(url)
@@ -95,11 +110,24 @@ def fetch_and_process():
                 processed_links.add(link)
                 
                 title = getattr(entry, 'title', '')
-                summary = clean_html(getattr(entry, 'summary', getattr(entry, 'description', '')))
                 
-                if is_relevant_article(title, summary):
-                    print(f" -> 匹配文章: {title[:50]}...")
-                    summary_zh = translate_text(summary)
+                # 【核心修改】优先提取 RSS 中的完整全文节点 (content:encoded 或 content)，其次才是 summary
+                raw_content = ""
+                if hasattr(entry, 'content') and entry.content:
+                    raw_content = entry.content[0].get('value', '')
+                elif hasattr(entry, 'summary_detail') and entry.summary_detail:
+                    raw_content = entry.summary_detail.get('value', '')
+                
+                if not raw_content:
+                    raw_content = getattr(entry, 'summary', getattr(entry, 'description', ''))
+                
+                # 清洗 HTML 标签，还原完整正文纯文本
+                full_content = clean_html(raw_content)
+                
+                if is_relevant_article(title, full_content):
+                    print(f" -> 匹配成功，正在完整翻译: {title[:40]}...")
+                    summary_zh = translate_text(full_content)
+                    
                     raw_date = getattr(entry, 'published', datetime.now().strftime('%a, %d %b %Y %H:%M:%S +0000'))
                     pub_date_clean = format_pub_date(raw_date)
                     
@@ -127,7 +155,6 @@ def update_daily_txt(articles):
     if os.path.exists(filename):
         with open(filename, 'r', encoding='utf-8') as f:
             existing_content = f.read()
-            # 读取已有的标题用于去重
             existing_titles = set(re.findall(r'【Title】(.*)', existing_content))
 
     added_count = 0
@@ -147,12 +174,12 @@ def update_daily_txt(articles):
     if added_count > 0:
         with open(filename, 'a', encoding='utf-8') as f:
             f.write(new_txt_buffer)
-        print(f"已成功追加 {added_count} 篇新文章到文件: {filename}")
+        print(f"已成功追加 {added_count} 篇完整文章到文件: {filename}")
     else:
         print("本次抓取到的匹配文章均已在今日 TXT 中，无需重复写入。")
 
 def main():
-    print("RSS 监控服务已启动...")
+    print("RSS 全文监控服务已启动...")
     articles = fetch_and_process()
     update_daily_txt(articles)
 
