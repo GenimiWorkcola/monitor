@@ -4,7 +4,7 @@ pandas
 openpyxl
 pandas-datareader
 feedparser
-deep-translator
+google-genai
 
 
 

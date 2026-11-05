@@ -3,10 +3,14 @@ import os
 import re
 from datetime import datetime
 import feedparser
-from deep_translator import MyMemoryTranslator
+from google import genai
 
 # 确保工作目录切换到 scmp 文件夹
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
+# 初始化 Gemini 客户端（自动读取 GitHub Secrets 里的 GEMINI_API_KEY）
+api_key = os.environ.get("GEMINI_API_KEY")
+client = genai.Client(api_key=api_key) if api_key else None
 
 # 订阅源列表（自动去重）
 RSS_URLS = list(set([
@@ -35,7 +39,7 @@ def clean_html(raw_html):
     """彻底清除 HTML 标签，保留纯文本结构"""
     if not raw_html:
         return ""
-    # 将换行标签转为真实换行，方便后续分段
+    # 将换行标签转为真实换行，方便后续排版
     raw_html = re.sub(r'</p>|<br\s*/?>', '\n', raw_html)
     clean_re = re.compile('<.*?>')
     text = re.sub(clean_re, '', raw_html)
@@ -55,37 +59,31 @@ def is_relevant_article(title, content):
     return False
 
 def translate_text(text):
-    """强力分段翻译，确保全文完整转换为中文"""
+    """使用 Gemini API 进行高质量、流畅的全文翻译"""
     if not text:
         return ""
-    try:
-        translator = MyMemoryTranslator(source='en', target='zh-CN')
-        paragraphs = text.split('\n')
-        translated_paragraphs = []
-        
-        for p in paragraphs:
-            p = p.strip()
-            if not p:
-                continue
-            
-            # 如果段落较长，按 300 字符安全切块
-            if len(p) > 300:
-                chunks = [p[i:i+300] for i in range(0, len(p), 300)]
-                chunk_res = []
-                for chunk in chunks:
-                    res = translator.translate(chunk)
-                    chunk_res.append(res if res else chunk)
-                    time.sleep(0.4) # 稳定延时
-                translated_paragraphs.append(" ".join(chunk_res))
-            else:
-                res = translator.translate(p)
-                translated_paragraphs.append(res if res else p)
-                time.sleep(0.4)
-                
-        return '\n\n'.join(translated_paragraphs)
-    except Exception as e:
-        print(f"[警告] 翻译过程出现异常: {e}")
+    if not client:
+        print("[警告] 未检测到 GEMINI_API_KEY，跳过翻译保留原文。")
         return text
+    
+    prompt = (
+        "请将以下英文新闻全文翻译为专业、流畅、地道的中文新闻。 "
+        "直接输出翻译后的中文内容，不要加任何多余的解释说明或客套话：\n\n" + text
+    )
+    
+    for attempt in range(3):
+        try:
+            response = client.models.generate_content(
+                model='gemini-2.5-flash',
+                contents=prompt,
+            )
+            if response and response.text:
+                return response.text.strip()
+        except Exception as e:
+            print(f"[警告] Gemini 翻译出错 (尝试 {attempt+1}/3): {e}")
+            time.sleep(2)
+            
+    return text  # 如果多次失败则降级返回原文
 
 def format_pub_date(raw_date):
     """精简时间格式，仅保留日期（如 Wed, 04 Nov 2026）"""
@@ -98,7 +96,7 @@ def fetch_and_process():
     processed_links = set()
     new_articles = []
     
-    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 开始深度抓取 RSS 全文...")
+    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 开始深度抓取 RSS 全文并使用 Gemini 翻译...")
     for url in RSS_URLS:
         try:
             feed = feedparser.parse(url)
@@ -111,7 +109,7 @@ def fetch_and_process():
                 
                 title = getattr(entry, 'title', '')
                 
-                # 【核心修改】优先提取 RSS 中的完整全文节点 (content:encoded 或 content)，其次才是 summary
+                # 优先提取 RSS 中的完整全文节点 (content:encoded 或 content)，其次才是 summary
                 raw_content = ""
                 if hasattr(entry, 'content') and entry.content:
                     raw_content = entry.content[0].get('value', '')
@@ -125,7 +123,7 @@ def fetch_and_process():
                 full_content = clean_html(raw_content)
                 
                 if is_relevant_article(title, full_content):
-                    print(f" -> 匹配成功，正在完整翻译: {title[:40]}...")
+                    print(f" -> 匹配成功，正在由 Gemini 完整翻译: {title[:40]}...")
                     summary_zh = translate_text(full_content)
                     
                     raw_date = getattr(entry, 'published', datetime.now().strftime('%a, %d %b %Y %H:%M:%S +0000'))
@@ -174,12 +172,12 @@ def update_daily_txt(articles):
     if added_count > 0:
         with open(filename, 'a', encoding='utf-8') as f:
             f.write(new_txt_buffer)
-        print(f"已成功追加 {added_count} 篇完整文章到文件: {filename}")
+        print(f"已成功追加 {added_count} 篇完整翻译文章到文件: {filename}")
     else:
         print("本次抓取到的匹配文章均已在今日 TXT 中，无需重复写入。")
 
 def main():
-    print("RSS 全文监控服务已启动...")
+    print("RSS 全文 Gemini 翻译监控服务已启动...")
     articles = fetch_and_process()
     update_daily_txt(articles)
 
