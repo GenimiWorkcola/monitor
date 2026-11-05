@@ -925,3 +925,304 @@ Sections: Economy | Topics: China trade, China, United States, Trade, China econ
 Short link: https://sc.mp/gsx9g
 Read the original article on SCMP
 
+========================================
+【Title】Finland jails Russian cargo ship captain over Baltic Sea cable sabotage
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+The court said the captain and a crew member acted intentionally when the ship dragged an anchor along the seabed for ‌around 130km.
+The Fitburg sits in  the harbour of Kirkkonummi, Finland, on January 1 after it is seized. Photo: Lehtikuva / AP
+A Finnish court on Thursday jailed the Russian captain and an Azerbaijani crew member of the cargo ship Fitburg for aggravated sabotage over damage to two subsea ‌telecommunications cables in the Gulf of Finland last year.
+Finland on December 31 seized the vessel in the Gulf of Finland while it was en route from Russia to Israel, on suspicion that it had damaged cables running from Helsinki to Estonia.
+The Helsinki District Court sentenced the captain to three years and six ⁠months in prison and the crew member to two years and 10 months.
+It ‌said in a statement the two acted intentionally when the ship dragged an anchor chain and anchor shank along the seabed for ‌around 130km (81 miles). The freighter sailed across nine telecommunications and power cables, as well as a gas pipeline.
+The indictment did not allege that the captain had explicitly ordered the anchor to be lowered, but the court found that both defendants must have known it was dragging.
+The Fitburg is docked in the port of Kantvik, Kirkkonummi, Finland, on January 4 after its seizure. Photo: Lehtikuva / Reuters
+Finland has intensified efforts to protect its undersea infrastructure ⁠following a string ⁠of incidents affecting cables and pipelines in the Baltic Sea since 2022, including a vessel-boarding drill it conducted ‌in September.
+The captain will appeal the verdict, while the crew member has not yet decided whether to do ‌so, ‌according to their respective lawyers.
+The court also ordered the two defendants to jointly pay around €1.9 ‌million (US$2.1 million) in damages, and ordered the captain to pay about €85,000 more, the verdict ⁠showed.
+The seized vessel, sailing under Saint Vincent and the Grenadines’ flag, was en route ⁠from the Russian port of St Petersburg to Israel at the time of the incident. The ship has since been released.
+The defendants, who have remained ‌in Finland subject to travel ‌bans, have denied any wrongdoing and have challenged Finland’s jurisdiction in the case.
+The 14 crew members of the vessel were nationals of Russia, Georgia, Kazakhstan and Azerbaijan, investigators have said.
+In a similar case last year, the Helsinki district court ruled that Finnish jurisdiction did not apply in an incident involving three crew members from a Cook Islands-registered tanker, the Eagle S.
+The Helsinki Court of Appeal overturned that ruling and sent the case back to the district court.
+In the case of the Fitburg, the court found it could be heard in the country, noting that it “concerned intentional offences whose consequences had manifested in Finland”.
+Additional reporting by Agence France-Presse
+By Reuters
+Sections: News / World / Europe | Topics: Nordic nations, Finland, Russia, Transport and logistics, Crime, Azerbaijan, Israel
+Short link: https://sc.mp/hyxvi
+Read the original article on SCMP
+
+========================================
+【Title】The US-China tech contest has moved – to the gatekeeping product testers
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+The FCC ban on Chinese testing labs exposes a strategic weakness: Beijing does not control whether its test results are accepted by a major export market.
+Workers produce electronic products for export at a workshop in the Yuexi Economic Development Zone, in China’s Anhui province on September 9. Photo: NurPhoto via Getty Images
+The latest front in the US-China technology contest is not advanced chips, artificial intelligence (AI) or telecommunications equipment. It is the laboratories that certify whether an electronic product may enter the American market.
+On October 29, the US Federal Communications Commission (FCC) voted to stop recognising testing laboratories, telecoms certification bodies and accreditation organisations in China and in other economies that lack a “mutual recognition agreement” or comparable reciprocal arrangement with the United States.
+The restrictions take effect on December 1, 2028. FCC chairman Brendan Carr cited a striking statistic: last year, about 82 per cent of US equipment-authorisation applications were associated with testing firms in China, while fewer than 4 per cent involved testing in the US.
+The figure is politically powerful. It also explains why Washington is acting.
+The strongest American argument is strategic dependence. Testing laboratories are an essential part of the electronics supply chain. Before a radio-frequency device can be marketed in the US, engineers must show it meets requirements concerning emissions, interference, exposure limits and other technical standards.
+If most of this work is concentrated in one country, diplomatic confrontation, regulatory intervention or disruption to cross-border services could affect the approval pipeline for thousands of products.
+US FCC chairman Brendan Carr speaking at a press conference in Washington on July 22. Photo: Reuters
+The second concern is regulatory control. US authorities have investigated cases involving falsified test results, misleading statements about where technical work was performed, and certification bodies whose personnel and operations did not match their declared structure.
+When laboratories, engineers and original records are outside US jurisdiction, investigation and enforcement become harder. Testing institutions also gain early access to unreleased products, engineering data and commercially sensitive information. Washington has reason to ask whether institutions in such a privileged position can be audited, investigated and held accountable.
+The third argument is reciprocity. Chinese laboratories have been able to test products for the US market, while Washington says US laboratories have not received equivalent access in China. The FCC has now made reciprocal treatment a condition of participation in its equipment-authorisation system.
+Industrial policy is the fourth motivation. Testing moved to China for much the same reasons electronics manufacturing did: lower costs, engineering expertise and proximity to factories and component suppliers. By excluding institutions located in China, Washington can redirect some of that business to American laboratories and approved partner economies.
+The policy may help the US rebuild testing expertise and expand capacity. It also gives Washington leverage. Access to the American market can now be used to persuade other governments to accept reciprocal arrangements on US terms.
+[embedded media]
+National security, regulatory integrity, reciprocity and industrial policy are therefore embedded in the same measure. The FCC rule is an attempt to reclaim control over a market-access gateway that Washington believes has become dangerously concentrated abroad.
+However, electronics manufacturers depend on rapid interaction among laboratories, designers, component suppliers and factories. Separating formal testing from production may require prototypes to cross borders repeatedly, technical questions to move between distant teams, and manufacturers to wait longer for retesting.
+Large multinational companies can reserve overseas capacity and absorb the additional expense. Smaller exporters and companies will struggle more. Some may reduce the number of products they offer in the US; others may decide the market is no longer worth entering.
+Washington should not assume that moving testing will lead to manufacturing reshoring. Companies can continue producing electronics in China while sending samples to recognised laboratories elsewhere.
+[embedded media]
+For China, the immediate losses will fall on testing institutions that have invested in equipment, engineers and FCC recognition. Larger groups may establish genuine operations abroad or acquire overseas laboratories. Smaller institutions may be forced to consolidate, withdraw from the US-facing business or close. The deeper damage is that China’s integrated design-manufacture-test-correct cycle may be weakened.
+If final testing, certification coordination and customer relationships move abroad, that feedback loop becomes less efficient. Some high-value engineering, compliance and client-management functions may eventually follow the certification business overseas.
+The strategic weakness exposed by the FCC decision is that China does not control whether its test results are accepted by a major export market.
+[embedded media]
+China can possess the manufacturing ecosystem, engineers and technical capacity, yet still lack the authority to convert those assets into internationally recognised compliance. The contest increasingly concerns who has the power to declare its product fit for sale. China must make its testing industry easier for outsiders to trust.
+Transparent ownership, traceable data, independent audits and credible disciplinary procedures would make it harder to treat every Chinese laboratory as part of a single undifferentiated risk. The most effective answer to allegations of untrustworthiness is evidence that can withstand scrutiny.
+The next phase of the US-China technology contest will not be fought only in factories, chip plants or research centres. It will also be fought at the gate where technical evidence becomes permission to sell. At that gate, credibility is power.
+By Tan Poh Hwee
+Sections: Opinion / China Opinion / World Opinion / News / China / Science / US / Science &amp; Technology / World / United States &amp; Canada | Topics: US-China tech war, Federal Communications Commission (US), China, United States, Technology, China technology, US-China relations, US-China trade war, Regulation, Brendan Carr
+Short link: https://sc.mp/4e34l
+Read the original article on SCMP
+
+========================================
+【Title】China ready to expand US agricultural imports if Board of Trade tariff cuts take effect
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+Soybean purchases are on track to meet this year’s target, an agricultural trader said, but a separate US$17 billion commitment remains largely unfulfilled.
+Beijing said it wants reciprocal tariff cuts in place before expanding agricultural imports from the US. Photo: AFP
+Beijing says it remains open to buying more agricultural products from the United States, but wants reciprocal tariff cuts covering US$30 billion worth of products on each side to be implemented first under the US-China Board of Trade.
+“China has always maintained an open attitude towards expanding agricultural imports from the United States, provided that the agreed-upon reciprocal tariff reduction arrangement – covering $30 billion on each side – is implemented,” Huang Ling, a spokeswoman for the Ministry of Commerce, said on Thursday.
+The comments followed the Democratic Party’s landslide victory in this week’s US midterm elections, which analysts said could complicate trade talks between Beijing and Washington ahead of the Asia-Pacific Economic Cooperation summit later this month by raising questions about the Trump administration’s ability to honour its commitments.
+“Agricultural trade between China and the United States is a vital component of bilateral economic and trade cooperation,” Huang said.
+“We hope the US side will work together with China to foster more favourable conditions for bilateral agricultural trade by jointly lowering tariffs, reducing non-tariff barriers and expanding market access.”
+Following President Xi Jinping’s state visit to the US in September, the two sides announced details on the Board of Trade, including a list of goods covered, but did not immediately implement the reduced tariff rates.
+On Monday, Li Chenggang, China’s international trade representative and an influential figure in trade talks with Washington, met with an American agricultural delegation, the ministry said.
+The two sides discussed economic and trade relations between China and the US, as well as cooperation in agricultural trade, it added.
+According to the White House, China had committed to buying at least 25 million tonnes of US soybeans annually through 2028, alongside an additional US$17 billion per year in American agricultural products, adjusted proportionally for 2026.
+However, only soybean purchases were so far on track, with 70 per cent of this year’s target already met, an agricultural trader said on condition of anonymity.
+“If buying continues at the current pace, the target should be completed before the end of the year,” the trader said, adding that there had been little progress towards the separate US$17 billion annual commitment to buy other American agricultural products.
+“Likely because [China] is also waiting for the implementation of reciprocal tariff reductions,” the trader said.
+Also on Thursday, the commerce ministry announced that it would extend countervailing duties on US n-Propanol imports, a crucial industrial material for packaging, for an additional five years.
+Additional reporting by Alice Li
+By Ji Siqi
+Sections: Economy / Global Economy / News / China Economy / World / US / Economy, Trade &amp; Business | Topics: US-China trade war, US-China trade war: All stories, Donald Trump’s China policy, 2026 Xi-Trump summits, Donald Trump, China trade, United States, China, Li Chenggang, Republican Party, US-China Business Council, Ministry of Commerce (China)
+Short link: https://sc.mp/3ixtv
+Read the original article on SCMP
+
+========================================
+【Title】Facing 2 years as a lame duck, what can Trump do to stay in control?
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+As Congress threatens his agenda at home, Trump may become even more aggressive overseas and reliant on executive orders.
+Facing a divided government, US President Donald Trump is widely expected to double down on unilateral action. Photo: EPA
+Following disastrous midterm elections that cost Republicans congressional control, US President Donald Trump could spend the rest of his term as a “lame duck” and battling constant resistance to his agenda.
+The loss is expected to steer the White House towards a more aggressive foreign policy and even greater reliance on executive orders. Trump has already suggested he could brandish his veto pen for “a month or two” before negotiating agreements with Democratic leaders.
+Here, we explain how executive powers and legislative limits could shape the final two years of Trump’s presidency.
+Can Trump lean on the veto?
+After the “blue tsunami” of the midterms, Trump posted a photo to social media showing his iconic red campaign cap with a single word – “VETO” – emblazoned across the front.
+As president, Trump can reject any bill passed by the incoming Democrat-dominated Congress. Overriding him requires a two-thirds vote in both chambers – a threshold far beyond the Democrats’ reach.
+Facing a divided government, the White House is widely expected to double down on unilateral action.
+[embedded media]
+According to data compiled by The American Presidency Project at the University of California, Santa Barbara, Trump has issued an annual average of 166 executive orders in his second term, more than any president since Franklin D. Roosevelt and far outstripping his recent predecessors.
+Trump’s plan was always to lean heavily on his executive authority while treating Congress as an optional partner, said Lindsay Newman, an associate fellow at Chatham House.
+“Much of his remaining domestic policy priorities – including on artificial intelligence, immigration, deregulation and energy – will be funnelled through the president’s office in his final two years,” Newman said in a note on Wednesday.
+Where can Congress rein in Trump?
+The Democrats’ most potent leverage is fiscal, as Trump cannot bypass lawmakers to secure federal funding or lift the national borrowing limit.
+The scenario mirrors Trump’s first term, when Democrats reclaimed the House in 2018 and effectively suffocated his signature domestic projects, from border-wall appropriations to major federal infrastructure spending.
+Congress’ powers of the purse gave Democrats an exceptionally strong hand, noted Josh Lipsky, a former International Monetary Fund adviser, in a research note.
+The first clash looms almost immediately: existing federal funding runs out on December 11. While the outgoing Congress may pass a continuing resolution, a budget fight appears inevitable in 2027.
+Beyond its fiscal control, Congress could also stall Trump’s momentum by blocking his personnel appointments.
+What are Trump’s remaining levers?
+Trade policy and foreign affairs are two areas where lawmakers will struggle to constrain the president.
+Boxed in at home and unshackled from re-election concerns, Trump was likely to pivot abroad to burnish his presidential legacy, Jorn Fleck, senior director of the Atlantic Council’s Europe Centre, said in a note.
+Fleck said that while Democratic lawmakers would try to reclaim the broad trade and tariff powers that Congress ceded to the executive branch during Trump’s second term, hard limits on his power were unlikely.
+Trump’s overtures to Moscow could also trigger friction between the branches of government, with lawmakers potentially erecting hurdles to any further energy-focused deals on the Ukraine war.
+[embedded media]
+Diplomatic compromise on this issue might face legal and political barriers, warned Landon Derentz, vice-president for energy and infrastructure at the Atlantic Council.
+In a note on Wednesday, Derentz pointed to cross-party resistance on Capitol Hill to easing sanctions on Moscow, compounded by the European Union’s legally binding commitment to phase out Russian gas imports entirely by 2027.
+Will Trump face investigation?
+Representative Robert Garcia, the California Democrat in line to lead the powerful House Committee on Oversight and Government Reform, delivered an ominous two-word warning to Republicans on Tuesday night: “Lawyer up.”
+Garcia had previously mapped out an oversight agenda should Democrats take the gavel, signalling plans to investigate Elon Musk’s role in the Department of Government Efficiency, the Trump family’s business interests, alleged abuses within Immigration and Customs Enforcement and the Jeffrey Epstein scandal.
+Congress could also attempt to impeach the president, but this also has structural limitations.
+During Trump’s first term, two high-profile impeachment proceedings consumed vast political energy only to collapse into Senate acquittals as Democrats lacked – and still lack – the two-thirds supermajority needed to remove Trump from office.
+Sub-impeachment inquiries, however, pose risks to the West Wing’s day-to-day operations. Committees in both chambers have broad subpoena powers to investigate alleged conflicts of interest, executive ethics and actions taken by Trump and his inner circle.
+By Carol Yang
+Sections: News / China / Diplomacy | Topics: US midterm elections 2026, Donald Trump, Robert Garcia
+Short link: https://sc.mp/ge96y
+Read the original article on SCMP
+
+========================================
+【Title】Powered by GPT-6, Unitree humanoid robots master painting, chess without training, says CEO
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+Unitree founder says the industry’s biggest hurdle is no longer digital reasoning or planning but closing a ‘last-millimetre’ mechanical gap.
+Unitree G1 robots perform at the company’s booth at the World Robot Conference in Beijing, August 20, 2026. Photo: Reuters
+Robots developed by Chinese humanoid maker Unitree Robotics can now paint pictures and play chess without any prior training, relying on frontier AI models to navigate complex physical tasks, according to founder and CEO Wang Xingxing.
+Speaking on Thursday at the China International Import Expo (CIIE) in Shanghai, Wang said Unitree’s machines, powered by OpenAI’s GPT-6, were capable of executing intricate robotic sequences, such as dynamically replacing brush water and blending pigments, guided purely by real-time model inference.
+“The precision required to change pigments without error is quite high,” Wang said. “Seeing it perform at this level with zero training was truly stunning.”
+While Unitree displayed video clips of its robots painting during the presentation, it did not conduct a live demonstration on stage.
+Still, the remarks highlight how China’s leading robotics firms are using cutting-edge AI models to accelerate physical automation. They followed comments Wang made last month, when he said that GPT-6 had pulled forward the industry’s breakthrough timeline to “within one or two years”.
+He suggested that next year’s GPT-7 could crack core challenges in embodied artificial intelligence.
+Translating AI commands into precise physical actions remains an uphill battle, however, according to Wang. He warned at the expo that the industry’s biggest hurdle was no longer digital reasoning or planning but closing a “last-millimetre” mechanical gap.
+Wang Xingxing, founder of Unitree Robotics, speaks during the World Physical AI Conference &amp; Unitree Partner Ecosystem Conference on October 22, 2026 in Hangzhou, Zhejiang province. Photo: VCG via Getty Images
+“The fundamental problem right now is the alignment error between the AI model’s inputs and outputs,” Wang said, projecting that the industry would overcome this physical bottleneck within one or two years.
+To speed up that transition, Unitree was developing a “self-evolving” feedback loop to allow humanoid robots to write code, run simulations and autonomously improve their real-world performance, Wang said.
+Wang’s bullish outlook was matched by other industry executives at the expo. Wang Qian, founder of Chinese robotics start-up X Square Robot, said embodied AI was on the verge of a watershed leap, pushing back against forecasts that mass adoption was half a decade away.
+“We believe we are very close to a ‘GPT moment’ for embodied AI – highly likely within a year or so,” the X Square Robot founder said. “We hope to see robots building robots, and chips manufacturing chips … achieving true artificial intelligence in the physical world.”
+Chip suppliers, however, struck a more cautious tone, pointing to constraints below the software layer.
+Wang Dong, co-founder of domestic graphics processing unit designer Moore Threads, warned that embodied AI development continued to lag expectations due to severe data scarcity and crippling hardware costs.
+Collecting real-world interaction data remained difficult, so developers were being forced to rely heavily on synthetic training sets, he said, adding that Moore Threads was making efforts to supply its own chips and solutions to domestic robotics developers as Nvidia chips were extremely expensive.
+By Ann Cao, Sylvia Ma
+Sections: Tech / Tech Trends / News / China Future Tech / Robotics / AI | Topics: Robotics, Unitree Robotics, OpenAI, Moore Threads Technology, Artificial intelligence (AI), Semiconductors, China, Wang Xingxing, Wang Jian, Nvidia
+Short link: https://sc.mp/ocyu1
+Read the original article on SCMP
+
+========================================
+【Title】Vietnam seeks Russia’s help for its nuclear ambition. Will sanctions stall it?
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+The two countries have agreed to let Vietnamese experts gain access to a Russian nuclear reactor under construction.
+An illustration of nuclear energy. Vietnam is seeking Russia’s help to grow its nuclear energy sector. Photo: Shutterstock
+Vietnam’s growing nuclear partnership with Russia could help Hanoi gain the expertise needed to fuel its ambitious nuclear programme amid doubts over Western sanctions against Moscow and financing challenges complicating the plans.
+The Vietnam Atomic Energy Institute (Vinatom) and a subsidiary of Russia’s state nuclear corporation Rosatom, which is leading the development of the MBIR International Research Centre, announced on Tuesday that they had signed a memorandum of understanding to cooperate on nuclear research and explore Vinatom’s potential membership in the centre’s international consortium.
+The centre will be based at a research reactor currently under construction in the city of Dimitrovgrad, Russia, which will allow scientists to study nuclear fuels, materials and reactor safety. The memorandum grants Vietnamese specialists access to the infrastructure of the MBIR’s fast-neutron reactor.
+The signing comes as Vietnam prepares to launch its first nuclear power programme. It passed a resolution in August to split the Ninh Thuan nuclear power project into three independent projects to speed up the programme.
+The Ninh Thuan 1 plant in the southern Khanh Hoa province will be built by Rosatom following an agreement signed in March, and is expected to begin operating between 2030 and 2035.
+Vietnam revived its nuclear power programme in 2024 in response to the vast growth of its manufacturing sector in recent years, particularly in energy-intensive segments such as artificial intelligence, semiconductors and data centres.
+In September, Vietnam’s Ministry of Trade and Industry warned that the country faced risks of power shortages to meet surging demand as planned generation and grid projects struggled to deliver.
+The Khanh Hoa coal-fired power plant in Thai Nguyen, Vietnam. Photo: AP
+“The real value of [Vietnam’s] nuclear power is having a more stable electricity supply as its industrial and hi-tech sectors continue to grow. It could also complement renewable energy and help diversify the country’s electricity mix,” said Tran Thi Mong Tuyen, a fellow at the foreign policy think tank Pacific Forum.
+Ha Hoang Hop, chairman of think tank VietKnow, said Hanoi and Moscow could work on immediate priorities to enhance Vietnam’s nuclear capabilities.
+Referring to the proposed Centre for Nuclear Science and Technology in Dong Nai province, Ha said: “The most feasible priorities are workforce development, operational and safety expertise and the planned nuclear science and technology centre, which can build Vietnamese capability before commercial reactors begin generating electricity.”
+The memorandum would lead to further research in areas such as nuclear materials and radioactive-waste reduction, he added.
+Tran said Vietnam and Russia could look at cooperation opportunities beyond power generation, citing nuclear research through the proposed centre in Dong Nai, healthcare, agriculture and workforce development.
+“Cooperation in medical radioisotopes, cancer treatment and agricultural applications could bring practical benefits without waiting for Ninh Thuan 1 to become operational.”
+A nuclear power plant as seen from the town of Kurchatov in the Kursk region, Russia. Photo: Reuters
+Spectre of sanctions
+Russian think tank Geofor Analytics said in an article published on Monday that the intergovernmental agreement on construction of the Ninh Thuan-1 plant could create a spillover boost for Vietnam’s financial sector.
+The partnership could drive demand for investment financing and risk insurance from contractors and equipment suppliers through the Vietnam International Finance Centre (VIFC).
+The VIFC was launched earlier this year under a dual-hub model, with the Da Nang hub focused on digital technology and innovation and the Ho Chi Minh hub specialising in capital markets, investment banking and other financial areas.
+Sanctions by the US and other Western countries against Russia have raised questions about the nuclear cooperation between Hanoi and Moscow as well as related financing activities.
+The report by Geofor Analytics noted, for instance, that Vietnam-Russia Joint Venture Bank appeared on the US Treasury Department’s sanctions list, which could complicate financing arrangements.
+However, Ha said the US sanctions would affect Russian banks supporting civil nuclear projects that were initiated after 21 November 2024, and whether this would extend to the Ninh Thuan 1 remained to be seen.
+“Sanctions create genuine counterparty-screening and payment obstacles, although they do not amount to a universal prohibition on civilian nuclear cooperation with Russia,” Ha said.
+According to Tran, while Russia’s civilian nuclear sector has not faced sanctions, restrictions on certain Russian banks may lead to restrictions on payments and access to international financial services.
+“I don’t think sanctions necessarily make the [Vietnam-Russia nuclear] project impossible, but they could make implementation more complicated and costly. Much will depend on how the financing and payment arrangements are structured,” she added.
+While the VIFC might be able to facilitate banking and investment flows for the Ninh Thuan 1 project, it could not resolve all the financing challenges that the project could face, Tran said.
+“It cannot replace government-backed financing or remove sanctions-related restrictions,” she added.
+Ha said that as Vietnam “cannot neutralise sanctions”, it should focus on strengthening the VIFC’s fundamentals.
+“Vietnam should therefore prioritise transparent, legally workable financing and enforceable technology-transfer and training commitments, using the centre as supporting infrastructure rather than treating it as a workaround for restrictions,” he added.
+By Sam Beltran
+Sections: This Week in Asia / Politics / News / Asia / Southeast Asia / World / Russia &amp; Central Asia | Topics: Vietnam, United States, Russia, United States Department of the Treasury, Pacific Forum
+Short link: https://sc.mp/3jljp
+Read the original article on SCMP
+
+========================================
+【Title】Malaysia Hindu rites row: live stream of Muslim youth’s repentance fuels fury
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+The public spectacle highlights the tightening boundaries of religious tolerance and state control over personal worship in multiracial Malaysia.
+The Batu Caves temple complex in Selangor, outside Kuala Lumpur, Malaysia. A 21-year-old Muslim man was sentenced to faith rehabilitation after participating in Hindu rituals at the shrine. Photo: Shutterstock
+A young Malaysian Muslim who took part in Hindu rituals to pray for his ailing mother publicly repented on Thursday in a ceremony live-streamed by state religious authorities, a day after a sharia court ordered him to undergo three months of faith rehabilitation.
+The spectacle has raised questions about the enforcement of Islamic orthodoxy in Muslim-majority Malaysia, where state religious departments wield significant influence to police the personal conduct and religious beliefs of Muslims.
+Wearing emerald-green traditional Malay attire, 21-year-old Aliff Daniel Adli read his declaration before senior Islamic officials at the Sultan Salahuddin Abdul Aziz Shah Mosque in Selangor, the state surrounding Kuala Lumpur. The proceedings were broadcast on the official Facebook page of the Selangor Islamic Religious Department.
+“I make this declaration sincerely, full of remorse and without any pressure or coercion,” Aliff said during the broadcast, acknowledging that his actions had caused widespread public unease. “I deeply regret my actions and promise that I will never repeat them. I repent and return to the right path.”
+Aliff Daniel Adli, 21, recites his public declaration of repentance during a ceremony live-streamed on the Selangor Islamic Religious Department’s Facebook page. Photo: Facebook/JAIS
+The controversy erupted in October after photos and videos circulated widely on social media showing Aliff taking part in Thaipusam rituals at the Batu Caves temple in 2024. The online backlash prompted religious authorities to launch an investigation, resulting in the arrest of Aliff and his mother on October 13.
+Thaipusam is a major annual festival observed by Tamil Hindus honouring Lord Murugan, during which devotees perform acts of penance, including bodily piercings and carrying ornate devotional offerings known as kavadi.
+Aliff said he had fasted on water and vegetables for a week before joining the rituals in January 2024. Describing his participation, he said he wore a white dhoti and flower garlands, pierced his cheek and tongue and carried both a kavadi and a milk offering up the temple steps to pray for his mother’s health, family happiness and spiritual purification.
+His mother, Rohizayanti Ramli, wept as she delivered her own public apology for what she described as her failure to guide her son.
+“I acknowledge my negligence and failure in fulfilling my responsibility as a mother,” she said. Aliff’s younger sister also took part in the ceremony, expressing regret for not offering him better advice.
+Their declarations were signed and endorsed by senior Islamic officials, including the Mufti of Selangor, along with two other witnesses.
+Faith on trial
+Islam is Malaysia’s official religion, adhered to by nearly two-thirds of the population. Under the country’s dual legal system, state-level sharia courts hold jurisdiction over Muslims in personal, family and religious matters. While the nation’s sizeable Buddhist, Christian and Hindu minorities freely practise their faiths, ethnic Malays – defined under the federal constitution as Muslim – face strict restrictions on acts deemed contrary to Islamic teachings.
+The Palace of Justice in Putrajaya, home to Malaysia’s apex courts. The country’s dual legal framework grants state-level sharia courts jurisdiction over personal and religious matters involving Muslims. Photo: Shutterstock
+The ceremony followed a ruling on Wednesday by the Gombak Barat Sharia Lower Court, which sentenced Aliff to three months at a religious rehabilitation centre in Hulu Yam after he pleaded guilty to improper worship.
+The charge carries a maximum penalty of two years’ imprisonment, a fine of up to 3,000 ringgit (US$730), or both. Prosecutors sought rehabilitation rather than a custodial prison sentence, state news agency Bernama reported.
+During sentencing, presiding judge Mohd Faizal Habib reminded Aliff that his actions bordered on syirik – the sin of polytheism or associating partners with God. “This repentance is a matter between you and Allah,” the judge said.
+The court scheduled a review hearing for February 25 next year to assess his progress. Aliff told the court that while the images had only recently gone viral, they were taken when he was 18 years old.
+Speaking at Thursday’s broadcast, Selangor Islamic Religious Council chairman Salehuddin Saidin defended the proceedings as part of an effort to restore proper religious understanding.
+“Every individual deserves to be treated respectfully and their dignity preserved,” Salehuddin said, adding that repentance required more than words spoken in public.
+But the decision to broadcast the family’s apology drew sharp criticism from some observers.
+Ahmad Fauzi Abdul Hamid, a political scientist at Universiti Sains Malaysia, questioned both the necessity and intent behind publicising the case.
+“Religiously, what good is there in humiliating a 21-year-old who just happened to deviate?” he said, contrasting the event with the 1994 televised repentance by members of Darul Arqam, a banned Islamic movement with thousands of followers, whose broadcast was pre-recorded rather than aired live.
+“It’s simply a show of power by the religious authorities,” Ahmad Fauzi said. “It serves no theological purpose.”
+By Iman Muttaqin Yusof
+Sections: This Week in Asia / People / News / Asia / Southeast Asia | Topics: Malaysia, Religion, Rafizi Ramli, Universiti Kebangsaan Malaysia
+Short link: https://sc.mp/bx4p9
+Read the original article on SCMP
+
+========================================
+【Title】European flights diverted again after fresh wave of hoax bomb threats
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+More than a dozen flights from cities including Copenhagen, Dublin, Helsinki, Madrid, Milan and Warsaw have been targeted with bomb threats.
+A Ryanair jet is parked at Sofia Airport after bomb threats forced airliners to make unplanned landings across Europe on Thursday. Photo: Reuters
+Multiple flights in Europe made emergency landings on Thursday after being diverted because of bomb threats, authorities said. The incidents followed hoax bomb threats earlier this week that prompted searches, diversions and in one case a military escort.
+More than a dozen flights from cities including Copenhagen, Dublin, Helsinki, Madrid, Milan and Warsaw were confirmed to have been targeted with bomb threats, most diverted to other airports for emergency landings while others landed safely at their destinations. So far inspections have not turned up hazardous or suspicious materials.
+Such threats are not new, but the latest incidents come at a time of increased geopolitical tensions and other disruptions, like attacks on supermarket refrigeration systems, drone incursions in Europe and mysterious triggers to alert apps. Authorities have warned that hybrid threats abound.
+Czech police said searches of another four planes that landed in Prague after being targeted by bomb threats were clear. They have not given details on where the flights originated.
+An Aer Lingus Airbus A320 plane is seen at Evreux military airbase after a flight from Dublin to Rome was diverted to France on Thursday. Photo: AP
+Earlier, a flight from Dublin to Rome was diverted to a military airbase in western France because of a bomb threat, the French prime minister’s office said.
+The flight landed safely at the base in Evreux in Normandy, Prime Minister Sebastien Lecornu’s office said. All 151 passengers and six crew members were safe and military bomb disposal teams were examining the plane, the office said.
+It added that it was following the situation in real time. No other information was immediately released.
+A LOT Polish Airlines flight from Warsaw to Brussels landed at its destination, where inspections found no hazardous or suspicious items, the airline said. A Wizz Air flight from Milan to Bucharest landed safely in Bucharest following a bomb threat, airport spokesman Teo Postelnicu said.
+A Finnair flight from Helsinki to Rome landed safely at Rome’s Leonardo da Vinci airport at around 9.30am, escorted by Italian air force fighter jets, according to an airport official with knowledge of the situation. The official spoke on condition of anonymity because they were not authorised to speak publicly.
+An emailed bomb threat had been received, and security clearance procedures by police bomb disposal experts were completed, with no explosives found, the official said.
+A flight to Warsaw landed in Vienna following a mail to Polish authorities containing an abstract threat, said Stefan Loidl, a police spokesman in Lower Austria province. Nothing was found and the plane continued to Warsaw.
+A police officer and a sniffer dog inspect a Ryanair plane in Murcia after a bomb threat is received during the flight from Manchester on Tuesday. Photo: Reuters
+He said there was also an abstract threat to Vienna Airport concerning four other flights, which he declined to identify, but operations were not disrupted.
+Polish authorities checked a LOT flight that was about to depart from Warsaw to Paris on Thursday morning after a threat was reported at Warsaw’s Chopin Airport, said airport spokesman Piotr Rudzki. No threat was ultimately identified. One runway at Chopin airport was temporarily closed while authorities carried out standard security procedures.
+Three Ryanair flights bound for Sofia, Bulgaria, had to make emergency landings because of bomb threats on board. Two of the flights, one from Copenhagen, Denmark, and the other from Madrid, landed safely at Sofia’s Vasil Levski Airport, airport officials told reporters.
+The third Sofia-bound flight, from London’s Stansted Airport to Sofia, had been diverted and landed safely at the airport in Plovdiv, Bulgaria’s second-largest city, Plovdiv Airport CEO Krassimir Peshev said.
+Several flights across Europe received hoax bomb threats earlier this week that prompted searches, diversions and, in one case, an escort by the Italian air force until landing, officials said.
+The flights included Polish airline LOT, Scandinavian Airlines, Wizz Air and Ryanair. The hoax threats came after a plane headed for Bulgaria was diverted to Hungary after receiving a similar bomb threat while in the air. No one was injured.
+By Associated Press
+Sections: News / World / Europe | Topics: France, Aviation, Italy, Ireland, Belgium, Denmark, Poland, Britain, Paris, Czech Republic, Finland, Bulgaria, Spain, Romania, Austria, Sebastien Lecornu
+Short link: https://sc.mp/cbtzl
+Read the original article on SCMP
+
+========================================
+【Title】China proves a cut above with world-first precision laser experiment in space
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+Researchers use a device mounted on the outside of the Tiangong space station to make millimetre-scale cuts.
+Precision laser cutting involves focusing a beam of light to slice or melt material with extreme accuracy. Photo: Shutterstock
+China’s space scientists have become the first to carry out precision laser cutting in orbit, slicing a piece of “large-scale equipment” with a robotic arm fixed to the outside the Tiangong space station.
+The official Science and Technology Daily reported on Wednesday that millimetre-scale cuts were made by a laser maintenance device operated remotely from “hundreds of kilometres away”.
+Precision laser cutting involves focusing a beam of light to slice or melt material with extreme accuracy, a difficult and risky process in orbit.
+The Tiangong device was developed jointly by Huazhong University of Science and Technology (HUST) and the Shanghai Institute of Space Power-Sources, with the researchers taking just a year to go from initial design to a flight-ready model.
+Professor Huang Yu, who led the HUST research team, told Science and Technology Daily that regular maintenance and high-precision repair were vital to the long-term operation of space stations.
+To translate ground-based laser processing equipment into space, the team overcame several challenges, including operating in the extremes of space, achieving millimetre-level positioning and executing micrometre-level precision cutting, Huang said.
+According to the report, the Tiangong device operates using multi-axis positioning mechanisms and is guided by an advanced vision system.
+“A multilevel vision system guides, identifies and positions the device, automatically completing high-precision laser cutting and waste material recovery,” HUST’s mechanical science and engineering school said in a social media post in September.
+The school said automated repairs could now be completed on the Tiangong, which would help to extend its lifespan and lay the foundations for an in-orbit maintenance system.
+HUST has been identified as a Chinese institution of concern by the United States, with companies and facilities affiliated with the university appearing on the US Bureau of Industry and Security Entity List.
+The cuts were carried out by a laser maintenance device mounted to a robotic arm outside China’s Tiangong space station. Image: HUST/Science and Technology Daily
+Space-based laser technologies have drawn scrutiny over dual-use concerns, particularly their potential to damage, disable or destroy other spacecraft.
+Both Beijing and Washington have pursued directed-energy and laser-weapon research, fuelling fears of an orbital arms race as each seeks to gain a strategic edge in space.
+Researchers are grappling with how long-term orbital and lunar operations can be made more efficient and cost-effective.
+Nasa is working on in-space servicing and manufacturing for Earth orbit and the moon, including laser-beam welding.
+“Laser systems can perform joining, cleaning, cutting and repair activities, which will enable the construction of large in-space structures that could not fit on a single launch vehicle,” according to an abstract by the Marshall Space Flight Centre posted on Nasa’s STI research repository in July.
+The abstract said Nasa was working on a number of space laser welding projects, including a compact vacuum welding chamber – which is planned to launch to the International Space Station – and an autonomous robotic arm to perform welds in a simulated lunar surface environment.
+In a report on space welding published in 2020, Nasa said that welding and additive manufacturing in space could help repair spacecraft more economically without requiring new parts to be shipped from Earth.
+As countries aim to build long-term presences in space and launch more spacecraft into Earth orbit and beyond, concerns have also been raised about the potential weaponisation of spacecraft.
+Last month, a report by the US Defence Intelligence Agency alleged that China could deploy space-based directed-energy weapons by the late 2020s, though it did not present evidence for the forecast or say whether this would be a laser- or high-power microwave-based device.
+By Victoria Bela
+Sections: News / China / Science | Topics: Science, United States, China
+Short link: https://sc.mp/g5ad3
+Read the original article on SCMP
+
