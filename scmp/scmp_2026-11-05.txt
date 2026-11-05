@@ -362,3 +362,867 @@ One farmer gifted 100 hens, declaring ‘we are family,’ while another drove o
 【中文正文】
 The 28-year-old helped achieve a breakthrough on Hilbert’s sixth problem and now he’s embracing the ‘new era’ of artificial intelligence.
 
+========================================
+【Title】DeepSeek engineer defends push for open-source AGI despite higher risks
+【时间】Wed, 04 Nov 2026
+----------------------------------------
+【中文正文】
+Some AI pioneers have warned that technology smarter than humans may escape human control.
+DeepSeek engineer Gao Xi speaks on an AI panel at the World Internet Conference on Tuesday. Photo: kankanews
+DeepSeek is committed to open-source artificial intelligence to accelerate the arrival of artificial general intelligence (AGI), even if it heightens safety risks, a company engineer says, defying growing safety concerns from the US and scrutiny in China over whether the strategy poses national security risks.
+Speaking on Tuesday on an AI panel at the World Internet Conference (WIC) in Wuzhen, DeepSeek engineer Gao Xi said open-source development promoted shared innovations and technical breakthroughs, framing the technology’s rapid progress as a race against the clock, rather than against rival firms.
+“If AGI is going to arrive in 10 years, then I hope we can bring this forward to one year. If it is going to arrive in one year, then I hope it can arrive tomorrow,” Gao said, in rare remarks from a DeepSeek representative.
+“AI is developing faster every year. For AI model companies, the real competitor in the AI race is not other companies, but time,” Gao said. He added that technical barriers erected by competitors would only temporarily slow competition, not stop the inevitable arrival of AGI.
+Gao’s remarks come as China’s open-source push emerges as a key flashpoint in the US-China tech rivalry. Unlike closed-weight systems championed by American front-runners such as OpenAI and Anthropic, open-weight models allow anyone with sufficient hardware to download and modify the code without vendor oversight.
+The opening ceremony of the 2026 World Internet Conference in Wuzhen, in China’s eastern Zhejiang province. Photo: Xinhua
+While Beijing has supported open-source ecosystems as a viable way to counter US tech containment, security experts have cautioned that releasing model weights could lower the barrier for rogue actors to conduct cyberattacks or develop bioweapons.
+At the same time, some AI pioneers – including Turing Award winners Geoffrey Hinton and Yoshua Bengio – have warned that AGI may escape human control.
+Acknowledging that open-source releases “may amplify the impact of safety issues”, Gao said DeepSeek was working to strengthen safety features, including classifications for its models, though he did not provide specific details.
+The “irreversible” nature of open-weight models presented additional safety challenges, acknowledged Liu Dayiheng, project lead for Alibaba Group Holding’s open-weight Qwen models, who also appeared on the panel.
+However, Liu pushed back against the closed ecosystem model favoured in the West, arguing that the solution lay in a comprehensive governance regime and industry standards rather than technological gatekeeping.
+“Without open source, the core technologies of large language models would only be in the hands of a few companies,” Liu said. “Open source allows developers around the world to contribute technology and innovate together.”
+Alibaba owns the South China Morning Post.
+[embedded media]
+Beijing is balancing both sides. While authorities proposed new export controls last month targeting frontier AI models with advanced cyber-offensive capabilities, top officials maintained support for open-source software.
+Both DeepSeek and Shanghai-based MiniMax completed domestic registrations to open-source their latest models, state media reported last month.
+This year’s WIC, convened under the theme “Open Source and Openness”, drew around 1,800 delegates from 138 countries and regions, according to official figures.
+Addressing the opening ceremony on Tuesday, Premier Li Qiang said China would continue to pursue “open innovation, promote technology transfer ... and work with all to build an open, inclusive and dynamic global ecosystem for digital innovation”.
+The AI panel was moderated by Wang Jian, an academician at the Chinese Academy of Engineering and chairman of the WIC’s AI committee, as well as founder of Alibaba Cloud. Other panellists included Wen Feng, chief architect and head of open platform at MiniMax, and John Higgins, chairman of the International AI Governance Association.
+At a separate WIC forum on Wednesday, Unitree Robotics founder Wang Xingxing said much of the data collected by robots remained underused, adding that self-improving physical AI models could help make better use of the data to accelerate technological advances.
+Additional reporting by Minxiao Chang
+By Vincent Chow
+Sections: Tech / Big Tech / Tech Trends / News / China Future Tech / AI | Topics: Artificial intelligence (AI), United States, China, Li Qiang, Alibaba, China technology, US-China tech war, DeepSeek, AI: Industry Trends, Technology, ChatGPT and other generative AIs, OpenAI
+Short link: https://sc.mp/xypi8
+Read the original article on SCMP
+
+========================================
+【Title】Tencent unveils Hy4 as open-weight AI race with DeepSeek, Z.ai, Alibaba heats up
+【时间】Wed, 04 Nov 2026
+----------------------------------------
+【中文正文】
+Tech giant says the new model introduces visual reasoning and powers a comprehensive update to its workplace AI tool WorkBuddy.
+Tencent says the release marks the first time its AI line-up has become one of the strongest open-weight models available today. Photo: Reuters
+Chinese tech giant Tencent Holdings has rolled out its latest flagship artificial intelligence model, Hy4, seeking to challenge top open-weight rivals with enhanced agentic capabilities built to power its enterprise software ecosystem.
+Released on Wednesday, the large language model (LLM) introduced visual understanding for the first time. Hy4 could process images, analyse complex charts and conduct visual mathematical reasoning, according to the Shenzhen-based company.
+Tencent said the release marked the first time its AI line-up became “one of the strongest open-weight models available today”, although it acknowledged that the model still trailed the world’s leading closed-source systems, particularly on challenging internal benchmarks for research-level mathematics, long-horizon coding, model self-improvement and advanced visual question answering.
+“We will continue to steadily scale pre-training and post-training to narrow this gap,” Tencent said in a blog post on Wednesday,
+The company has been increasing both model size and training data to close the gap with competitors. The Hy4 series features 770 billion parameters – a 2.6-fold jump from the 295 billion parameters in its predecessor, Hy3.
+Tencent indicated that its next-generation model, Hy5, would scale further, while a soon-to-come, lightweight Hy4 Flash version would slash task costs.
+The company is also laying the foundation for recursive self-improvement in Hy4, expanding its ability to carry out autonomous AI research and development.
+Underlining a “co-design” strategy to develop the AI model alongside products used in real enterprise workflows, Tencent said Hy4 powered a comprehensive update to its workplace AI tool WorkBuddy. The model achieved an average score of 83.18 and a pass rate of 96.15 per cent in internal evaluations for WorkBuddy tasks, according to the company.
+The launch underscores Tencent’s efforts to hold its ground in China’s fierce AI race, with domestic rivals including DeepSeek, Z.ai and Alibaba Group Holding already challenging global peers in the open-weight landscape. Alibaba owns the South China Morning Post.
+A preview version of Hy4, launched in late August, ranked 23rd globally on Wednesday on Code Arena’s WebDev leaderboard – a real-time benchmark evaluating LLMs on real-world coding tasks.
+With significantly expanded training data and model scale compared with the preview release, Hy4 improved on its earlier version across 12 tasks spanning agentic capabilities, coding and workplace automation, according to Tencent.
+The new flagship outperformed Z.ai’s GLM-5.3 and the DeepSeek-V4.1-Flash-1017 model across all tested tasks, while trading wins with Moonshot’s Kimi K3.1 Pro, according to benchmarks published in the model’s technical blog.
+The Hy4 release also marks another step towards Tencent’s goal of building frontier, state-of-the-art AI models. The company aggressively increased its capital expenditure by 176 per cent year on year to 52.8 billion yuan (US$7.9 billion) in the second quarter to fund its AI efforts, pushing free cash flow into negative territory for the period.
+Tencent also moved to mitigate cybersecurity concerns by restricting the hacking capabilities of Hy4 during training by filtering out content related to exploit development, reverse engineering and penetration testing “to avoid amplifying potential offensive capabilities”.
+By Iris Deng
+Sections: Tech / Big Tech / Tech Trends / Tech War / Business / Companies / China Business / News / China Future Tech / AI | Topics: Tencent Holdings, Artificial intelligence (AI), AI: Companies, China, Alibaba, AI: Industry Trends, China technology, DeepSeek, Z.ai, Moonshot AI's Kimi chatbot
+Short link: https://sc.mp/b7dor
+Read the original article on SCMP
+
+========================================
+【Title】Self-improving AI the key step towards AGI but safety is key: Z.ai founder
+【时间】Sun, 01 Nov 2026
+----------------------------------------
+【中文正文】
+Tang says RSI represents a ‘new paradigm’ of R&amp;D that will accelerate AI development even more than it has been.
+Z.ai co-founder Tang Jie says RSI is the main research problem for achieving AGI. Photo: CFOTO/Future Publishing via Getty Images
+Using artificial intelligence to build even smarter systems will make artificial general intelligence (AGI) more achievable, though it would need to be done safely, leading Chinese computer scientist Tang Jie said at an event in Shanghai on Saturday.
+The remarks underscore how AI companies in the US and China are both chasing the holy grail of recursive self-improvement (RSI), where increasingly powerful AI systems also become better at improving themselves in an ever-accelerating “loop”.
+“[Recursive self-improvement] is the main research problem for [achieving] AGI,” said Tang, who is a computer science professor at Tsinghua University and co-founder of Beijing-based artificial intelligence model company Z.ai, developer of the GLM family of models.
+AGI refers to a hypothetical AI system that matches or surpasses human beings in all cognitive tasks.
+In recent months, leading US AI start-ups OpenAI and Anthropic have both said that they are starting to see the early signs of RSI. In September, Claude developer Anthropic released a report showing that AI was leading 26 per cent of internal research and development on AI development in August, up from around 1 per cent in March.
+Tang did not disclose how much of Z.ai’s R&amp;D was now being done by AI. However, he said in his keynote speech at the World Laureates Forum that RSI represents a “new paradigm” of R&amp;D that would accelerate AI development even more than it has been.
+Earlier this year, Tang was one of the first Chinese AI experts and industry leaders to identify RSI as the next stage for AI development.
+Last month, Z.ai said that its latest GLM-5.3 model helped optimise its own “inference” infrastructure – the software needed to serve a model quickly and efficiently – for Chinese chips, which had not previously been done before at the same scale.
+In his speech on Saturday, Tang said that as frontier AI models shifted from being simple chatbots to AI agents tasked with complex scientific and research projects, it was logical to turn to AI systems themselves for help, given that human researchers were facing greater engineering difficulties as well as financial constraints.
+The logo of Zhipu AI seen at its headquarters in Beijing on June 25. Photo: Reuters
+RSI was a major theme of this year’s World Laureates Forum, an annual gathering of leading global scientists, with several Chinese industry and academic experts sharing presentations about how AI was accelerating the design and manufacturing of semiconductors, which are themselves used to power AI systems.
+However, some experts have warned that RSI could lead to humans losing control over AI as the development process accelerates too quickly for humans to understand or intervene.
+Acknowledging such concerns, Tang called for human researchers to be “humble” in the face of RSI, arguing that the responsibility for ensuring AI progresses safely should be “shared”.
+“Probably … the world should organise something together so that we can guarantee the safety for not just one country but for all the world,” he said.
+Tang spun Z.ai, also known as Zhipu AI, out of his Tsinghua University laboratory in 2019, with many of his former and current students going on to become core researchers at his company.
+Several of his students have become key figures in China’s AI industry in their own right, including Moonshot AI CEO Yang Zhilin.
+By Vincent Chow
+Sections: Tech / Tech Trends / News / China Future Tech / AI / Semiconductors | Topics: Artificial intelligence (AI), Z.ai, OpenAI, Anthropic, US-China tech war, United States, Shanghai, China, Tsinghua University
+Short link: https://sc.mp/5xfs7
+Read the original article on SCMP
+
+========================================
+【Title】DeepSeek unveils AI ‘super agent’ in coding race with OpenAI, Anthropic
+【时间】Sun, 01 Nov 2026
+----------------------------------------
+【中文正文】
+Technical paper proposes approach that reduces need for humans to coordinate multiple AI agents and monitor their progress.
+Proposal allows multiple agents to work simultaneously and proactively respond to events without requiring explicit instructions for every task. Photo: Reuters
+Chinese artificial intelligence start-up DeepSeek has previewed a plan for a more autonomous AI agent that can handle multiple tasks with minimal human intervention, as it steps up competition with US rivals OpenAI and Anthropic in developing coding assistants.
+The proposed system, dubbed super agent, aimed to reduce the need for humans to coordinate multiple AI agents and monitor their progress, addressing a key bottleneck in managing today’s increasingly complex workflows, according to a technical article published by the company’s DeepSeek Harness team on Saturday.
+DeepSeek said that advances in AI models had fuelled the emergence of agents that could automate a growing range of tasks, from managing calendars and drafting emails to preparing work reports and writing code.
+However, managing multiple agents simultaneously still demanded considerable human attention, the team said.
+“Single-task limits depend on model capabilities, while multitask limits depend on human attention,” the paper said.
+The DeepSeek team estimated that a person could typically oversee only three to five active AI agent sessions simultaneously, limiting the productivity gains from deploying multiple assistants.
+DeepSeek’s proposed system seeks to overcome this by automatically distributing tasks among agents and coordinating their work, leaving humans to focus on decision-making and reviewing results.
+The initiative comes as competition intensifies among AI developers to build more autonomous coding assistants, with Anthropic’s Claude Code and OpenAI’s Codex increasingly capable of handling complex software development tasks.
+DeepSeek’s proposal seeks to take agent automation further by allowing multiple agents to work simultaneously and proactively respond to events such as messages and code updates without requiring explicit instructions for every task.
+[embedded media]
+Under the proposed architecture, a central coordinating agent would distribute assignments among multiple independent agents, which could execute tasks in parallel and report their progress to the central agent, reducing the need for human oversight.
+In one example, the team said an agent could detect a software bug reported in a group chat and independently attempt to reproduce and fix it, even without being directly instructed to do so.
+If it identified a viable solution, the agent could submit a proposed code change for human review. Otherwise, it would remain silent to avoid unnecessary interruptions, the team said in the paper.
+In experimental tests, the approach enabled completion of one task in just under 16 minutes, compared with more than 29 minutes for a conventional approach, according to the team’s findings.
+Some industry experts acknowledged that DeepSeek was making progress in the right direction, but questioned whether the proposal offered meaningful advances over existing systems.
+“The challenge in AI software development today is ensuring reliability … rather than completing tasks faster,” said Liu Ming, a Beijing-based AI entrepreneur, on China’s Quora-like platform Zhihu.
+DeepSeek itself acknowledged potential challenges around security and privacy, including the risk that malicious instructions could compromise the agents connected to other services and systems.
+DeepSeek released an open-source research prototype of the super agent on code hosting platform GitHub, while stressing that the initiative remained an architectural exploration rather than a mature product.
+By Ben Jiang
+Sections: Tech / News / China Future Tech / AI | Topics: Artificial intelligence (AI), United States, China, OpenAI, Anthropic, AI: Companies, AI: Industry Trends, DeepSeek
+Short link: https://sc.mp/blxgq
+Read the original article on SCMP
+
+========================================
+【Title】Ex-armed police chief Wang Ning ousted from China’s top advisory body
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+Wang Ning joins predecessors in disgrace as Beijing deepens scrutiny of internal security.
+Wang Ning has been removed as a standing committee member of the Chinese People’s Political Consultative Conference (CPPCC) and vice-chair of its foreign affairs committee.  Photo: Handout
+A former commander of China’s paramilitary force has been stripped of his senior political advisory roles, sealing a sweep of more than 15 years in which three consecutive heads of the People’s Armed Police have fallen from grace.
+General Wang Ning, 71, was formally removed as a standing committee member of the Chinese People’s Political Consultative Conference (CPPCC) and vice-chair of its foreign affairs committee on Wednesday.
+The top political advisory body revoked his membership during its closing session, which was presided over by China’s fourth-ranking leader and chair of the CPPCC, Wang Huning, according to Xinhua.
+[embedded media]
+China keeps most investigations within its military secret. Consequently, notices announcing the removal of retired generals from China’s national legislative and political advisory bodies have become an important channel for observing the latest moves.
+Wang disappeared from public view months ago and was noticeably absent from the annual “two sessions” legislative gathering in March.
+Born in Nanjing, Wang Ning grew up in a military family with deep roots in the Nanjing Military Region. He rose through the ranks of the Nanjing theatre and the Fujian-based 31st Group Army, serving as group army commander and deputy chief of general staff before taking the helm of the armed police from 2014 to 2020.
+A notable number of senior generals swept up in the military’s anti-corruption campaign share career origins in the former Nanjing Military Region and the Fujian-based 31st Group Army – the long-time power base of fallen former Central Military Commission vice-chairman He Weidong and former Political Work Department director Miao Hua.
+The ousting of Wang completes a remarkable sweep into disgrace across the top echelon of the People’s Armed Police (PAP), the sprawling internal security apparatus tasked with domestic stability, anti-terror and border defence. Every general who held the post of PAP commander from 2009 to mid-2025 has ended up embroiled in corruption investigations.
+Wang’s predecessor, Wang Jianping, was detained in 2016, becoming the first sitting general placed under investigation after President Xi Jinping rose to power in late 2012. His successor, Wang Chunning, who took command of the PAP in 2020, was also expelled from the Communist Party and stripped of his military rank for “serious violations of discipline and law” in October last year.
+The downfall of a series of PAP commanders shows the intensity of the anti-corruption campaign led by Xi in the world’s second largest military. The Communist Party’s recent fifth plenum, held late last month, endorsed disciplinary penalties against 16 generals, marking a new high for recent plenary sessions.
+[embedded media]
+Two PAP lieutenant generals – deputy commanders Fu Wenhua, 61, and Zhu Wenxiang, 62 – were among five alternate members of the current Central Committee passed over for promotion to full member, which is supposed to follow their ranking in the body. Fu previously served as commander of the strategically vital Beijing garrison, while Zhu formerly commanded the PAP First Mobile Corps.
+While being passed over does not confirm that an officer is under formal investigation, it reflects the leadership’s deliberate caution and intense personnel screening.
+By William Zheng
+Sections: News / China / Military | Topics: China’s Communist Party, Xi Jinping's anti-corruption campaign, China, Xi Jinping, Chinese People’s Political Consultative Conference (CPPCC), Communist Party politics, Central Military Commission, Corruption in China, Wang Ning
+Short link: https://sc.mp/yqumf
+Read the original article on SCMP
+
+========================================
+【Title】Russia’s ‘eastward pivot’ gains steam as Putin confirms new China border railway
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+The new railway track will use the same standard gauge as China, a sign of Moscow’s ‘pragmatic’ focus on boosting ties with Beijing, analysts say.
+Russian President Vladimir Putin chairs a meeting at the Kremlin in Moscow on Tuesday. Photo: EPA
+Russian President Vladimir Putin has signed into law a deal to build a second standard-gauge railway track at a key border crossing with China, as Moscow looks to accelerate its eastward pivot and boost ties with Beijing ahead of the Apec summit.
+According to a document posted on Russia’s official legislative information portal on Monday, Putin has now signed a law ratifying the railway deal reached with Beijing during the Russian leader’s visit to China in May.
+The two sides have agreed to jointly construct a new track along the cross-border railway linking Zabaikalsk in southeastern Russia and Manzhouli in northern China.
+Crucially, the track will use the 1,435mm gauge – the world’s most widely used standard and the one adopted by China – rather than the wider 1,520mm gauge primarily used on Russia’s domestic rail network.
+The second standard-gauge track would help ease constraints on cargo volumes at the border crossing, reducing waiting times for freight trains and improving the speed and reliability of services along the eastern corridor, said Li Lifan, an expert on Russia and Central Asia at the Shanghai Academy of Social Sciences.
+Freight trains travelling from China to Russia currently use a single 1,435mm-gauge track at the Manzhouli-Zabaikalsk border crossing, which handles more than 60 per cent of China’s rail freight trade with Russia and a significant share of Europe-bound cargo.
+Trains travelling in opposite directions take turns to cross, creating periodic bottlenecks.
+Zoey Wang, director of corporates, infrastructure and project finance ratings at Fitch Ratings, said the project was expected to provide more stable transport conditions for two-way shipments of commodities, machinery and electrical products, consumer goods and cross-border e-commerce cargo.
+It would also make shipping schedules more predictable for businesses and help cut costs linked to delays, cargo hold-ups and supply chain disruptions, she said.
+Containers are stacked ready to be shipped across the Russian border at Manzhouli Railway Station in northern China’s Inner Mongolia autonomous region. Photo: Xinhua
+Moscow expected the second track to lift annual capacity at the Zabaikalsk crossing to 39 million tonnes by 2030, up 11 million tonnes from current levels, Russian media reported. The country has increasingly redirected trade towards Asia in recent years, as Western sanctions have restricted access to European markets.
+However, experts cautioned that the additional track would not necessarily translate into a significant increase in trade volumes, adding that its greater significance lay in the strategic considerations behind the decision.
+Despite Russia’s target, actual growth would be constrained by limitations in Russian railway infrastructure further inland, as cargo would still need to be transferred to 1,520mm-gauge wagons for onwards transport within the country, according to Li.
+“It did not signal a shift in the country’s railway gauge system, but rather a pragmatic trade-off as its eastward pivot enters its delivery phase,” Li said.
+Moscow had judged that the benefits of easing bottlenecks along its trade corridor with China outweighed the costs of maintaining procedural barriers at the border, he explained.
+The timing of Putin’s signing of the law – which came ahead of the Asia-Pacific Economic Cooperation summit in Shenzhen later this month – was also deliberate, Li said. Moscow wanted to “demonstrate its ability to deliver on its commitments to Beijing and establish a precedent that could be replicated elsewhere”.
+“While Russia has long adhered to this broad-gauge standard, the current depth of strategic trust and coordination between China and Russia means there is no longer any real reason to resist laying standard-gauge track on select feeder lines – especially along critical border sections,” said Zhao Long, director of the Institute for International Strategic and Security Studies at Shanghai Institutes for International Studies.
+“It also reflects the growing influence and magnetic pull of China’s economic, trade and connectivity networks – not just for Russia, but across the entire Eurasian continent.”
+Wang said the project reflected how China’s railway technical standards and related services were finding broader application internationally.
+However, she cautioned that expanding border capacity did not automatically guarantee a corresponding rise in trade volume. The project’s actual impact, she said, would depend on a range of factors, including freight rates, customs coordination, European demand, regulatory policies and operating conditions along the corridor.
+Construction of the second track on the Russian side has already begun and is expected to be completed by the end of 2026, while the Chinese section is scheduled to be finished in early 2027, Russian media reported.
+By Sherry Wang
+Sections: Economy / China Economy / Global Economy / News / World / Russia &amp; Central Asia | Topics: China-Russia relations, Russia, China, China trade, Infrastructure, Trade, China economy, Shanghai, Vladimir Putin, Shanghai Institutes for International Studies, Chinese Academy of Social Sciences, Fitch Ratings
+Short link: https://sc.mp/2olyv
+Read the original article on SCMP
+
+========================================
+【Title】Will New Zealand’s election reshape its ‘softly-softly’ approach to Trump?
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+The next government’s foreign policy and defence priorities could hinge on the smaller parties needed to form a coalition.
+New Zealand’s Prime Minister and National Party leader Christopher Luxon campaigns in his Botany electorate in Auckland on October 26. Photo: Reuters
+Cost of living issues are expected to dominate this weekend’s election in New Zealand, but the outcome could also determine whether Wellington maintains its cautious approach to US President Donald Trump or pursues a more independent foreign policy, analysts have said.
+With the major parties locked in a close contest ahead of Saturday’s vote, the next government’s approach to Washington, as well as its defence priorities, could hinge on the smaller parties needed to form a coalition.
+Robert Patman, a professor of international relations at New Zealand’s University of Otago, said a key issue at stake was whether Wellington would continue its so far unsuccessful “softly-softly” approach to the second Trump administration.
+“Or whether it pragmatically recognises that the Trump administration is unlike previous administrations and opts for closer relations with a new constellation of middle and small powers,” Patman said, citing similar moves by Canadian Prime Minister Mark Carney.
+New Zealanders will head to the polls amid mounting concerns over living costs, unemployment and healthcare, with both major parties promising to address the country’s economic difficulties.
+New Zealand’s Prime Minister and National Party leader Christopher Luxon casts his vote, with his wife Amanda, in the general election during advance voting in Beachlands, Auckland, on October 26. Photo: Reuters
+Prime Minister Christopher Luxon’s centre-right National Party came to power in 2023 on a promise to “build the economy” and has governed in coalition with the ACT and New Zealand First (NZ First) parties.
+National has emphasised economic management, restoring a budget surplus and expanding the country’s retirement savings scheme.
+The main opposition, the centre-left Labour party led by former prime minister Chris Hipkins, has focused on reducing living costs, improving healthcare and transport, and investing in housing, jobs and public services.
+A 1News Verian poll published on Tuesday placed National at 30 per cent and Labour at 29 per cent, pointing to a closely fought election in which smaller parties could play a decisive role.
+Under New Zealand’s mixed-member proportional electoral system, parties generally need at least 5 per cent of the party vote or an electorate seat to enter parliament, making coalition negotiations crucial to determining who governs.
+Patman said a significant shift in Wellington’s approach to Washington was unlikely if the current National-led coalition were re-elected, given what he described as the broadly pro-Trump orientation of NZ First and ACT.
+However, if a Labour-led coalition involving the Greens and the Opportunity Party came to power, Wellington could adopt a much more measured approach and “realign foreign policy to sit more consistently with New Zealand values and interests”, Patman said.
+New Zealand has largely maintained a careful, muted diplomatic posture towards major US foreign policy and security shifts under Trump, according to analysts.
+When Washington rolled back reciprocal tariffs on New Zealand exports, Wellington maintained a non-confrontational response and prioritised behind-the-scenes diplomacy.
+New Zealand’s Labour party leader Chris Hipkins (right) meets locals during a campaign walkabout in Paekakariki on the Kapiti Coast on Wednesday. Photo: AFP
+Patman pointed to Canada as a possible model for how Wellington could navigate an increasingly unpredictable international environment.
+In a landmark address at the World Economic Forum in Davos in January, Carney argued that the traditional post-war, US-led international rules-based order had collapsed and been replaced by great-power bullying and the weaponisation of trade.
+To shield Canada from what he calls a “geopolitical rupture”, Carney has shifted foreign policy to prioritise closer relations with middle and small powers.
+Apart from pursuing an unprecedented “associate membership” framework with the European Union, Ottawa has spearheaded the Partners for Multilateralism initiative alongside Brazil, the EU, Kenya, India and Australia.
+David Capie, a professor of international relations at Victoria University of Wellington, said the election had mainly focused on affordability issues, with the economy struggling and people feeling the impact of higher energy prices.
+With both main parties polling poorly, whoever emerged the winner on Saturday night would need coalition partners to form a government, Capie noted.
+“The wild card is the emergence of a new centrist party – Opportunity – which has said it could work with either National or Labour,” Capie said. “If it gets above the 5 per cent threshold and into parliament, it could well hold the balance of power.”
+Capie warned that the polls, currently too close to call, might not produce clear results on Saturday night. “Negotiations to form a government could potentially take weeks.”
+Opportunity, led by Qiulae Wong, is campaigning independently and positioning itself to hold the balance of power as a potential “kingmaker”.
+Leader of the New Zealand Opportunity Party Qiulae Wong in Lower Hutt on October 29. Photo: AFP
+Richard Shaw, professor of politics at Massey University’s College of Humanities and Social Sciences, said if the present government was returned to power, National would still be the largest party but was likely to have fewer seats at the cabinet table.
+“This means that the anti-immigration policies of NZ First, and the anti-Maori policies of both the ACT and NZ First parties will have greater salience than was previously the case,” Shaw said.
+NZ First advocates strict reforms designed to reduce non-essential immigration and prioritise New Zealand citizens. ACT and NZ First have also sought to dismantle race-based policies and ethnic prioritisation in addressing structural inequities, leading indigenous advocacy groups to slam their agendas as “anti-Maori”.
+Last month, NZ First released a new policy titled “Defence, Security and Protection of the Realm”, which calls for a six-year reform plan to rebuild the New Zealand Defence Force.
+Apart from proposing a massive funding surge aimed at expanding military capabilities to match a more demanding strategic environment, the policy also suggested rapidly growing the country’s military forces to over 20,000 personnel.
+Shaw said if the right-wing bloc formed the next government, NZ First could have more seats in parliament and therefore more leverage.
+“Winston Peters will almost certainly retain responsibility for foreign affairs,” Shaw said, referring to the NZ First leader and New Zealand’s foreign minister.
+An ACT Party campaign hoarding on display in Woodville, New Zealand, on October 23. Photo: EPA
+Still, it was difficult to see potential coalition partners lining up to reverse some of the commitments already made, Shaw said.
+These include scrapping the current frigate procurement programme, which involves spending an estimated NZ$6 billion (US$3.4 billion) to NZ$8 billion upfront, while redirecting funds towards uncrewed air, surface and undersea drones, and a second amphibious warship.
+Patman said even if the present coalition were re-elected, it was doubtful whether defence expenditure would increase beyond the current 2 per cent.
+National and Labour were also unlikely to accept NZ First’s defence posture, which de-emphasised maritime security, Patman added.
+If the current coalition retains power, Capie expects the Defence Capability Plan – a 15-year strategic blueprint unveiled in April 2025 to rebuild and modernise the defence force – to move forward.
+Apart from upgrading strike capabilities, missile systems, naval and aerial fleets, the NZ$12 billion plan over the first four years will also further invest in uncrewed and drone surveillance vehicles as well as space technology.
+“If there were a change of government, defence would be one area where you will see renewed debate,” Capie said. “There are a lot of different interests at play for New Zealand, including meeting our commitment as a treaty ally to Australia.”
+By Maria Siow
+Sections: This Week in Asia / Politics / News / Asia / Australasia | Topics: New Zealand, Asia elections, Donald Trump, Diplomacy, United States, Christopher Luxon, Winston Peters, National Citizen Party, UK Labour Party
+Short link: https://sc.mp/8v4gy
+Read the original article on SCMP
+
+========================================
+【Title】Hunt in Canada after multiple grizzlies suspected of killing mother and daughter
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+British Columbia community placed under curfew as conservation officers investigate fatal attack.
+A file photo of a grizzly bear. Conservation officers are investigating fatal attacks in British Columbia. Photo: Shutterstock
+More than one grizzly may have been involved in a bear attack that relatives say left a mother and daughter dead in Bella Coola along the province’s central coast, the Conservation Officer Service in British Columbia said.
+The service’s Inspector Jeff Tyre said in a video message that the second body had been found in a search by Royal Canadian Mounted Police and conservation officers on Tuesday afternoon that followed the discovery of the first set of remains a day earlier.
+He said it’s “not yet clear if more than one bear was involved”, and any bears captured in the area will be assessed.
+Family members of art therapist Jenny Balcarras and her daughter, Selah Reed, had reported them missing on Sunday.
+Balcarras’ brother, Matthew Balcarras, said Wednesday that his sister was “incredibly strong” and had lived in many difficult, remote places, including Alaska, before moving to Bella Coola on British Columbia’s central coast a few months ago.
+“She was a beautiful artist and was an inspiration for me and my brothers,” Matthew Balcarras said of his sister.
+Authorities have imposed a curfew on the community, about 1,000km north of Vancouver, as the search for the animal or animals behind the attack continues. If the “offending bear” is captured it will be killed to protect public safety, Tyre said.
+The attack comes nearly a year after a grizzly attack on a group of 20 elementary school students and teachers in the same area, which left one adult and three children badly hurt.
+[embedded media]
+The animal involved in that attack last November was never captured.
+Kim Titchener, founder of Bear Safety &amp; More Inc based in Calgary, said she was concerned when she saw reports about the women on Facebook hiking groups.
+“When I saw that they were missing and in the area that they were missing, my heart just dropped because I just kind of knew this could be a bear attack,” Titchener said.
+“This community and area have suffered so much last year,” she said, referring to the grizzly attack on schoolchildren.
+Bella Coola is well-known for its large population of grizzly and black bears, and Titchener said it’s common for people in Bella Coola to see bears walking near their homes.
+Grizzly bears can be particularly aggressive at this time of year as they build up their fat reserves before winter hibernation.
+Titchener said there have been “concerning pressures” on bear populations in British Columbia because of the loss of habitat, food stress caused by drought and climate change, setting off more conflicts with people.
+“I don’t know if Bella Coola suffered from any drought issues, but certainly other parts of the province of BC did,” she said.
+Additional reporting by Agence France-Presse
+By Associated Press
+Sections: News / World / United States &amp; Canada | Topics: Canada, Animals
+Short link: https://sc.mp/zi486
+Read the original article on SCMP
+
+========================================
+【Title】UK man charged over hidden camera in toilet on Japan-Singapore flight
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+A Scoot cabin crew member who used the toilet found the device, removed it and alerted a colleague.
+A British man faces voyeurism charges in Singapore after allegedly hiding a camera on a plane toilet. Photo: Shutterstock
+A man who allegedly hid a camera in a toilet on a Scoot flight from Japan to Singapore was charged on Thursday.
+Hugh Lutley, a 52-year-old British national, was handed one charge each of voyeurism and obstruction of justice by deleting evidence.
+He is accused of operating a camera at about 5.10pm on October 7 with the intention of observing passengers performing a private act.
+The alleged offence took place on board Scoot flight TR821, which was travelling from Osaka, Japan, to Singapore, according to the charge.
+In a news release, Singapore police said Lutley had allegedly concealed a camera in one of the toilets on the plane.
+After leaving the toilet, he allegedly activated the camera’s recording function remotely using a mobile application on his phone.
+A cabin crew member later used the toilet and discovered the hidden camera, police said. She removed it and immediately alerted her colleague.
+According to the police, Lutley later tried to retrieve the camera but found it had already been removed.
+He then allegedly deleted the mobile application and all related photos from his phone in an attempt to avoid detection, forming the basis of his second charge for obstruction of justice.
+Lutley was detained for investigations on arrival at Changi Airport. His phone and camera were seized.
+On Thursday, he indicated that he would plead guilty. He was offered bail of S$10,000 (US$7,835) and a pre-trial conference was scheduled for November 17.
+According to court records, he is represented by Barry Douglas Delaney of Delaney Advocates &amp; Solicitors.
+If convicted of voyeurism, Lutley could be jailed for up to two years, fined, caned or given any combination of these punishments.
+For obstruction of justice, he could be jailed for up to seven years, fined or both.
+This story was first published by CNA
+By CNA
+Sections: News / Asia / Southeast Asia | Topics: Singapore, Japan, Britain, Aviation, Crime
+Short link: https://sc.mp/0czru
+Read the original article on SCMP
+
+========================================
+【Title】Nasa’s Swift satellite telescope falls from orbit in final fiery plunge
+【时间】Wed, 04 Nov 2026
+----------------------------------------
+【中文正文】
+Swift’s re-entry over Indonesia comes less than three months after a failed rescue mission in space.
+Workers remove the final pieces of protective cover on the Swift spacecraft at Cape Canaveral Air Force Station, Florida, in 2002. Photo: Nasa via AP
+Nasa’s Swift satellite ⁠telescope, which spent two decades studying the most powerful known blasts of energy in the cosmos, tumbled out of orbit as expected on Wednesday and burned up in Earth’s atmosphere over Indonesia, the space agency reported.
+The fiery demise of the Neil Gehrels Swift Observatory, weighing roughly 1,452kg (3,200 pounds), came less than three months after a ‌rescue spacecraft failed its mission to boost the satellite to higher orbit and extend its life.
+The US Space Force confirmed that Swift’s re-entry occurred at 7.39am, as the satellite streaked into the upper atmosphere at about 22 times the speed of sound over Indonesia’s North Sumatra province, roughly 322km (200 miles) north of the equator, according to Nasa.
+Nasa said it expected the frictional heat of re-entry would incinerate most of the satellite well above Earth’s surface, with some ⁠fragments surviving the plunge, though the US space agency reported no damage or injuries on the ground from falling debris.
+It was not ‌immediately clear how close the telescope’s re-entry point was to North Sumatra’s capital and largest city, Medan, home to about 2.5 million people. The population of the province as a whole totals around 16 million.
+The ‌Space Force had earlier calculated the risk posed to populated areas as very low, putting the odds ⁠of harm coming to anyone on ⁠Earth at one chance in 2,100.
+[embedded media]
+Dean Sladen, an aerospace engineer for Britain-based industrial parts supplier Accu Components, said before re-entry that only a “handful of small, scorched ‌fragments are expected to make it down, nothing recognisable as a telescope”.
+“Satellites this size re-enter the atmosphere regularly, and in nearly 70 years of space flight no one has ‌ever been ‌killed by falling debris,” Sladen said in an email.
+The risk of a re-entry accident grows over the longer term, “which is ‌why designing satellites to come down safely matters more and more”, he added.
+Nasa’s prized US$500 million Swift satellite was primarily designed to study ⁠gamma-ray bursts – the most intense blasts of energy in the universe – using its multi-wavelength array of three telescopes.
+Since its launch in 2004, Swift ⁠had also studied hundreds of supernova explosions, star-shredding black holes, stellar X-ray flares, asteroids and comets, contributing to some 7,000 published scientific papers. It ceased operations on October 20.
+The observatory, which lacked its own propulsion system, had long outlasted ‌its two-year design life and had ‌been drifting towards orbital instability for months.
+In July, Nasa and Arizona-based start-up Katalyst launched a specially built rescue vehicle called Link on a mission to rendezvous with Swift, latch onto the satellite and tug it into a higher, more sustainable orbit.
+But the Link spacecraft itself began spinning uncontrollably soon after reaching space, and by mid-August, mission managers abandoned the effort, resigned to letting Swift fall back to Earth.
+By Reuters
+Sections: News / World / United States &amp; Canada | Topics: Space, Nasa (National Aeronautics and Space Administration), US Space Force, Indonesia, United States
+Short link: https://sc.mp/yvv66
+Read the original article on SCMP
+
+========================================
+【Title】Trump suffers midterms trouncing weeks before Xi meeting
+【时间】Wed, 04 Nov 2026
+----------------------------------------
+【中文正文】
+A collapse in the president’s poll ratings helped Democrats gain control of both houses of Congress in midterm elections.
+The sun sets on the US Capitol on election day in Washington. Photo: AFP
+Democrats won control of both houses of Congress in midterm elections as US voters punished President Donald Trump over inflation, corruption and rising healthcare costs.
+The party was on track for at least 54 Senate seats after upset wins in long-standing Republican strongholds including South Carolina, Texas and Kansas. In the House of Representatives, Democrats were set to pick up dozens of seats and gain a double-figure majority.
+A collapse in Trump’s approval ratings amid record petrol and diesel prices and war in Iran kneecapped Republican candidates and let Democrats break up the Maga alliance that returned the president to the White House two years ago. The midterm loss also comes a couple of weeks before Trump is due to meet China’s President Xi Jinping for the third time this year at an Apec summit in Shenzhen.
+“China is willing to continue working with the US to uphold and implement the important consensus reached by the two heads of state,” foreign ministry spokesman Mao Ning said at a regular briefing following the election. The two leaders are also due to meet at the G20 summit in Florida in December.
+Congressional control gives Democrats the power to derail much of Trump’s agenda by opening investigations and refusing to pass legislation he supports. The party may struggle to get its own proposals into law as the new majorities are insufficient to override presidential vetoes.
+[embedded media]
+Related news:
+The midterms will probably have a “relatively limited” impact on US foreign policy, especially regarding China, according to Chen Dongxiao, president of the Shanghai Institutes for International Studies. “The two parties share considerable common ground on China strategy, leaving little impetus for a wholesale reversal of the existing framework,” Chen told The Paper, a digital news outlet owned by state-run Shanghai United Media Group. The US president also traditionally has considerable latitude in foreign affairs, and Democrats will probably focus their attention on domestic matters, he said.
+Xi, Trump and Russian President Vladimir Putin could hold a trilateral meeting at the November 18-19 Apec summit. “Work is under way on organising such a meeting,” Dmitry Peskov, Putin’s spokesman, told the Financial Times. China’s foreign ministry said there was contact with relevant parties, without elaboration. The White House didn’t respond to questions from the FT. Trump first floated the idea of a meeting last month, initially focused on denuclearisation and later on Ukraine. Separately, German Chancellor Friedrich Merz said US plans to invite Putin to December’s G20 summit were “completely unacceptable”.
+Trump announced on polling day that he would axe US$3.8 billion of annual military aid to Israel by year-end. The president cited Israel’s economic strength as a reason for the move, along with domestic criticism, including attacks from Democrat Abdul El-Sayed during his Senate campaign in Michigan. Then-president Barack Obama approved the annual aid payments under a decade-long deal due to end in 2028. Separately, Trump wrote on social media on Monday that a deal with Iran “could happen”. The president had earlier threatened to carry out a major attack on the country after the midterm vote.
+How others reported it
+Emboldened abroad: The danger for everyone from China’s Xi Jinping to Japanese leader Sanae Takaichi is that for the final two years of his last term, Trump – hamstrung at home – becomes bolder abroad. His legacy-mode laundry list could look like this: Tokyo pressured into paying more for US troops (a long-time bugbear for Trump); South Korea forced into signing up to unfavourable investment projects; and Taiwan squeezed into handing over more chip technology. A fourth and final rendezvous with North Korea’s Kim Jong Un for old times’ sake can’t be ruled out. (Bloomberg Opinion)
+Trade offensive: Asian countries are bracing for a renewed trade offensive after the US midterm elections, with the Trump administration expected to use executive powers to impose tariffs regardless of which party controls Congress … For China, that would stoke renewed tensions between Beijing and Washington in the next two years, says Hui Shan, chief China economist at Goldman Sachs, adding a Congress with greater Democratic control may introduce new hawkish measures on China. (Nikkei Asia)
+Tough on tech: Congress is likely to pass tougher technology restrictions on China, according to Stephen Okun, CEO of the Singapore-based APAC Advisors. “The next Congress is going to pass them regardless of midterms because both parties agree on them,” he said. (The Australian)
+Iran opposition: Democrats have repeatedly voted against the [Iran] war and even passed a resolution, together with some Republicans, calling for an end to the hostilities. The Trump administration has ignored it. “I don’t think Congress will have huge powers here,” Michael O’Hanlon, director of research for foreign policy at the US think tank Brookings Institution, told DW, but added that Congress could perhaps prevent a major escalation by refusing to fund it. (Deutsche Welle)
+No constraints: The fact that the midterms are over … means that Trump no longer has to be so careful about the political consequences of his actions. … With political constraints lifted, he could become more erratic and unpredictable. Congress would not be completely powerless to stop him, at least in theory. But most actions it can take – such as cutting off funding for the war with Iran or seizing tariff power back from the president – require margins of control in both chambers that Democrats are unlikely to have, despite their formidable victories. (The Conversation)
+The SCMP Plus takeaway
+Democratic control of Congress may herald a change of emphasis in US-China relations rather than a wholesale rethink.
+China is one of the few areas where there is broad agreement between Democratic and Republican leaders. Both parties see the country as a strategic competitor at least, both support export controls to slow its technological development, particularly in artificial intelligence (AI), and both still largely favour engagement and trade in some form.
+This consensus also falls in line with President Donald Trump’s policies since the signing of a trade-war truce last year, and it’s one reason why China was something of a side issue in the midterm vote. Candidates and political groups produced only 44 television advertisements criticising China during this election cycle, compared with 190 ahead of the 2022 midterms, Nikkei Asia reported, citing data from AdImpact. Republicans accounted for 38 of the ads versus six for Democrats, it said. Spending on such ads fell to US$26.2 million from US$65.6 million in 2022.
+Americans’ views towards China have also improved from lows just two years ago. The percentage supporting friendly engagement and cooperation has climbed to 57 per cent from 40 per cent in 2024, according to a Chicago Council on Global Affairs survey in July.
+Foreign policy also rarely factors heavily in US elections. The main topics instead tend to be domestic issues, such as the cost of living, immigration or crime. This year was little different, even if record fuel prices and renewed inflation spurred a focus on conflict in the Middle East. Some 81 per cent of Americans said that the war had increased the cost of living, according to a pre-election survey by the Institute for Global Affairs.
+A key outcome from the midterms in terms of US-China relations will be new leadership for both houses’ foreign affairs committees. Democratic chairmen will soon get to decide which topics are investigated and which Trump officials are summoned for questioning, as well as determining whether a bill gets the chance to proceed towards the statute book.
+Those powers can help set the US agenda towards China, as well as offering the chance to embarrass the White House and derail its policies. The Senate committee can also delay or block State Department appointments, including ambassadors.
+In the House, Congressman Greg Meeks of New York is due to take over the foreign affairs committee, returning to a role he held from 2021 to 2023. He supported engagement with China under then-president Joe Biden in a 2023 Foreign Policy article while criticising Republicans “whose foreign-policy platform has been defined almost entirely by anti-China rhetoric and policy”.
+Still, he saw a “bipartisan consensus that China is the United States’ central geostrategic challenge”, and said the US must respond to China’s “malicious actions”. Meeks also backed a reinvigorated Quad security partnership between the US, Australia, India and Japan, as well as the Aukus submarine deal, according to an analysis by Australia’s United States Studies Centre.
+Furthermore, Meeks joined then House speaker Nancy Pelosi on a 2022 trip to Taiwan which drew condemnation from Beijing and triggered a wave of military exercises by the People’s Liberation Army. Beijing regards Taiwan as sovereign territory, to be returned to the fold by force if necessary. Meeks has backed military aid to the island, but emphasised the need for all sides to maintain the status quo.
+The Senate Foreign Relations Committee gavel will probably be taken by Chris Coons, a Delaware Democrat who more explicitly describes China as an “adversary”. He joined a bipartisan delegation that visited Taiwan and the Philippines last year, and supported a bipartisan bill in December designed to block the Trump administration from loosening restrictions on AI chip exports to China for 30 months. Coons also backed a bipartisan resolution ahead of Trump’s May summit with Xi calling for the president to take a tough line.
+Democrats will take control of Congress in January, and they could use the foreign relations committees to investigate the Trump administration over China tariffs, tech or Taiwan. Still, it’s probable that the lack of major policy differences and strategic alternatives will encourage a focus on areas promising greater political pay-off, starting with the war on Iran.
+By Brian Rhoads, Raymond Ma
+Sections: News / US / US Elections / China / Diplomacy / Politics / Economy / China Economy | Topics: US midterm elections 2026, United States, China, Donald Trump, US Politics, Republican Party, Democratic Party (US), US-China relations, Donald Trump’s China policy, Taiwan, Shenzhen, Xi Jinping
+Short link: https://sc.mp/8fa5d
+Read the original article on SCMP
+
+========================================
+【Title】Finland and Norway’s call to Putin tests European unity over Russia
+【时间】Mon, 02 Nov 2026
+----------------------------------------
+【中文正文】
+For Russia’s neighbours, direct diplomatic contact is a chance to voice concerns that don’t receive equal attention in broader negotiations.
+From the left, Finland’s President Alexander Stubb, Norway’s Prime Minister Jonas Gahr Store and Ukraine’s President Volodymyr Zelensky arrive for a meeting in Oslo on October 20. Photo: AFP / Ukrainian Presidential Press Service
+When Finnish President Alexander Stubb and Norwegian Prime Minister Jonas Gahr Store called Russian President Vladimir Putin on October 27, they took an unusual diplomatic step at a time when direct high-level contact between European governments and Moscow has been limited. The call, initiated by the two Nordic leaders ahead of renewed peace negotiations, also drew criticism from Denmark over the lack of broader European coordination.
+The call did not signal a change in Finland or Norway’s position towards Russia. Both remain committed to Nato and continue to support Ukraine. Their initiative points instead to a question that will become increasingly important as diplomatic efforts advance: how can European countries pursue their own security interests while maintaining a common approach towards Moscow?
+For Finland and Norway, direct contact with Russia is not new, although the two countries have different experiences of managing the relationship. Norway has long combined deterrence with reassurance, keeping channels of communication open even as political relations have deteriorated. Its 2025 National Security Strategy calls for a consistent and predictable approach towards Russia, coordinated closely with allies in the transatlantic alliance.
+Just four days before the call, Norway and Russia reached a fisheries agreement for 2027, following their first face-to-face negotiations since 2019. The agreement came despite continuing disputes over sanctions, showing that practical cooperation has continued even as political relations remain strained.
+Finland, which joined Nato in 2023, has taken a firm position towards Russia while leaving open the possibility of future engagement. In an August speech, Stubb acknowledged that Finland would eventually need to redefine its relationship with Russia as a neighbour, while also making clear that the future of that relationship would depend on Moscow’s actions.
+These experiences show that maintaining contact with Russia can serve different purposes. Norway’s fisheries cooperation rests on established institutions and shared practical interests, while Finland has kept open the possibility of future political engagement.
+[embedded media]
+The October 27 call went further, bringing both leaders into direct discussions with Putin over Ukraine and efforts to end the Russian invasion. Such high-level diplomacy involves more contentious questions, however, and the continuation of practical cooperation offers no guarantee of progress in negotiations.
+For Finland and Norway, being near Russia gives them particular security concerns. Finland shares a long land border, making changes in Russian military deployments and regional security arrangements especially relevant to its defence planning. Norway faces different challenges in the High North, where military activity, maritime security and cross-border relations remain important.
+A peace settlement in Ukraine might end the fighting, but difficult questions about Russia’s military presence and Nato’s security arrangements in northern Europe will remain. Finland and Norway will have to deal with these issues long after negotiations end.
+The October 27 call followed consultations in Oslo involving Ukraine, the United States, other European representatives and Nato. Following the call, Store argued that European governments should have their own channels of communication with Moscow rather than relying solely on Washington.
+Finland and Norway emphasised that they had consulted Ukraine before the call and were speaking on behalf of their own governments, not Europe as a whole. Ukrainian President Volodymyr Zelensky subsequently welcomed their diplomatic support and discussed preparations for further negotiations.
+The significance of this initiative also lies in the wider question of Europe’s place in the negotiations. European countries will have to live with the security consequences of any agreement, even if they are not directly involved in determining its terms. For Russia’s neighbours, direct diplomatic contact provides an additional opportunity to express concerns that might not receive equal attention in broader negotiations.
+[embedded media]
+However, access to Moscow does not guarantee influence over Russian decisions. The Kremlin has given little indication of a change in its negotiating position. Direct engagement might still serve a purpose by allowing Finland and Norway to hear Moscow’s position first-hand and communicate their own concerns. Whether such contacts are worthwhile is a matter of debate among European governments.
+Danish Prime Minister Mette Frederiksen criticised the initiative, questioning its value and calling for greater European coordination. Swedish Prime Minister Ulf Kristersson also expressed reservations about the call. Stubb and Store responded that partners and allies had been informed in advance. Being informed about an initiative, however, is not the same as helping to shape it.
+European governments can agree on their support for Ukraine while differing over when and how to engage Moscow. Countries bordering Russia might have particular reasons to maintain direct contacts, but such initiatives require consultation with relevant partners and clarity about whose interests they represent.
+The October 27 call produced no publicly announced breakthrough, but it nevertheless shows how Russia’s neighbours can seek a direct role in diplomacy as negotiations over Ukraine evolve. Finland and Norway will have to manage the security consequences of any settlement long after the talks themselves have ended.
+Europe’s task is to make room for those concerns while ensuring national initiatives support a coherent diplomatic effort. Unity over Russia does not require identical channels of communication.
+By Nong Hong
+Sections: Opinion / World Opinion / News / World / Europe | Topics: Ukraine war, European Union, Norway, Finland, 5050, Ukraine, Russia, Vladimir Putin
+Short link: https://sc.mp/8p3pp
+Read the original article on SCMP
+
+========================================
+【Title】Chinese and North Korean officials step up diplomatic drive in wake of Kim Jong-un visit
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+Both sides pledge to step up cooperation in the wake of the North Korean supreme leader’s recent trip to the border city of Dandong.
+North Korean leader Kim Jong-un crosses the bridge linking the two countries last month accompanied by Wang Yi and other senior officials. Photo:  EPA/KCNA
+Senior Chinese and North Korean officials met on Thursday in the wake of Kim Jong-un’s recent cross-border visit and a renewed drive by the two sides to deepen their relationship.
+China’s top diplomat Wang Yi struck an upbeat tone on the relationship between the two countries when he hosted a visiting delegation led by Kim Song-nam, the international affairs chief of the Workers’ Party of Korea, in Beijing.
+“China is ready to work with the DPRK [Democratic People’s Republic of Korea] to resolutely carry out the key consensus reached by the top leaders of the two parties and the two countries, and to advance bilateral ties towards deeper, greater, substantive and better development,” Wang told Kim.
+He was acting in his capacity as a member of the Politburo and director of the Office of the Central Commission for Foreign Affairs rather than as foreign minister, according to the Communist Party’s International Department, Beijing’s main agency for managing ties with Pyongyang.
+Wang, along with Beijing’s No. 4 official Wang Huning, was also among the officials who welcomed the North Korean leader to China during his recent trip to the border city of Dandong, where the two sides reaffirmed their commitment to their traditional friendship.
+Kim Song-nam’s visit took place shortly after the most important event in China’s political calendar this year, the party’s fifth plenum.
+Wang Yi briefed the North Korean visitors on the plenum’s outcome and said Beijing was ready to strengthen exchanges on party building and governance – something Pyongyang said it was open to, according to the Chinese statement.
+Widely regarded as Pyongyang’s foremost China expert, Kim oversees critical party-to-party ties between the two neighbours and previously visited the country in 2024 and 2025, as well as accompanying Kim Jong-un on his latest trip.
+Wang Yi greets Kim Song-nam ahead of their meeting in Beijing. Photo: IDCPC
+“The DPRK is willing to work together with China, in accordance with the will of the top leaders of both parties and both countries, to make unremitting efforts to develop friendly relations,” Kim Song-nam said on Thursday, according to the statement from Beijing.
+He also described the North Korean leader’s recent visit, where he marked the 76th anniversary of Chinese troops entering the Korean war, as fresh proof of a friendship “sealed in blood” and hardened by history.
+His latest visit coincides with a series of other high-profile meetings, including a visit to North Korea by a delegation from China’s Central Party School and visit to Beijing this week by a delegation from the state news agency KCNA.
+The exchanges come about a week ahead of the Apec summit in the southern Chinese city of Shenzhen, where US President Donald Trump and other world leaders are expected to attend. North Korea is not a member of the group and it is not known if it will be represented at the meeting.
+The Apec meeting has triggered fresh speculation about a meeting between Trump and North Korean leader, but the latter’s sister Kim Yo-jong dismissed the prospect on Wednesday, saying there was “no need to sit face to face with such untrustworthy and hostile people”.
+The United States has recently introduced fresh sanctions targeting North Korea, while the FBI has accused Pyongyang of stealing more than US$6 billion from cryptocurrency exchange Binance in a sophisticated hack.
+Meanwhile, North Korea test-fired a new air defence missile on Wednesday, the third launch of its kind in under a week.
+By Orange Wang
+Sections: News / China / Diplomacy | Topics: China-North Korea relations, North Korea, United States, China, Kim Jong-un, Wang Yi, Workers’ Party of Korea, Binance
+Short link: https://sc.mp/nw8ii
+Read the original article on SCMP
+
+========================================
+【Title】Philippine envoy says US immigration detention rules may change after midterms
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+Jose Manuel Romualdez says the potential rule change would ‘definitely’ ease the concerns of Filipinos with questionable visa status.
+Police and US Immigration and Customs Enforcement (ICE) officers stand guard as people gather near a parking lot to prevent ICE from leaving for an immigration raid in the Manhattan, New York, in November. Photo: Reuters
+The Philippines on Thursday voiced optimism that the Democratic Party’s resounding midterm election win would prompt the United States to adopt “a different approach” to President Donald Trump’s hardening immigration crackdown that has ensnared many Filipinos.
+Trump’s Republican Party was routed in Tuesday’s polls, with the Democrats taking control of both houses of the US Congress and gaining legislative power to check his policies.
+The drubbing has given hope to Jose Manuel Romualdez, Manila’s envoy to Washington, who said potential changes to the US immigration rules would “definitely” ease the concerns of Filipinos with questionable visa status.
+“Some of the policies that affect us, including immigration, there could be some changes because the Democrats have been pushing for a different approach, especially in the detention and the arrest of illegal aliens in the United States,” Romualdez said on a radio show, referring to the term used by the government to describe undocumented immigrants.
+The ambassador told Super Radyo DZBB that “hopefully it would be a different kind of approach, maybe. But we will see what happens”.
+Romualdez said the Philippine embassy in Washington was working closely with the Department of Homeland Security to help affected Filipinos.
+Supporters of Democratic Senate candidate James Talarico cheer as he is projected to win a seat for Texas on November 3, 2026. Photo: AFP
+He earlier urged undocumented Filipinos to leave the US voluntarily to avoid getting caught in the enforcement blitz carried out by the Immigration and Customs Enforcement (ICE).
+The US has ramped up its immigration clampdown in recent months, arresting, deporting and holding people in detention centres, including those allowed to stay in the country.
+According to the Deportation Data Project, ICE agents took 49,571 people into custody in July, a 15 per cent rise from 43,021 arrests a month earlier.
+Many Filipino green card holders were also rounded up during the months-long nationwide operations that dominated the midterm campaigning, where some Democratic contestants called for ICE to be dismantled.
+ICE agents even arrested five undocumented immigrants on election day near polling centres in Arizona during a raid that civil rights groups said “sends a message of intimidation for voters”.
+In September, a cancer-stricken Filipino man was released on “humanitarian grounds” after spending more than two months at a detention centre. He was arrested in the US on an old criminal charge from the Philippines while applying for citizenship.
+[embedded media]
+His case also drew accusations from migrant advocacy groups that Philippine embassy and consulate officials failed to provide adequate help to citizens abroad.
+The diplomatic mission told Filipinos to consult a qualified US immigration lawyer “for advice appropriate to their individual circumstances”.
+Some Democrats who won Tuesday’s election have proposed to disband ICE and end funding for detention and deportation operations.
+“You can’t reform ICE, you can’t retrain ICE, you have to abolish ICE,” Abdul El-Sayed said during the primary in Michigan, Latin Times reported. He will become the first US Muslim senator after defeating Republican Mike Rogers.
+Amnesty International also echoed the senator-elect’s demand. “For the US government to have an immigration enforcement system that complies with international human rights law and standards, ICE needs to be abolished and we need to start over,” it said in a September statement.
+By SCMP’s Asia desk
+Sections: This Week in Asia / Politics / News / Asia / Southeast Asia | Topics: The Philippines, Donald Trump, United States, US midterm elections 2026, US immigration, ICE (US Immigration and Customs Enforcement), US Politics, Jose Manuel Romualdez, Department of Homeland Security (US), Amnesty International
+Short link: https://sc.mp/uoq72
+Read the original article on SCMP
+
+========================================
+【Title】China’s fifth plenum resolution
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+SCMP Plus annotates resolution adopted at the Communist Party’s fifth plenum outlining tighter oversight of senior officials, stronger party discipline and an intensified anti-corruption campaign.
+This article contains excerpts from the official English translation of the original Chinese document released by Xinhua.
+By SCMP Plus
+Sections: News / China / Politics / Economy / China Economy / Policy | Topics: China’s Communist Party, China, Xi Jinping, Xi Jinping's anti-corruption campaign, China’s fifth plenum, Central Committee, Corruption in China, Politburo
+Short link: https://sc.mp/eht6r
+Read the original article on SCMP
+
+========================================
+【Title】Centuries-old UK parliament risks ‘catastrophic failure’ over delayed revamp
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+MPs warn crumbling Palace of Westminster faces rising threat of devastating fire.
+Commuters cross in front of the Palace of Westminster and Elizabeth Tower in London. Photo: AFP
+Britain’s centuries-old parliament is at risk of a “Notre Dame-like” fire or other catastrophe if lawmakers continue to put off a major restoration project, MPs warned on Wednesday.
+Crumbling masonry, ageing electrics, frequent leaks and high asbestos levels are some of the problems besetting the Palace of Westminster, parts of which are more than 900 years old.
+Billions of pounds are required to renovate the estate, which sits within a Unesco World Heritage site, but parliamentarians have been unable to decide for years on how to proceed.
+Parliament’s public accounts committee said the delay was leading to spiralling costs and risked causing a “catastrophic failure” that would harm the UK’s “morale and reputation”.
+“A lack of action risks, for instance, the chamber being plunged into darkness during the state opening of parliament,” said chair Geoffrey Clifton-Brown MP, referencing when the monarch reads out the government’s legislation plans.
+“Consider the impact of global rolling news footage of Notre Dame-like flames licking out of the building’s roof, resulting in the destruction of our heritage, or worse, injuries or loss of life.
+“These are not notional possibilities, but real and rising risks,” he added.
+The 12th century Parisian landmark was gutted in April 2019 after a fire tore through its ancient timber roof and collapsed its spire.
+Flames engulf Notre-Dame Cathedral in Paris in 2019. British MPs warned the Palace of Westminster faces a similar disaster without urgent renovation. Photo: AFP
+Most of the central London site, including the internationally recognised Elizabeth Tower commonly known as Big Ben, was built during the 1800s when Queen Victoria was on the throne.
+Parliamentarians first voted to move out of the central London site in 2018 to allow extensive repairs. But there has since been disagreement about whether this should go ahead.
+A series of votes is expected in both the elected lower House of Commons and the unelected upper House of Lords on the so-called Restoration and Renewal programme later this year.
+The current options include a “full decant” costing up to £15.6 billion and lasting up to 24 years, where both houses leave for much of the works.
+A partial decant called “enhanced maintenance and improvement plus”, where no more than 30 per cent of staff would stay on site at any one time, is projected to cost £39 billion (US$52.5 billion) and take up to 61 years.
+MPs will also be asked to approve a first phase of works that will be capped at £3 billion and last seven years.
+Current timescales predict that work would start in 2032.
+In its report, the committee warned that the weekly cost of maintenance on the parliamentary estate is expected to grow from the current £1.5 million to £2 million in coming years.
+Each year the programme is delayed will add £420 million to the lifetime costs of delivering the scheme, it added.
+“Work is already happening across the parliamentary estate to ensure the ongoing safety of those working here and visiting,” said a UK parliament spokesperson.
+By Agence France-Presse
+Sections: News / World / Europe | Topics: Britain, UK parliament, Andy Burnham
+Short link: https://sc.mp/rntgo
+Read the original article on SCMP
+
+========================================
+【Title】North Korea digs in for US stand-off as Democratic midterm wins dim summit hopes
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+Recent weapons tests signal Pyongyang will lean on Moscow and Beijing rather than bank on Washington talks amid shifting US politics.
+A newly designed advanced air-defence missile system is test-fired by North Korea in this photograph released by state media on Thursday. Photo: KCNA via Reuters
+North Korea is bracing for a prolonged confrontation with the United States, analysts say, after sweeping Democratic gains in the US midterm elections diminished the likelihood of renewed diplomacy between Kim Jong-un and President Donald Trump.
+As Americans cast their ballots on Tuesday, Pyongyang test-fired a new surface-to-air missile system and carried out a strike drill with long-range strategic cruise missiles early on Wednesday, Korean time – its fourth weapons test in a week.
+The launches came hours after Kim Yo-jong, the sister of North Korean leader Kim Jong-un, blasted Washington on Tuesday for linking Pyongyang to a US$6.3 billion cryptocurrency theft from Binance, calling the FBI’s findings a “grave political provocation”.
+She warned that Pyongyang had matters to “reconsider” in response to US hostility, but stopped short of threatening retaliation, leaving the door open to dialogue.
+On Wednesday, she said: “The choice for peace includes dialogue, of course, but this is not surely equated with national interests for us.”
+Kim Yo-jong, the sister of North Korea’s leader Kim Jong-un, attends a reception in the Great Hall of People in Beijing, China, in September 2025. Photo: AFP
+Oh Gyeong-seob, a senior researcher at the Korea Institute for National Unification, said the Democrats’ victory was unwelcome news for Pyongyang, which endured strict sanctions under the previous Biden administration.
+The Biden administration insisted that dialogue could not take place without a commitment to denuclearisation, and demanded that any summit be preceded by working-level talks to resolve differences – a stark contrast to the top-down diplomacy favoured by Trump, Oh said.
+“The North is deeply wary of the [Binance] heist sparking further US and international sanctions, and this concern adds to the reasons for Pyongyang to seek dialogue. Kim Yo-jong’s statement reflects this concern,” Oh said.
+However, Oh added there was little chance that the Trump administration and Pyongyang could reach a compromise acceptable to a Democrat-led Congress.
+“Pyongyang knows this fact, and it is bracing itself for prolonged confrontation as well,” he said.
+Leif-Eric Easley, a professor of international studies at Ewha Womans University, said that while the midterm results dealt Trump a major blow, he was unlikely to moderate his style or policy positions.
+“Instead, domestic constraints could encourage him to pursue dramatic and controversial diplomatic initiatives,” Easley said, adding that Trump might seek deals with Chinese President Xi Jinping, Russian President Vladimir Putin or Kim Jong-un, while stepping up pressure on allies to shoulder defence costs and offer economic concessions.
+A Democratic-controlled Congress, however, would likely investigate Trump’s decisions, scrutinise agreements and resist sanctions relief for Russia or North Korea, he said.
+“So Washington might see more assertive presidential diplomacy but less certainty about implementation,” Easley said.
+South Korea supported renewed Trump-Kim diplomacy, but a summit that shelved denuclearisation would weaken deterrence and spark policy friction among Washington, Seoul and Tokyo, he added.
+“North Korea’s numerous weapons tests, record crypto heists, aggressive rhetoric against Seoul and sanctions-violating cooperation with Moscow seriously complicate engagement,” Easley said.
+Lim Eul-chul, a professor at Kyungnam University’s Institute for Far Eastern Studies, said the election results had dampened expectations for the top-down, transactional diplomacy preferred by Kim.
+With Democrats taking control of Congress, any effort by Trump to alter political dynamics through a North Korea-US summit would face stiff resistance from congressional control over spending, investigative powers and sanctions legislation, Lim said.
+“From Pyongyang’s perspective, even an agreement reached with Trump could be at risk of collapsing at any time. North Korea would therefore seek to avoid a repeat of the 2019 Hanoi summit’s failure,” he said, referring to the collapse of talks after the two sides failed to agree on sanctions relief in exchange for nuclear dismantlement.
+US President Donald Trump and North Korean leader Kim Jong-un shake hands during their summit at the Metropole Hotel in Hanoi, Vietnam, in 2019. Photo: Reuters
+North Korea had a deep-seated conviction that “the essence of the US hostile policy towards North Korea will never change”, Lim said. Given this distrust, Pyongyang saw little incentive to engage in dialogue with Washington, risking the uncertain implementation of an agreement for limited tangible benefits, he added.
+“North Korea is likely to further consolidate a survival structure capable of neutralising US sanctions pressure through comprehensive military and economic cooperation with China and Russia,” Lim said.
+Such ties would allow Pyongyang to pursue its defence and economic development plans with less concern for Washington’s reaction while preparing for “a prolonged strategic confrontation”, he added.
+“The current political situation is likely to reinforce North Korea’s conviction that developing its independent nuclear capabilities, regardless of changes in the US administration or the ruling party, was the correct and strategically superior choice.”
+“The development, test-firing and training of new weapons systems are expected to become increasingly routine and regularised,” Lim said.
+Against this backdrop, North Korea’s Wednesday tests paired technical verification of a new air-defence missile system with simulated target strikes by long-range strategic cruise missiles.
+Lim said the simultaneous deployment of defensive and offensive systems in a single day was intended to show improved electronic warfare capabilities and technologies for evading low- and high-altitude air-defence networks.
+Yang Moo-jin, a professor at the University of North Korean Studies, said it was rare for North Korea to launch defensive surface-to-air missiles together with offensive cruise missiles.
+“The near-simultaneous timing of the missile launches and Kim Yo-jong’s statement is also unusual, suggesting that the actions were planned in advance to coincide with the US midterm elections,” Yang said, adding that the launches were intended to draw attention to North Korea and underscore its strategic significance.
+The tests also served as a retaliatory show of force against Freedom Flag, a two-week joint South Korea-US air drill that will last until Friday, Yang said.
+An F-16 fighter jet lands at Osan Air Base in Pyeongtaek, South Korea, in October, during the joint US-South Korea Freedom Flag air exercise. Photo: EPA
+By pairing weapons demonstrations with Kim Yo-jong’s statement, Pyongyang was signalling that its words were backed by action and that it would match any perceived US hostility with corresponding measures, he said.
+“Pyongyang is conveying that dialogue and confrontation, peace and military exercises and improving relations and disrespect for its sovereignty cannot coexist,” Yang said.
+“However, North Korea is also signalling that dialogue, peace and improved relations remain possible if the Trump administration respects the North Korean regime and abandons what Pyongyang regards as hostile policies towards the country, including joint US-South Korean military exercises.”
+By Park Chan-kyong
+Sections: This Week in Asia / Politics / News / Asia / East Asia / World / United States &amp; Canada | Topics: North Korea, South Korea, United States, Russia, China, Kim Jong-un, Donald Trump, Kim Yo-jong, Binance, Ewha Womans University, University of North Korean Studies (UNKS), Korea Institute for National Unification (KINU)
+Short link: https://sc.mp/vhyf4
+Read the original article on SCMP
+
+========================================
+【Title】‘China-squeeze narrative’ on trade surplus belies reality, top official says
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+‘The surplus is in China, but the benefits are shared by all parties,’ vice-premier says while pledging import expansion at opening of CIIE.
+China’s Vice-Premier Ding Xuexiang speaks during the opening ceremony of the 9th China International Import Expo in Shanghai on Thursday. Photo: AFP
+Chinese Vice-Premier Ding Xuexiang pushed back against criticism of the country’s widening trade surplus while pledging to expand imports, as China faces growing international pressure to address global trade imbalances.
+Addressing the opening ceremony of the China International Import Expo (CIIE) in Shanghai on Thursday, Ding said China had never deliberately sought a trade surplus, which he attributed to the country’s position in global supply chains and its comparative advantages.
+“The surplus is in China, but the benefits are shared by all parties,” Ding said, adding that foreign companies accounted for 27 per cent of China’s total exports and 16 per cent of its trade surplus in 2025.
+“The so-called China-squeeze narrative promoted by some institutions and media outlets is rooted in a zero-sum mentality and is fundamentally untenable.”
+In the first nine months of the year, China recorded a trade surplus of US$938.1 billion, customs data showed, putting the country on track to post another record annual surplus after last year’s US$1.2 trillion figure drew heightened scrutiny from Western trading partners.
+US Treasury Secretary Scott Bessent has called for coordinated action among Group of 20 members to put pressure on Beijing over the surplus, raising the prospect of greater external pressure on China at the G20 summit in Miami in December.
+The six-day CIIE, launched in 2018, is seen by many foreign businesses as a prime marketing opportunity, as well as a platform for China to signal its commitment to boosting imports and keeping its market open to foreign businesses.
+Normal trade in certain hi-tech products has been disrupted and restricted, causing huge losses for all partiesVice-Premier Ding Xuexiang
+During his address, Ding called for the removal of trade barriers, warning that “overstretching the concept of national security” would only exacerbate trade imbalances.
+“There are many products that China wants to import but cannot buy, or is not allowed to buy,” he said, without citing specific countries. “In particular, normal trade in certain hi-tech products has been disrupted and restricted, causing huge losses for all parties concerned.”
+This year’s expo attracted 4,142 companies from around the world and covers more than 440,000 square metres at the National Exhibition and Convention Centre, Vice-Minister of Commerce Yan Dong said at a press conference last month.
+More than 300 Fortune Global 500 companies and industry-leading businesses were taking part, a record for the event, while more than 2,000 companies were making their debuts at this year’s event, Yan said.
+The National Exhibition and Convention Center in Shanghai, the venue for the China International Import Expo, pictured on Wednesday. Photo: Xinhua
+Among exhibitors, companies from the United States, Germany, Britain and France account for the largest exhibition areas. US companies occupy more than 50,000 square metres, retaining the top spot for the eighth consecutive year.
+The Hongqiao International Economic Forum, featuring a main forum and 23 sub-forums, is also part of the CIIE’s schedule of events.
+Ding said the forum would for the first time release a report on countries’ export opportunities in the Chinese market, providing businesses with a reference for assessing global openness and exploring potential trade.
+“China is now both the world’s factory and the world’s market,” he said, pledging that the country would import more high-quality goods and services to “provide impetus and stability for global economic development”.
+By Sylvia Ma
+Sections: Economy | Topics: China trade, China, United States, Trade, China economy, US-China trade war: All stories, US-China relations, US-China trade war, Scott Bessent, China exports, US-China tech war, Shanghai, Ding Xuexiang
+Short link: https://sc.mp/gsx9g
+Read the original article on SCMP
+
+========================================
+【Title】Finland jails Russian cargo ship captain over Baltic Sea cable sabotage
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+The court said the captain and a crew member acted intentionally when the ship dragged an anchor along the seabed for ‌around 130km.
+The Fitburg sits in  the harbour of Kirkkonummi, Finland, on January 1 after it is seized. Photo: Lehtikuva / AP
+A Finnish court on Thursday jailed the Russian captain and an Azerbaijani crew member of the cargo ship Fitburg for aggravated sabotage over damage to two subsea ‌telecommunications cables in the Gulf of Finland last year.
+Finland on December 31 seized the vessel in the Gulf of Finland while it was en route from Russia to Israel, on suspicion that it had damaged cables running from Helsinki to Estonia.
+The Helsinki District Court sentenced the captain to three years and six ⁠months in prison and the crew member to two years and 10 months.
+It ‌said in a statement the two acted intentionally when the ship dragged an anchor chain and anchor shank along the seabed for ‌around 130km (81 miles). The freighter sailed across nine telecommunications and power cables, as well as a gas pipeline.
+The indictment did not allege that the captain had explicitly ordered the anchor to be lowered, but the court found that both defendants must have known it was dragging.
+The Fitburg is docked in the port of Kantvik, Kirkkonummi, Finland, on January 4 after its seizure. Photo: Lehtikuva / Reuters
+Finland has intensified efforts to protect its undersea infrastructure ⁠following a string ⁠of incidents affecting cables and pipelines in the Baltic Sea since 2022, including a vessel-boarding drill it conducted ‌in September.
+The captain will appeal the verdict, while the crew member has not yet decided whether to do ‌so, ‌according to their respective lawyers.
+The court also ordered the two defendants to jointly pay around €1.9 ‌million (US$2.1 million) in damages, and ordered the captain to pay about €85,000 more, the verdict ⁠showed.
+The seized vessel, sailing under Saint Vincent and the Grenadines’ flag, was en route ⁠from the Russian port of St Petersburg to Israel at the time of the incident. The ship has since been released.
+The defendants, who have remained ‌in Finland subject to travel ‌bans, have denied any wrongdoing and have challenged Finland’s jurisdiction in the case.
+The 14 crew members of the vessel were nationals of Russia, Georgia, Kazakhstan and Azerbaijan, investigators have said.
+In a similar case last year, the Helsinki district court ruled that Finnish jurisdiction did not apply in an incident involving three crew members from a Cook Islands-registered tanker, the Eagle S.
+The Helsinki Court of Appeal overturned that ruling and sent the case back to the district court.
+In the case of the Fitburg, the court found it could be heard in the country, noting that it “concerned intentional offences whose consequences had manifested in Finland”.
+Additional reporting by Agence France-Presse
+By Reuters
+Sections: News / World / Europe | Topics: Nordic nations, Finland, Russia, Transport and logistics, Crime, Azerbaijan, Israel
+Short link: https://sc.mp/hyxvi
+Read the original article on SCMP
+
+========================================
+【Title】The US-China tech contest has moved – to the gatekeeping product testers
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+The FCC ban on Chinese testing labs exposes a strategic weakness: Beijing does not control whether its test results are accepted by a major export market.
+Workers produce electronic products for export at a workshop in the Yuexi Economic Development Zone, in China’s Anhui province on September 9. Photo: NurPhoto via Getty Images
+The latest front in the US-China technology contest is not advanced chips, artificial intelligence (AI) or telecommunications equipment. It is the laboratories that certify whether an electronic product may enter the American market.
+On October 29, the US Federal Communications Commission (FCC) voted to stop recognising testing laboratories, telecoms certification bodies and accreditation organisations in China and in other economies that lack a “mutual recognition agreement” or comparable reciprocal arrangement with the United States.
+The restrictions take effect on December 1, 2028. FCC chairman Brendan Carr cited a striking statistic: last year, about 82 per cent of US equipment-authorisation applications were associated with testing firms in China, while fewer than 4 per cent involved testing in the US.
+The figure is politically powerful. It also explains why Washington is acting.
+The strongest American argument is strategic dependence. Testing laboratories are an essential part of the electronics supply chain. Before a radio-frequency device can be marketed in the US, engineers must show it meets requirements concerning emissions, interference, exposure limits and other technical standards.
+If most of this work is concentrated in one country, diplomatic confrontation, regulatory intervention or disruption to cross-border services could affect the approval pipeline for thousands of products.
+US FCC chairman Brendan Carr speaking at a press conference in Washington on July 22. Photo: Reuters
+The second concern is regulatory control. US authorities have investigated cases involving falsified test results, misleading statements about where technical work was performed, and certification bodies whose personnel and operations did not match their declared structure.
+When laboratories, engineers and original records are outside US jurisdiction, investigation and enforcement become harder. Testing institutions also gain early access to unreleased products, engineering data and commercially sensitive information. Washington has reason to ask whether institutions in such a privileged position can be audited, investigated and held accountable.
+The third argument is reciprocity. Chinese laboratories have been able to test products for the US market, while Washington says US laboratories have not received equivalent access in China. The FCC has now made reciprocal treatment a condition of participation in its equipment-authorisation system.
+Industrial policy is the fourth motivation. Testing moved to China for much the same reasons electronics manufacturing did: lower costs, engineering expertise and proximity to factories and component suppliers. By excluding institutions located in China, Washington can redirect some of that business to American laboratories and approved partner economies.
+The policy may help the US rebuild testing expertise and expand capacity. It also gives Washington leverage. Access to the American market can now be used to persuade other governments to accept reciprocal arrangements on US terms.
+[embedded media]
+National security, regulatory integrity, reciprocity and industrial policy are therefore embedded in the same measure. The FCC rule is an attempt to reclaim control over a market-access gateway that Washington believes has become dangerously concentrated abroad.
+However, electronics manufacturers depend on rapid interaction among laboratories, designers, component suppliers and factories. Separating formal testing from production may require prototypes to cross borders repeatedly, technical questions to move between distant teams, and manufacturers to wait longer for retesting.
+Large multinational companies can reserve overseas capacity and absorb the additional expense. Smaller exporters and companies will struggle more. Some may reduce the number of products they offer in the US; others may decide the market is no longer worth entering.
+Washington should not assume that moving testing will lead to manufacturing reshoring. Companies can continue producing electronics in China while sending samples to recognised laboratories elsewhere.
+[embedded media]
+For China, the immediate losses will fall on testing institutions that have invested in equipment, engineers and FCC recognition. Larger groups may establish genuine operations abroad or acquire overseas laboratories. Smaller institutions may be forced to consolidate, withdraw from the US-facing business or close. The deeper damage is that China’s integrated design-manufacture-test-correct cycle may be weakened.
+If final testing, certification coordination and customer relationships move abroad, that feedback loop becomes less efficient. Some high-value engineering, compliance and client-management functions may eventually follow the certification business overseas.
+The strategic weakness exposed by the FCC decision is that China does not control whether its test results are accepted by a major export market.
+[embedded media]
+China can possess the manufacturing ecosystem, engineers and technical capacity, yet still lack the authority to convert those assets into internationally recognised compliance. The contest increasingly concerns who has the power to declare its product fit for sale. China must make its testing industry easier for outsiders to trust.
+Transparent ownership, traceable data, independent audits and credible disciplinary procedures would make it harder to treat every Chinese laboratory as part of a single undifferentiated risk. The most effective answer to allegations of untrustworthiness is evidence that can withstand scrutiny.
+The next phase of the US-China technology contest will not be fought only in factories, chip plants or research centres. It will also be fought at the gate where technical evidence becomes permission to sell. At that gate, credibility is power.
+By Tan Poh Hwee
+Sections: Opinion / China Opinion / World Opinion / News / China / Science / US / Science &amp; Technology / World / United States &amp; Canada | Topics: US-China tech war, Federal Communications Commission (US), China, United States, Technology, China technology, US-China relations, US-China trade war, Regulation, Brendan Carr
+Short link: https://sc.mp/4e34l
+Read the original article on SCMP
+
+========================================
+【Title】China ready to expand US agricultural imports if Board of Trade tariff cuts take effect
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+Soybean purchases are on track to meet this year’s target, an agricultural trader said, but a separate US$17 billion commitment remains largely unfulfilled.
+Beijing said it wants reciprocal tariff cuts in place before expanding agricultural imports from the US. Photo: AFP
+Beijing says it remains open to buying more agricultural products from the United States, but wants reciprocal tariff cuts covering US$30 billion worth of products on each side to be implemented first under the US-China Board of Trade.
+“China has always maintained an open attitude towards expanding agricultural imports from the United States, provided that the agreed-upon reciprocal tariff reduction arrangement – covering $30 billion on each side – is implemented,” Huang Ling, a spokeswoman for the Ministry of Commerce, said on Thursday.
+The comments followed the Democratic Party’s landslide victory in this week’s US midterm elections, which analysts said could complicate trade talks between Beijing and Washington ahead of the Asia-Pacific Economic Cooperation summit later this month by raising questions about the Trump administration’s ability to honour its commitments.
+“Agricultural trade between China and the United States is a vital component of bilateral economic and trade cooperation,” Huang said.
+“We hope the US side will work together with China to foster more favourable conditions for bilateral agricultural trade by jointly lowering tariffs, reducing non-tariff barriers and expanding market access.”
+Following President Xi Jinping’s state visit to the US in September, the two sides announced details on the Board of Trade, including a list of goods covered, but did not immediately implement the reduced tariff rates.
+On Monday, Li Chenggang, China’s international trade representative and an influential figure in trade talks with Washington, met with an American agricultural delegation, the ministry said.
+The two sides discussed economic and trade relations between China and the US, as well as cooperation in agricultural trade, it added.
+According to the White House, China had committed to buying at least 25 million tonnes of US soybeans annually through 2028, alongside an additional US$17 billion per year in American agricultural products, adjusted proportionally for 2026.
+However, only soybean purchases were so far on track, with 70 per cent of this year’s target already met, an agricultural trader said on condition of anonymity.
+“If buying continues at the current pace, the target should be completed before the end of the year,” the trader said, adding that there had been little progress towards the separate US$17 billion annual commitment to buy other American agricultural products.
+“Likely because [China] is also waiting for the implementation of reciprocal tariff reductions,” the trader said.
+Also on Thursday, the commerce ministry announced that it would extend countervailing duties on US n-Propanol imports, a crucial industrial material for packaging, for an additional five years.
+Additional reporting by Alice Li
+By Ji Siqi
+Sections: Economy / Global Economy / News / China Economy / World / US / Economy, Trade &amp; Business | Topics: US-China trade war, US-China trade war: All stories, Donald Trump’s China policy, 2026 Xi-Trump summits, Donald Trump, China trade, United States, China, Li Chenggang, Republican Party, US-China Business Council, Ministry of Commerce (China)
+Short link: https://sc.mp/3ixtv
+Read the original article on SCMP
+
+========================================
+【Title】Facing 2 years as a lame duck, what can Trump do to stay in control?
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+As Congress threatens his agenda at home, Trump may become even more aggressive overseas and reliant on executive orders.
+Facing a divided government, US President Donald Trump is widely expected to double down on unilateral action. Photo: EPA
+Following disastrous midterm elections that cost Republicans congressional control, US President Donald Trump could spend the rest of his term as a “lame duck” and battling constant resistance to his agenda.
+The loss is expected to steer the White House towards a more aggressive foreign policy and even greater reliance on executive orders. Trump has already suggested he could brandish his veto pen for “a month or two” before negotiating agreements with Democratic leaders.
+Here, we explain how executive powers and legislative limits could shape the final two years of Trump’s presidency.
+Can Trump lean on the veto?
+After the “blue tsunami” of the midterms, Trump posted a photo to social media showing his iconic red campaign cap with a single word – “VETO” – emblazoned across the front.
+As president, Trump can reject any bill passed by the incoming Democrat-dominated Congress. Overriding him requires a two-thirds vote in both chambers – a threshold far beyond the Democrats’ reach.
+Facing a divided government, the White House is widely expected to double down on unilateral action.
+[embedded media]
+According to data compiled by The American Presidency Project at the University of California, Santa Barbara, Trump has issued an annual average of 166 executive orders in his second term, more than any president since Franklin D. Roosevelt and far outstripping his recent predecessors.
+Trump’s plan was always to lean heavily on his executive authority while treating Congress as an optional partner, said Lindsay Newman, an associate fellow at Chatham House.
+“Much of his remaining domestic policy priorities – including on artificial intelligence, immigration, deregulation and energy – will be funnelled through the president’s office in his final two years,” Newman said in a note on Wednesday.
+Where can Congress rein in Trump?
+The Democrats’ most potent leverage is fiscal, as Trump cannot bypass lawmakers to secure federal funding or lift the national borrowing limit.
+The scenario mirrors Trump’s first term, when Democrats reclaimed the House in 2018 and effectively suffocated his signature domestic projects, from border-wall appropriations to major federal infrastructure spending.
+Congress’ powers of the purse gave Democrats an exceptionally strong hand, noted Josh Lipsky, a former International Monetary Fund adviser, in a research note.
+The first clash looms almost immediately: existing federal funding runs out on December 11. While the outgoing Congress may pass a continuing resolution, a budget fight appears inevitable in 2027.
+Beyond its fiscal control, Congress could also stall Trump’s momentum by blocking his personnel appointments.
+What are Trump’s remaining levers?
+Trade policy and foreign affairs are two areas where lawmakers will struggle to constrain the president.
+Boxed in at home and unshackled from re-election concerns, Trump was likely to pivot abroad to burnish his presidential legacy, Jorn Fleck, senior director of the Atlantic Council’s Europe Centre, said in a note.
+Fleck said that while Democratic lawmakers would try to reclaim the broad trade and tariff powers that Congress ceded to the executive branch during Trump’s second term, hard limits on his power were unlikely.
+Trump’s overtures to Moscow could also trigger friction between the branches of government, with lawmakers potentially erecting hurdles to any further energy-focused deals on the Ukraine war.
+[embedded media]
+Diplomatic compromise on this issue might face legal and political barriers, warned Landon Derentz, vice-president for energy and infrastructure at the Atlantic Council.
+In a note on Wednesday, Derentz pointed to cross-party resistance on Capitol Hill to easing sanctions on Moscow, compounded by the European Union’s legally binding commitment to phase out Russian gas imports entirely by 2027.
+Will Trump face investigation?
+Representative Robert Garcia, the California Democrat in line to lead the powerful House Committee on Oversight and Government Reform, delivered an ominous two-word warning to Republicans on Tuesday night: “Lawyer up.”
+Garcia had previously mapped out an oversight agenda should Democrats take the gavel, signalling plans to investigate Elon Musk’s role in the Department of Government Efficiency, the Trump family’s business interests, alleged abuses within Immigration and Customs Enforcement and the Jeffrey Epstein scandal.
+Congress could also attempt to impeach the president, but this also has structural limitations.
+During Trump’s first term, two high-profile impeachment proceedings consumed vast political energy only to collapse into Senate acquittals as Democrats lacked – and still lack – the two-thirds supermajority needed to remove Trump from office.
+Sub-impeachment inquiries, however, pose risks to the West Wing’s day-to-day operations. Committees in both chambers have broad subpoena powers to investigate alleged conflicts of interest, executive ethics and actions taken by Trump and his inner circle.
+By Carol Yang
+Sections: News / China / Diplomacy | Topics: US midterm elections 2026, Donald Trump, Robert Garcia
+Short link: https://sc.mp/ge96y
+Read the original article on SCMP
+
+========================================
+【Title】Powered by GPT-6, Unitree humanoid robots master painting, chess without training, says CEO
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+Unitree founder says the industry’s biggest hurdle is no longer digital reasoning or planning but closing a ‘last-millimetre’ mechanical gap.
+Unitree G1 robots perform at the company’s booth at the World Robot Conference in Beijing, August 20, 2026. Photo: Reuters
+Robots developed by Chinese humanoid maker Unitree Robotics can now paint pictures and play chess without any prior training, relying on frontier AI models to navigate complex physical tasks, according to founder and CEO Wang Xingxing.
+Speaking on Thursday at the China International Import Expo (CIIE) in Shanghai, Wang said Unitree’s machines, powered by OpenAI’s GPT-6, were capable of executing intricate robotic sequences, such as dynamically replacing brush water and blending pigments, guided purely by real-time model inference.
+“The precision required to change pigments without error is quite high,” Wang said. “Seeing it perform at this level with zero training was truly stunning.”
+While Unitree displayed video clips of its robots painting during the presentation, it did not conduct a live demonstration on stage.
+Still, the remarks highlight how China’s leading robotics firms are using cutting-edge AI models to accelerate physical automation. They followed comments Wang made last month, when he said that GPT-6 had pulled forward the industry’s breakthrough timeline to “within one or two years”.
+He suggested that next year’s GPT-7 could crack core challenges in embodied artificial intelligence.
+Translating AI commands into precise physical actions remains an uphill battle, however, according to Wang. He warned at the expo that the industry’s biggest hurdle was no longer digital reasoning or planning but closing a “last-millimetre” mechanical gap.
+Wang Xingxing, founder of Unitree Robotics, speaks during the World Physical AI Conference &amp; Unitree Partner Ecosystem Conference on October 22, 2026 in Hangzhou, Zhejiang province. Photo: VCG via Getty Images
+“The fundamental problem right now is the alignment error between the AI model’s inputs and outputs,” Wang said, projecting that the industry would overcome this physical bottleneck within one or two years.
+To speed up that transition, Unitree was developing a “self-evolving” feedback loop to allow humanoid robots to write code, run simulations and autonomously improve their real-world performance, Wang said.
+Wang’s bullish outlook was matched by other industry executives at the expo. Wang Qian, founder of Chinese robotics start-up X Square Robot, said embodied AI was on the verge of a watershed leap, pushing back against forecasts that mass adoption was half a decade away.
+“We believe we are very close to a ‘GPT moment’ for embodied AI – highly likely within a year or so,” the X Square Robot founder said. “We hope to see robots building robots, and chips manufacturing chips … achieving true artificial intelligence in the physical world.”
+Chip suppliers, however, struck a more cautious tone, pointing to constraints below the software layer.
+Wang Dong, co-founder of domestic graphics processing unit designer Moore Threads, warned that embodied AI development continued to lag expectations due to severe data scarcity and crippling hardware costs.
+Collecting real-world interaction data remained difficult, so developers were being forced to rely heavily on synthetic training sets, he said, adding that Moore Threads was making efforts to supply its own chips and solutions to domestic robotics developers as Nvidia chips were extremely expensive.
+By Ann Cao, Sylvia Ma
+Sections: Tech / Tech Trends / News / China Future Tech / Robotics / AI | Topics: Robotics, Unitree Robotics, OpenAI, Moore Threads Technology, Artificial intelligence (AI), Semiconductors, China, Wang Xingxing, Wang Jian, Nvidia
+Short link: https://sc.mp/ocyu1
+Read the original article on SCMP
+
+========================================
+【Title】Vietnam seeks Russia’s help for its nuclear ambition. Will sanctions stall it?
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+The two countries have agreed to let Vietnamese experts gain access to a Russian nuclear reactor under construction.
+An illustration of nuclear energy. Vietnam is seeking Russia’s help to grow its nuclear energy sector. Photo: Shutterstock
+Vietnam’s growing nuclear partnership with Russia could help Hanoi gain the expertise needed to fuel its ambitious nuclear programme amid doubts over Western sanctions against Moscow and financing challenges complicating the plans.
+The Vietnam Atomic Energy Institute (Vinatom) and a subsidiary of Russia’s state nuclear corporation Rosatom, which is leading the development of the MBIR International Research Centre, announced on Tuesday that they had signed a memorandum of understanding to cooperate on nuclear research and explore Vinatom’s potential membership in the centre’s international consortium.
+The centre will be based at a research reactor currently under construction in the city of Dimitrovgrad, Russia, which will allow scientists to study nuclear fuels, materials and reactor safety. The memorandum grants Vietnamese specialists access to the infrastructure of the MBIR’s fast-neutron reactor.
+The signing comes as Vietnam prepares to launch its first nuclear power programme. It passed a resolution in August to split the Ninh Thuan nuclear power project into three independent projects to speed up the programme.
+The Ninh Thuan 1 plant in the southern Khanh Hoa province will be built by Rosatom following an agreement signed in March, and is expected to begin operating between 2030 and 2035.
+Vietnam revived its nuclear power programme in 2024 in response to the vast growth of its manufacturing sector in recent years, particularly in energy-intensive segments such as artificial intelligence, semiconductors and data centres.
+In September, Vietnam’s Ministry of Trade and Industry warned that the country faced risks of power shortages to meet surging demand as planned generation and grid projects struggled to deliver.
+The Khanh Hoa coal-fired power plant in Thai Nguyen, Vietnam. Photo: AP
+“The real value of [Vietnam’s] nuclear power is having a more stable electricity supply as its industrial and hi-tech sectors continue to grow. It could also complement renewable energy and help diversify the country’s electricity mix,” said Tran Thi Mong Tuyen, a fellow at the foreign policy think tank Pacific Forum.
+Ha Hoang Hop, chairman of think tank VietKnow, said Hanoi and Moscow could work on immediate priorities to enhance Vietnam’s nuclear capabilities.
+Referring to the proposed Centre for Nuclear Science and Technology in Dong Nai province, Ha said: “The most feasible priorities are workforce development, operational and safety expertise and the planned nuclear science and technology centre, which can build Vietnamese capability before commercial reactors begin generating electricity.”
+The memorandum would lead to further research in areas such as nuclear materials and radioactive-waste reduction, he added.
+Tran said Vietnam and Russia could look at cooperation opportunities beyond power generation, citing nuclear research through the proposed centre in Dong Nai, healthcare, agriculture and workforce development.
+“Cooperation in medical radioisotopes, cancer treatment and agricultural applications could bring practical benefits without waiting for Ninh Thuan 1 to become operational.”
+A nuclear power plant as seen from the town of Kurchatov in the Kursk region, Russia. Photo: Reuters
+Spectre of sanctions
+Russian think tank Geofor Analytics said in an article published on Monday that the intergovernmental agreement on construction of the Ninh Thuan-1 plant could create a spillover boost for Vietnam’s financial sector.
+The partnership could drive demand for investment financing and risk insurance from contractors and equipment suppliers through the Vietnam International Finance Centre (VIFC).
+The VIFC was launched earlier this year under a dual-hub model, with the Da Nang hub focused on digital technology and innovation and the Ho Chi Minh hub specialising in capital markets, investment banking and other financial areas.
+Sanctions by the US and other Western countries against Russia have raised questions about the nuclear cooperation between Hanoi and Moscow as well as related financing activities.
+The report by Geofor Analytics noted, for instance, that Vietnam-Russia Joint Venture Bank appeared on the US Treasury Department’s sanctions list, which could complicate financing arrangements.
+However, Ha said the US sanctions would affect Russian banks supporting civil nuclear projects that were initiated after 21 November 2024, and whether this would extend to the Ninh Thuan 1 remained to be seen.
+“Sanctions create genuine counterparty-screening and payment obstacles, although they do not amount to a universal prohibition on civilian nuclear cooperation with Russia,” Ha said.
+According to Tran, while Russia’s civilian nuclear sector has not faced sanctions, restrictions on certain Russian banks may lead to restrictions on payments and access to international financial services.
+“I don’t think sanctions necessarily make the [Vietnam-Russia nuclear] project impossible, but they could make implementation more complicated and costly. Much will depend on how the financing and payment arrangements are structured,” she added.
+While the VIFC might be able to facilitate banking and investment flows for the Ninh Thuan 1 project, it could not resolve all the financing challenges that the project could face, Tran said.
+“It cannot replace government-backed financing or remove sanctions-related restrictions,” she added.
+Ha said that as Vietnam “cannot neutralise sanctions”, it should focus on strengthening the VIFC’s fundamentals.
+“Vietnam should therefore prioritise transparent, legally workable financing and enforceable technology-transfer and training commitments, using the centre as supporting infrastructure rather than treating it as a workaround for restrictions,” he added.
+By Sam Beltran
+Sections: This Week in Asia / Politics / News / Asia / Southeast Asia / World / Russia &amp; Central Asia | Topics: Vietnam, United States, Russia, United States Department of the Treasury, Pacific Forum
+Short link: https://sc.mp/3jljp
+Read the original article on SCMP
+
+========================================
+【Title】Malaysia Hindu rites row: live stream of Muslim youth’s repentance fuels fury
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+The public spectacle highlights the tightening boundaries of religious tolerance and state control over personal worship in multiracial Malaysia.
+The Batu Caves temple complex in Selangor, outside Kuala Lumpur, Malaysia. A 21-year-old Muslim man was sentenced to faith rehabilitation after participating in Hindu rituals at the shrine. Photo: Shutterstock
+A young Malaysian Muslim who took part in Hindu rituals to pray for his ailing mother publicly repented on Thursday in a ceremony live-streamed by state religious authorities, a day after a sharia court ordered him to undergo three months of faith rehabilitation.
+The spectacle has raised questions about the enforcement of Islamic orthodoxy in Muslim-majority Malaysia, where state religious departments wield significant influence to police the personal conduct and religious beliefs of Muslims.
+Wearing emerald-green traditional Malay attire, 21-year-old Aliff Daniel Adli read his declaration before senior Islamic officials at the Sultan Salahuddin Abdul Aziz Shah Mosque in Selangor, the state surrounding Kuala Lumpur. The proceedings were broadcast on the official Facebook page of the Selangor Islamic Religious Department.
+“I make this declaration sincerely, full of remorse and without any pressure or coercion,” Aliff said during the broadcast, acknowledging that his actions had caused widespread public unease. “I deeply regret my actions and promise that I will never repeat them. I repent and return to the right path.”
+Aliff Daniel Adli, 21, recites his public declaration of repentance during a ceremony live-streamed on the Selangor Islamic Religious Department’s Facebook page. Photo: Facebook/JAIS
+The controversy erupted in October after photos and videos circulated widely on social media showing Aliff taking part in Thaipusam rituals at the Batu Caves temple in 2024. The online backlash prompted religious authorities to launch an investigation, resulting in the arrest of Aliff and his mother on October 13.
+Thaipusam is a major annual festival observed by Tamil Hindus honouring Lord Murugan, during which devotees perform acts of penance, including bodily piercings and carrying ornate devotional offerings known as kavadi.
+Aliff said he had fasted on water and vegetables for a week before joining the rituals in January 2024. Describing his participation, he said he wore a white dhoti and flower garlands, pierced his cheek and tongue and carried both a kavadi and a milk offering up the temple steps to pray for his mother’s health, family happiness and spiritual purification.
+His mother, Rohizayanti Ramli, wept as she delivered her own public apology for what she described as her failure to guide her son.
+“I acknowledge my negligence and failure in fulfilling my responsibility as a mother,” she said. Aliff’s younger sister also took part in the ceremony, expressing regret for not offering him better advice.
+Their declarations were signed and endorsed by senior Islamic officials, including the Mufti of Selangor, along with two other witnesses.
+Faith on trial
+Islam is Malaysia’s official religion, adhered to by nearly two-thirds of the population. Under the country’s dual legal system, state-level sharia courts hold jurisdiction over Muslims in personal, family and religious matters. While the nation’s sizeable Buddhist, Christian and Hindu minorities freely practise their faiths, ethnic Malays – defined under the federal constitution as Muslim – face strict restrictions on acts deemed contrary to Islamic teachings.
+The Palace of Justice in Putrajaya, home to Malaysia’s apex courts. The country’s dual legal framework grants state-level sharia courts jurisdiction over personal and religious matters involving Muslims. Photo: Shutterstock
+The ceremony followed a ruling on Wednesday by the Gombak Barat Sharia Lower Court, which sentenced Aliff to three months at a religious rehabilitation centre in Hulu Yam after he pleaded guilty to improper worship.
+The charge carries a maximum penalty of two years’ imprisonment, a fine of up to 3,000 ringgit (US$730), or both. Prosecutors sought rehabilitation rather than a custodial prison sentence, state news agency Bernama reported.
+During sentencing, presiding judge Mohd Faizal Habib reminded Aliff that his actions bordered on syirik – the sin of polytheism or associating partners with God. “This repentance is a matter between you and Allah,” the judge said.
+The court scheduled a review hearing for February 25 next year to assess his progress. Aliff told the court that while the images had only recently gone viral, they were taken when he was 18 years old.
+Speaking at Thursday’s broadcast, Selangor Islamic Religious Council chairman Salehuddin Saidin defended the proceedings as part of an effort to restore proper religious understanding.
+“Every individual deserves to be treated respectfully and their dignity preserved,” Salehuddin said, adding that repentance required more than words spoken in public.
+But the decision to broadcast the family’s apology drew sharp criticism from some observers.
+Ahmad Fauzi Abdul Hamid, a political scientist at Universiti Sains Malaysia, questioned both the necessity and intent behind publicising the case.
+“Religiously, what good is there in humiliating a 21-year-old who just happened to deviate?” he said, contrasting the event with the 1994 televised repentance by members of Darul Arqam, a banned Islamic movement with thousands of followers, whose broadcast was pre-recorded rather than aired live.
+“It’s simply a show of power by the religious authorities,” Ahmad Fauzi said. “It serves no theological purpose.”
+By Iman Muttaqin Yusof
+Sections: This Week in Asia / People / News / Asia / Southeast Asia | Topics: Malaysia, Religion, Rafizi Ramli, Universiti Kebangsaan Malaysia
+Short link: https://sc.mp/bx4p9
+Read the original article on SCMP
+
+========================================
+【Title】European flights diverted again after fresh wave of hoax bomb threats
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+More than a dozen flights from cities including Copenhagen, Dublin, Helsinki, Madrid, Milan and Warsaw have been targeted with bomb threats.
+A Ryanair jet is parked at Sofia Airport after bomb threats forced airliners to make unplanned landings across Europe on Thursday. Photo: Reuters
+Multiple flights in Europe made emergency landings on Thursday after being diverted because of bomb threats, authorities said. The incidents followed hoax bomb threats earlier this week that prompted searches, diversions and in one case a military escort.
+More than a dozen flights from cities including Copenhagen, Dublin, Helsinki, Madrid, Milan and Warsaw were confirmed to have been targeted with bomb threats, most diverted to other airports for emergency landings while others landed safely at their destinations. So far inspections have not turned up hazardous or suspicious materials.
+Such threats are not new, but the latest incidents come at a time of increased geopolitical tensions and other disruptions, like attacks on supermarket refrigeration systems, drone incursions in Europe and mysterious triggers to alert apps. Authorities have warned that hybrid threats abound.
+Czech police said searches of another four planes that landed in Prague after being targeted by bomb threats were clear. They have not given details on where the flights originated.
+An Aer Lingus Airbus A320 plane is seen at Evreux military airbase after a flight from Dublin to Rome was diverted to France on Thursday. Photo: AP
+Earlier, a flight from Dublin to Rome was diverted to a military airbase in western France because of a bomb threat, the French prime minister’s office said.
+The flight landed safely at the base in Evreux in Normandy, Prime Minister Sebastien Lecornu’s office said. All 151 passengers and six crew members were safe and military bomb disposal teams were examining the plane, the office said.
+It added that it was following the situation in real time. No other information was immediately released.
+A LOT Polish Airlines flight from Warsaw to Brussels landed at its destination, where inspections found no hazardous or suspicious items, the airline said. A Wizz Air flight from Milan to Bucharest landed safely in Bucharest following a bomb threat, airport spokesman Teo Postelnicu said.
+A Finnair flight from Helsinki to Rome landed safely at Rome’s Leonardo da Vinci airport at around 9.30am, escorted by Italian air force fighter jets, according to an airport official with knowledge of the situation. The official spoke on condition of anonymity because they were not authorised to speak publicly.
+An emailed bomb threat had been received, and security clearance procedures by police bomb disposal experts were completed, with no explosives found, the official said.
+A flight to Warsaw landed in Vienna following a mail to Polish authorities containing an abstract threat, said Stefan Loidl, a police spokesman in Lower Austria province. Nothing was found and the plane continued to Warsaw.
+A police officer and a sniffer dog inspect a Ryanair plane in Murcia after a bomb threat is received during the flight from Manchester on Tuesday. Photo: Reuters
+He said there was also an abstract threat to Vienna Airport concerning four other flights, which he declined to identify, but operations were not disrupted.
+Polish authorities checked a LOT flight that was about to depart from Warsaw to Paris on Thursday morning after a threat was reported at Warsaw’s Chopin Airport, said airport spokesman Piotr Rudzki. No threat was ultimately identified. One runway at Chopin airport was temporarily closed while authorities carried out standard security procedures.
+Three Ryanair flights bound for Sofia, Bulgaria, had to make emergency landings because of bomb threats on board. Two of the flights, one from Copenhagen, Denmark, and the other from Madrid, landed safely at Sofia’s Vasil Levski Airport, airport officials told reporters.
+The third Sofia-bound flight, from London’s Stansted Airport to Sofia, had been diverted and landed safely at the airport in Plovdiv, Bulgaria’s second-largest city, Plovdiv Airport CEO Krassimir Peshev said.
+Several flights across Europe received hoax bomb threats earlier this week that prompted searches, diversions and, in one case, an escort by the Italian air force until landing, officials said.
+The flights included Polish airline LOT, Scandinavian Airlines, Wizz Air and Ryanair. The hoax threats came after a plane headed for Bulgaria was diverted to Hungary after receiving a similar bomb threat while in the air. No one was injured.
+By Associated Press
+Sections: News / World / Europe | Topics: France, Aviation, Italy, Ireland, Belgium, Denmark, Poland, Britain, Paris, Czech Republic, Finland, Bulgaria, Spain, Romania, Austria, Sebastien Lecornu
+Short link: https://sc.mp/cbtzl
+Read the original article on SCMP
+
+========================================
+【Title】China proves a cut above with world-first precision laser experiment in space
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+Researchers use a device mounted on the outside of the Tiangong space station to make millimetre-scale cuts.
+Precision laser cutting involves focusing a beam of light to slice or melt material with extreme accuracy. Photo: Shutterstock
+China’s space scientists have become the first to carry out precision laser cutting in orbit, slicing a piece of “large-scale equipment” with a robotic arm fixed to the outside the Tiangong space station.
+The official Science and Technology Daily reported on Wednesday that millimetre-scale cuts were made by a laser maintenance device operated remotely from “hundreds of kilometres away”.
+Precision laser cutting involves focusing a beam of light to slice or melt material with extreme accuracy, a difficult and risky process in orbit.
+The Tiangong device was developed jointly by Huazhong University of Science and Technology (HUST) and the Shanghai Institute of Space Power-Sources, with the researchers taking just a year to go from initial design to a flight-ready model.
+Professor Huang Yu, who led the HUST research team, told Science and Technology Daily that regular maintenance and high-precision repair were vital to the long-term operation of space stations.
+To translate ground-based laser processing equipment into space, the team overcame several challenges, including operating in the extremes of space, achieving millimetre-level positioning and executing micrometre-level precision cutting, Huang said.
+According to the report, the Tiangong device operates using multi-axis positioning mechanisms and is guided by an advanced vision system.
+“A multilevel vision system guides, identifies and positions the device, automatically completing high-precision laser cutting and waste material recovery,” HUST’s mechanical science and engineering school said in a social media post in September.
+The school said automated repairs could now be completed on the Tiangong, which would help to extend its lifespan and lay the foundations for an in-orbit maintenance system.
+HUST has been identified as a Chinese institution of concern by the United States, with companies and facilities affiliated with the university appearing on the US Bureau of Industry and Security Entity List.
+The cuts were carried out by a laser maintenance device mounted to a robotic arm outside China’s Tiangong space station. Image: HUST/Science and Technology Daily
+Space-based laser technologies have drawn scrutiny over dual-use concerns, particularly their potential to damage, disable or destroy other spacecraft.
+Both Beijing and Washington have pursued directed-energy and laser-weapon research, fuelling fears of an orbital arms race as each seeks to gain a strategic edge in space.
+Researchers are grappling with how long-term orbital and lunar operations can be made more efficient and cost-effective.
+Nasa is working on in-space servicing and manufacturing for Earth orbit and the moon, including laser-beam welding.
+“Laser systems can perform joining, cleaning, cutting and repair activities, which will enable the construction of large in-space structures that could not fit on a single launch vehicle,” according to an abstract by the Marshall Space Flight Centre posted on Nasa’s STI research repository in July.
+The abstract said Nasa was working on a number of space laser welding projects, including a compact vacuum welding chamber – which is planned to launch to the International Space Station – and an autonomous robotic arm to perform welds in a simulated lunar surface environment.
+In a report on space welding published in 2020, Nasa said that welding and additive manufacturing in space could help repair spacecraft more economically without requiring new parts to be shipped from Earth.
+As countries aim to build long-term presences in space and launch more spacecraft into Earth orbit and beyond, concerns have also been raised about the potential weaponisation of spacecraft.
+Last month, a report by the US Defence Intelligence Agency alleged that China could deploy space-based directed-energy weapons by the late 2020s, though it did not present evidence for the forecast or say whether this would be a laser- or high-power microwave-based device.
+By Victoria Bela
+Sections: News / China / Science | Topics: Science, United States, China
+Short link: https://sc.mp/g5ad3
+Read the original article on SCMP
+
