@@ -1226,3 +1226,223 @@ Sections: News / China / Science | Topics: Science, United States, China
 Short link: https://sc.mp/g5ad3
 Read the original article on SCMP
 
+========================================
+【Title】After US$474m gamble flops, what happens now to Elon Musk’s Tesla, SpaceX and China ties?
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+Billionaire may face congressional scrutiny over SpaceX’s government contracts and Tesla’s China links, analysts say.
+Elon Musk stands on the side as Donald Trump speaks to the media at the White House in September. Photo: AFP
+Elon Musk bet nearly half a billion dollars that political spending could keep Washington friendly to his sprawling business empire. On Tuesday, that bet came up short.
+As Democrats recaptured control of the US Congress in the midterm elections, the world’s richest man found himself facing an abruptly altered political landscape.
+After pouring a record-breaking US$474 million into political groups – overwhelmingly backing Republicans – Musk now faces a divided Washington keen to examine his sprawling web of domestic government contracts and deep commercial links to China.
+The political shift threatens to complicate operations across Musk’s corporate universe just as his enterprises, from Tesla and SpaceX to xAI, have become deeply intertwined with both Washington and Beijing.
+Markets reacted swiftly on Wednesday morning. SpaceX shares fell 4 per cent and Tesla tumbled 5 per cent shortly after the opening bell.
+Musk attempted to laugh off the setback on social media, writing: “Guess my election-interfering space lasers didn’t work this time.”
+He said in another post: “Data centres in space looking pretty appealing right now.”
+Behind the bravado, billions of dollars are on the line. Under US President Donald Trump’s second administration, Musk’s ventures flourished on the back of major federal contracts and swift regulatory approvals.
+Since stepping down from his controversial post heading the Department of Government Efficiency (Doge) in May 2025, his companies had secured at least US$10 billion in new federal deals, according to an October report by the Democracy Defenders Fund, a non-profit watchdog.
+Nowhere is the scrutiny expected to bite harder than at SpaceX, whose role as a major defence contractor makes it a particularly obvious target for congressional oversight.
+Democrats have already said they want to examine Musk’s government contracts and potential conflicts of interest involving SpaceX and Tesla, so expect Shanghai to be framed as a security question rather than a cost advantageChristopher Tang, University of California, Los Angeles
+In May alone, SpaceX won two US Space Force contracts worth a combined US$6.45 billion, including a US$4.16 billion agreement to develop satellites capable of tracking airborne threats. Meanwhile, his AI venture, xAI, landed a nearly US$200 million Department of Defence contract in July 2025.
+“The new Democrat-controlled Congress will likely diminish Musk’s influence in Washington to some extent, although he still seems to have Trump’s ear,” said Kyle Chan, a fellow at the Brookings Institution.
+Chan noted that lawmakers could investigate SpaceX’s military deals as well as Musk’s conduct during his tenure at Doge, including allegations concerning the misuse of government data.
+The Shanghai question
+A key flashpoint on Capitol Hill is the intersection of Musk’s defence portfolio and Tesla’s extensive reliance on China.
+Tesla’s Shanghai Gigafactory accounted for more than half of the company’s global vehicle deliveries last year, while production elsewhere depends on a network of Chinese suppliers.
+The company also produces energy-storage batteries in Shanghai and has been in talks to buy nearly US$3 billion of Chinese solar manufacturing equipment to support its US expansion.
+Musk’s recent hints at merging Tesla and SpaceX – announcing in October that the firms had formed special committees to explore a merger – could hand lawmakers an immediate opening.
+“Democrats have already said they want to examine Musk’s government contracts and potential conflicts of interest involving SpaceX and Tesla, so expect Shanghai to be framed as a security question rather than a cost advantage,” said Christopher Tang, a professor specialising in global supply chains at the Anderson School of Management at the University of California, Los Angeles.
+Any merger review is expected to examine whether sensitive aerospace and defence technology could remain effectively insulated from Tesla’s Chinese supply chain.
+“Washington controls contracts and clearances, while Beijing controls inputs, cost and speed,” Tang said. “The election tightened the Washington side of that vice without loosening the Beijing side.”
+[embedded media]
+Trouble on the home turf
+Musk’s electoral setback was felt just as keenly in Texas, the de facto operational nerve centre of his empire.
+He funnelled US$224 million into Texas races – nearly half of his overall midterm war chest – according to a CNBC analysis of campaign finance records. That did not stop Democrat Gina Hinojosa from ousting Republican incumbent Greg Abbott in the gubernatorial contest.
+“The backlash over data centres has spread across the country, and some candidates made it a big part of their campaigns,” said Daniel Kollar, deputy managing director for Greater China at consultancy Intralink.
+Hinojosa campaigned on freezing approvals for new data centres until environmental and energy safeguards were established, tapping into grassroots frustration over surging electricity bills and water usage.
+While such restrictions would not halt existing operations at Tesla’s Austin Gigafactory, SpaceX’s Starbase in Boca Chica, or a planned joint semiconductor facility, they could complicate Musk’s ambitions to build out AI infrastructure in the region.
+Ahead of its initial public offering in June, SpaceX pitched AI computing as a cornerstone of its future growth, citing an estimated US$28.5 trillion addressable market.
+Congress can make Shanghai politically more expensive. It cannot make it less productiveChristopher Tang, University of California, Los Angeles
+Resilience in China
+Despite the political headwinds, analysts said Tesla’s Chinese production was unlikely to buckle under US congressional pressure.
+Beyond vehicle assembly, Chinese suppliers play a critical role in Musk’s long-term robotics vision.
+Tesla engineers audited Chinese component makers including Zhejiang Sanhua Intelligent Controls, Ningbo Joyson Electronic and Tuopu Group ahead of planned mass production of its Optimus humanoid robot, the South China Morning Post reported in September.
+“Congress can make Shanghai politically more expensive. It cannot make it less productive,” Tang said.
+“Given how many US companies still do business in China and rely heavily on Chinese suppliers, I think Congress would have a hard time explaining why it was singling out Tesla,” Kollar said.
+Bai Wenxi, chief economist at China Enterprise Capital Union, expressed a similar view. “Tesla’s China operations won’t grind to a halt just because Musk faces investigations,” Bai said.
+Sidelined in diplomacy
+Where Musk may lose influence, however, was in his role as an informal intermediary between Beijing and Washington, analysts said.
+Over the past year, some observers viewed Musk as a potential backchannel between the two governments. He joined Trump’s delegation to Beijing in May and secured a seat at the head table during the White House state dinner for President Xi Jinping in September.
+That role had become increasingly irrelevant following the US-China trade truce reached in South Korea last year, according to Brookings Institution’s Chan.
+“At the start of Trump’s second term, many wondered whether Elon Musk would play a moderating role in the White House’s approach to China,” Chan said. “After the Busan agreement, there seems to be less of a role for someone like Musk to play in US-China relations.”
+Bai said Musk’s value as a diplomatic conduit had diminished.
+“Musk himself has gone from being a ‘strategic bridge’ to just one of the American businessmen Beijing can engage with,” he said.
+Ultimately, however, Trump remains in the Oval Office for the next two years, holding executive veto power and agency leadership that could shield Musk from major regulatory challenges. But the days of unfettered access may be over.
+“My guess is Musk will keep a lower political profile for a while to draw less attention to his businesses,” Kollar said. “There will likely be increased congressional scrutiny, but without executive action, I’d be surprised if he changed his merger plans or how Tesla operates in China.”
+By Chong Ming Lee, Mia Nurmamat
+Sections: Tech / Big Tech / Policy / Tech Trends / Tech War / Business / China Business / Companies / News / China Future Tech / AI / Aerospace / EVs | Topics: Elon Musk, China, Tesla, SpaceX, Electric &amp; new energy vehicles, US-China relations, EVs: Companies, Artificial intelligence (AI), EVs: Industry Trends, Space, xAI, Shanghai, United States, Donald Trump, Brookings Institution
+Short link: https://sc.mp/23vd1
+Read the original article on SCMP
+
+========================================
+【Title】No Intel, no Qualcomm: Huawei unveils desktop built entirely with China-made components
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+Tech giant expands HarmonyOS beyond laptops and tablets as it accelerates efforts to replace US technology.
+Huawei has launched the Qinyun HM650 series desktop computers for enterprise and government users. Photo: handout
+Huawei Technologies has launched its first desktop computer powered by its proprietary operating system, HarmonyOS, touting the device as “100 per cent domestically made” in its latest push for technological self-reliance.
+The Shenzhen-based company on Thursday unveiled its Qinyun HM650 series desktop computers for enterprise and government users, powered by the self-developed Kirin X90 processor, which debuted in Huawei’s consumer laptops and tablets last year.
+The tech giant said the new desktop line-up used entirely China-made components, from the processor to memory modules, making it the country’s first desktop computer to receive certification as “100 per cent domestic”, according to its website. The exact scope of the certification is unclear.
+Zhu Dongdong, an executive at Huawei’s tablet and personal computer (PC) unit, said the company achieved a fully domestic component rate by combining in-house development of core technologies, joint development for key parts and large-scale production of general-purpose hardware.
+Speaking at a launch event in Wuhan on Thursday, Zhu said the achievement reflected collaboration across China’s broader computer supply chain, according to a report by Chinese tech outlet ITHome. Huawei did not immediately respond to a request for comment.
+The Qinyun HM650 series runs on HarmonyOS V1.0, an enterprise version of Huawei’s self-developed operating system for computers. It marked the first time Huawei deployed the system on its desktop products, according to the company.
+The launch underscores Huawei’s efforts to seek greater tech self-reliance under US sanctions that have restricted its access to advanced foreign technology. HarmonyOS, originally developed as an alternative to Google’s Android platform, has steadily expanded beyond smartphones into the PC market.
+Huawei had sold over 1 million HarmonyOS PCs as of October, according to Zhu, who said the figure was expected to reach 1.2 million by the end of this year.
+The company has also accelerated efforts to replace American technology in its PC business after Washington revoked special licences in 2024 that had allowed chip suppliers Qualcomm and Intel to sell older-generation semiconductors for Huawei’s laptops and smartphones.
+Its Kirin X90 chip – a central processing unit developed by Huawei’s chip-design arm HiSilicon – received a Level 2 national certification for security and reliability last year, paving the way for wider adoption among government agencies and enterprise customers.
+Before Washington tightened restrictions, most Huawei consumer laptops relied on Intel’s Core processors, while some used Qualcomm’s Snapdragon chips.
+By Iris Deng
+Sections: Tech / Tech Trends / Tech War / Business / China Business / Companies | Topics: Huawei Technologies, China technology, US-China tech war, China, Technology, China manufacturing, US sanctions on China, United States, Intel, Qualcomm
+Short link: https://sc.mp/fwp8u
+Read the original article on SCMP
+
+========================================
+【Title】US labour market holds firm as weekly lay-offs tumble to 57-year low
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+Hiring plans are the highest for any October since 2009, and likely mostly seasonal jobs heading into the holidays.
+A man walks past a Help Wanted sign in New York’s Queens borough on June 04, 2021. Photo: AFP
+The number of Americans filing new claims for unemployment slipped to a 57-year last week as lay-offs remained low against the backdrop of a resilient labour market.
+Initial claims for state unemployment benefits fell 6,000 to a seasonally adjusted 189,000 for the week ended October 31, the Labour Department ‌said on Thursday. Economists had forecast 196,000 claims for the latest week.
+Claims matched the 189,000 level touched in mid-July, which was the lowest reading since 1969. They have stayed mostly below 200,000 since mid-September.
+Low lay-offs, thanks to strong domestic demand and profit growth, are anchoring the labour market, with hiring still constrained by uncertainty over the dragging US-Israeli war with Iran.
+The government reported this week that there were 1.06 open jobs for every unemployed person in September, ⁠up from 1.02 in August, which some economists argued was a sign of the labour market starting to tighten. Others, however, viewed ‌the low level of jobless claims as a function of a smaller labour force amid an immigration crackdown, rather than fewer job cuts.
+A man enters an employment agency in Los Angeles, California, on August 2, 2024. Photo: EPA-EFE
+A separate report from global outplacement firm Challenger, Gray and Christmas on ‌Thursday showed US-based employers announced 43,994 job cuts in October, up 2 per cent from September. Planned lay-offs dropped 71 per cent ⁠compared to October 2025.
+Despite the rise over the month, lay-offs were the lowest for any October since 2023. Employers announced plans to hire 444,692 workers last month, a 57 per cent jump from October 2025. Hiring plans were the highest for any October since 2009, and likely mostly seasonal jobs.
+“Employers are holding on to the workers they have heading into the holidays, ‌and the ‌hiring they are announcing is largely short-term, seasonal work,” said Andy Challenger, chief revenue officer at Challenger, Gray and Christmas. “Companies want the flexibility ‌to meet holiday demand without adding permanent headcount.”
+The reluctance to increase permanent hiring means some unemployed people are experiencing long periods of ⁠joblessness.
+The claims report showed the number of people receiving unemployment benefits after an initial week of aid, a proxy for hiring, increased ⁠23,000 to a still-low seasonally adjusted 1.718 million during the week ended October 24. The so-called continuing claims, however, do not include some unemployed people, including recent college graduates and others who have little or no work history.
+Some ‌people might also have exhausted their ‌eligibility for benefits, limited to 26 weeks in most states, keeping continuing claims at relatively low levels.
+The claims report has no bearing on the government’s closely watched employment report for October due on Friday as it falls outside the survey period. Nonfarm payrolls likely increased by 65,000 jobs last month after rising 29,000 in September, a survey of economists showed. The unemployment rate is forecast unchanged at 4.2.
+By Reuters
+Sections: News / World / United States &amp; Canada | Topics: United States, Jobs, US Bureau of Labour Statistics
+Short link: https://sc.mp/7v1eu
+Read the original article on SCMP
+
+========================================
+【Title】Why the next US House speaker won’t follow Nancy Pelosi’s Taiwan playbook
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+‘Moderate’ Democratic congressman Hakeem Jeffries is unlikely to pursue high-profile engagement with Taipei, analysts say.
+Hakeem Jeffries, the US House’s top-ranking Democrat, announced his bid for the speakership on Wednesday after Democrats won a majority of seats in the midterm elections. Photo: Getty Images via AFP
+The Democrat expected to become US House speaker has met Taiwan’s former leader and backed legislation supporting the island yet is unlikely to follow Nancy Pelosi’s example in pursuing high-profile engagement with Taipei, analysts said.
+Hakeem Jeffries, the House’s top-ranking Democrat, announced his bid for the speakership on Wednesday after Democrats won a majority of seats in the US midterm elections. He is poised to officially become House speaker following a floor vote on the first day of the new Congress in January.
+In March 2023, Jeffries met then-Taiwanese leader Tsai Ing-wen in New York during her transit through the United States. He described their discussion at the time as “very productive”, covering mutual security and economic interests, alongside a shared commitment to democracy and freedom.
+He also voted in favour of the Protect Taiwan Act, which passed the House in February and seeks to restrict Beijing’s participation in certain international financial institutions in response to potential threats to Taiwan.
+[embedded media]
+But analysts said Jeffries’ record did not necessarily suggest he would emulate Pelosi, the last Democratic speaker of the House, whose visit to Taiwan in August 2022 prompted large-scale People’s Liberation Army military exercises around the island and further strained China-US relations.
+Jeffries was elected to succeed Pelosi after she stepped down from leadership following the Democratic Party’s loss of the House in November 2022.
+Beijing sees Taiwan as part of China to be reunited by force if necessary.
+Most countries, including the US, do not recognise Taiwan as an independent state, but Washington is opposed to any attempt to take the self-ruled island by force and is committed to supplying it with weapons.
+Xin Qiang, a professor and deputy director of Fudan University’s Centre for American Studies, called Pelosi’s high-profile trip to Taiwan “an exception rather than a precedent that future House leaders would necessarily follow”.
+The visit drew criticism within the US political establishment for risking escalation with Beijing and potentially triggering armed conflict, Xin said, adding that American politicians were subsequently likely to “show greater caution and restraint regarding Taiwan visits”.
+Xin said that a speaker’s individual stance could affect how congressional support for Taiwan was expressed.
+“Support for Taiwan is essentially a bipartisan consensus in Congress,” he said. “But individual factors always play a role. A more cautious and restrained speaker could have a positive influence. By contrast, an extreme and impulsive speaker could seriously damage US-China relations, as Pelosi did.”
+US congressional backing for Taipei was deeply institutionalised and unlikely to fundamentally shift, Xin said, adding that with Jeffries managing the legislative agenda and maintaining conventional measures supporting Taiwan, he might hesitate to advance provocative proposals.
+Then-US House speaker Nancy Pelosi (left) speaks during a meeting with then-Taiwanese leader Tsai Ing-wen in Taipei on August 3, 2022. Photo: AP
+According to an international relations expert who declined to be named, citing the sensitivity of the matter, Jeffries’ legislative record and public remarks showed that he was a “relatively rational and moderate politician” with less personal attachment to Taiwan and less ideological hostility towards Beijing than Pelosi, making an official visit to the island highly unlikely.
+Ja Ian Chong, an associate professor of political science at the National University of Singapore, said Pelosi’s visit was shaped by political conditions at that moment alongside personal preference.
+Beijing’s attempts to lobby the Joe Biden administration against her trip inflamed domestic sensitivities over the separation of powers, prompting Congress to signal independence from the executive branch, Chong said.
+“There does not seem to be anything on the cards about a Jeffries visit to Taiwan at this point in time,” he added.
+Still, a high-profile visit could materialise if lawmakers sought to send an assertive signal to Beijing, the White House or regional partners, Chong said.
+He expected broad policy continuity, calling defence support for Taiwan one of Washington’s few durable bipartisan consensus issues.
+Drew Thompson, a senior fellow at Nanyang Technological University’s S. Rajaratnam School of International Studies, agreed, saying there was strong bipartisan support for Taiwan in Congress.
+Thompson argued that a Democratic-controlled Congress would be more supportive of Taiwan and more critical of the Donald Trump administration’s reluctance to call out Beijing on issues ranging from human rights to tech export controls.
+Referring to long-stalled arms sales to the island, he said: “I anticipate Congress will encourage the administration to notify it of the intent to sell the US$14 billion in items that have already processed.”
+By Cao Jiaxuan
+Sections: News / China / Diplomacy | Topics: US-China relations, Taiwan, United States, China, Singapore, Tsai Ing-wen, Xin Qiang, Nancy Pelosi, Fudan University, National University of Singapore (NUS), Nanyang Technological University, S. Rajaratnam School of International Studies, Nancy Pelosi’s visit to Taiwan, Diplomacy, Donald Trump’s China policy, Defence, US Politics, US midterm elections 2026, US Congress, US House of Representatives, Democratic Party (US)
+Short link: https://sc.mp/hw6wo
+Read the original article on SCMP
+
+========================================
+【Title】Indonesian wiretapping scandal exposes widening Prabowo-Jokowi rift
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+Lawmakers are considering a parliamentary inquiry into Jokowi’s son Gibran’s eligibility to serve as vice-president.
+Indonesian President Prabowo Subianto, (centre) walks with, Vice-President Gibran Rakabuming Raka (left) and  then national police chief Listyo Sigit Prabowo (right) upon arrival from an overseas trip at Halim Perdanakusuma Airbase in Jakarta, on July 16, 2025. Photo: AP
+An Indonesian police inquiry into the wiretapping of President Prabowo Subianto’s phone was a matter for law enforcement, the country’s police chief said on Thursday, as the scandal exposed the deepening cracks between Prabowo and his former backer and predecessor, Joko Widodo.
+“We assure you that this is ‌purely law enforcement and has nothing to do with rivalries or anything else,” police chief Suyudi Ario Seto told reporters without elaborating, adding that the arrests must serve as a lesson for the police.
+Prabowo took office in 2024 after winning the election in a landslide as the continuity candidate for Widodo, known also as Jokowi, whose son Gibran Rakabuming Raka was also elected as Prabowo’s vice-president.
+After details of the wiretapping scandal emerged, several lawmakers said on Thursday they were considering launching a parliamentary inquiry into Gibran’s eligibility to serve after questions were raised about his election ⁠credentials – a move analysts saw as the first step to potentially remove him from office.
+The wiretapping involved a Jokowi loyalist, and Prabowo’s office said intercepting ‌the president’s communications could amount to treason.
+Indonesia’s National Police Chief Suyudi Ario Seto (left) shakes hands with then presidential chief of staff Listyo Sigit Prabowo at their inauguration in Jakarta on October 1. Photo: Reuters
+Three senior police officers were arrested on Tuesday, including former national police chief and Prabowo’s chief of staff, Listyo Sigit Prabowo, for allegedly tapping the phones of Prabowo as well as other politicians, journalists, civil society organisations, ‌government officials and businesspeople since 2025.
+Prabowo sacked Listyo, widely known as a Widodo loyalist, the next day.
+The scandal has piled more ⁠pressure on the president, with public ⁠discontent growing over his costly populist policies and weakening investor confidence in Indonesia’s US$1.5 trillion economy.
+Neither the government nor police investigators have yet disclosed the motives behind the wiretapping. Jokowi told reporters on Thursday that ‌he respected the legal process.
+Political parties have started discussions to invoke parliament’s right to hold an inquiry into the vice-president following the wiretapping case, according to Hasto Kristiyanto, a senior official with ‌the Indonesian ‌Democratic Party of Struggle, the biggest party in parliament and the only one outside Prabowo’s coalition.
+[embedded media]
+They are following up on rulings by the Constitutional ‌Court and the Supreme Court that Gibran’s foreign senior high school credentials did not meet domestic legal requirements for vice-presidential candidates, and had been improperly accepted by election ⁠officials in 2024.
+“There’s increasingly intensive dialogue in the parliament to invoke their constitutional rights, especially after the wiretapping,” Hasto said.
+Three other parties in parliament – all within ⁠Prabowo’s coalition – were also considering an inquiry into the matter, party officials said. Under the constitution, lawmakers can launch an investigation into allegations of legal or constitutional violations by the government.
+“We are currently reviewing these options and also communicating with other political parties,” said Muhammad Kholid, a senior official ‌of the Prosperous Justice Party.
+The vice-president’s office ‌did not respond to a request for comment. Prabowo’s coalition controls 81 per cent of parliament. Neither Jokowi nor Gibran belongs to a party represented in parliament.
+Burhanuddin Muhtadi, a senior visiting fellow at Singapore’s Yusof Ishak Institute, said the inquiry process would likely lead to Gibran’s impeachment.
+“It’s ultimately leading to Gibran’s impeachment and some think they no longer need to do an investigation because there are already rulings from two courts,” he said, adding it looked increasingly unlikely that Jokowi and Prabowo would mend their relationship.
+By Reuters
+Sections: News / Asia / Southeast Asia | Topics: Indonesia, Prabowo Subianto, Joko Widodo, Gibran Rakabuming Raka, Indonesian Democratic Party of Struggle, Crime, Law, Singapore, ISEAS-Yusok Ishak Institute
+Short link: https://sc.mp/noii5
+Read the original article on SCMP
+
+========================================
+【Title】Lithuania builds world’s biggest ultra-fast laser factory amid China tensions
+【时间】Thu, 05 Nov 2026
+----------------------------------------
+【中文正文】
+Ties between Beijing and Vilnius remain strained over Taiwan, but Litilit CEO says supply chain realities can override political posturing.
+Litilit’s new factory in Vilnius, Lithuania will be able to produce 3,000 femtosecond lasers per year. Photo: Litilit
+Amid tensions with China, a small European country is anchoring itself at the centre of the global semiconductor and artificial intelligence (AI) hardware supply chain as a laser powerhouse.
+The latest sign of Lithuania’s growing footprint in the sector came last month, when laser maker Litilit launched a new factory in the capital, Vilnius. The company’s expansion unfolds as the Baltic nation of fewer than 3 million people navigates fraught ties with Beijing, which has targeted Lithuania with a slew of informal trade restrictions over its Taiwan stance.
+In 2021, Lithuania emerged as a symbol of Taiwan’s expanding diplomatic ties in Europe by allowing the opening of a Taiwanese representative office in Vilnius, breaking the long-standing convention of using “Taipei” in the names of such offices.
+Beijing responded sharply to the move, downgrading its diplomatic ties with Lithuania and imposing trade measures, including banning certain food and alcohol products from the country and blocking many Lithuanian exporters from the Chinese market.
+Lithuania’s new government, which took office earlier this year, has pledged to normalise ties with Beijing, but frictions persist.
+In June, Beijing said it hoped Lithuania would “take early and decisive action to correct its mistakes, return to the right track of adhering to the one-China principle and create conditions for the normalisation of China-Lithuania relations”.
+One month later, the Chinese commerce ministry put Lithuanian laser manufacturer Ekspla on its European dual-use exports control list, alongside 13 other European Union entities.
+Despite this setback, the Lithuanian laser industry continues to thrive. The new Litilit facility will be able to produce 3,000 femtosecond lasers per year at full capacity.
+These advanced lasers can emit pulses of light so short that they can process materials, including glass, with high precision and minimal heat damage to surrounding structures. This ability has become crucial for chipmakers as they explore glass as a substrate for the next generation of AI infrastructure.
+According to Litilit, the new factory boasts the world’s largest potential production capacity for this class of advanced laser. By comparison, global output stood at an estimated 9,600 units last year.
+Litilit plans to produce an initial 1,000 units in its first year before scaling to full capacity, exporting most of its output to Europe, North America and Asia, according to the company.
+Nikolajus Gavrilinas, Litilit’s co-founder and CEO, said the commercial reality of the supply chain often overrode political posturing.
+“We are absolutely in line with Lithuanian official policies about US, Chinese, European and [other] political alignments,” Gavrilinas said.
+“We are looking for strong partnerships with all three [regions]: Europe, the US and Asia. Together with our partners, we are ready to expand our capacity to tens of thousands of lasers per year.”
+He said that while he had observed some tensions between European countries and China, if one side needed a technology and another needed a different technology, and they were part of each other’s global supply chain, they would not be easily stopped from doing business.
+“Until it becomes a real resistance for each other, everything is very smooth,” he said.
+Litilit CEO Nikolajus Gavrilinas says femtosecond technology is expected to be the industry standard for the next two decades. Photo: Litilit
+While public discussion of AI often focuses on software and algorithms, Gavrilinas said the growth of AI data centres was driving demand for the advanced manufacturing tools – including femtosecond lasers – needed to build their hardware.
+As AI models require more processing power, data centres are changing how their chips are assembled. One emerging approach, known as advanced packaging, stacks multiple chips on a single board.
+A glass interposer is a thin piece of glass connecting chiplets and memory to the package substrate. The thermal expansion properties of glass can be tuned to closely match that of silicon, making it a promising material for advanced semiconductor packaging.
+However, light from conventional lasers passes through transparent materials, making processing difficult. Femtosecond lasers overcome this by focusing energy directly within the glass to form precise pathways and internal structures.
+Gavrilinas noted that femtosecond lasers could be used to carve electrical paths inside glass in a method similar to 3D printing, adding that this application “opens a lot of possibilities”. He said this process could also be used on other transparent materials, such as polycrystalline diamond, an ultra-hard material for cutting tools and metalworking dies.
+“Imagine … glass coming back to the main domain of everything, like as a base plate for electronics, chips and so on. This is a fabulous transformation,” he said.
+“Our goal is to move the femtosecond laser from niche applications to the commodity market,” Gavrilinas said, comparing its present growth phase to earlier lasers that moved from labs to everyday tasks such as engraving names on cups.
+While legacy laser manufacturers rely heavily on manual assembly, typically producing around one laser per worker each year on average, the Litilit facility has achieved around 85 per cent automation with a workforce of around 100 to 200 people.
+“When we have this level of automation … we can scale it up in any country, in any region,” Gavrilinas said, adding that this helped limit the effects of “turbulence” in labour costs or politics.
+The company is evaluating further expansion with potential production hubs in Singapore, Japan, the United States and Europe to meet surging demand, according to Gavrilinas.
+When asked about the potential for even faster attosecond lasers, Gavrilinas said femtosecond technology would be the industry standard for the next 20 years.
+“For the next two decades, we believe that it will be femtosecond. Maybe later [when] we broaden our experience and everything around it, it may be attosecond,” he said.
+The Baltic nation’s laser industry traces back to 1962, when Lithuania was still part of the Soviet Union and three students were sent to Moscow to study laser physics and quantum electronics. By 1966, the country’s first laser was fired at Vilnius University.
+Today, Lithuania has more than 60 laser and photonics companies and over 2,000 specialists across its research centres, and the country exports more than 90 per cent of its laser output, according to Vilnius University.
+Undeterred by the threat of blacklists, the Lithuanian laser sector has sought to work with experts from Taiwan, a global semiconductor powerhouse.
+According to the Research Council of Lithuania, which provides research and development funding, 60 researchers from Lithuania and Taiwan explored new partnership opportunities and exchanged knowledge last month at a three-day laser technology workshop in the European nation.
+The event was organised as part of a 2023 agreement between the research council and Taiwan’s National Science and Technology Council to fund joint research projects in biotechnology, laser and materials science, engineering and computer information technology.
+By Holly Chik
+Sections: News / China / Science | Topics: Science, China, United States, Singapore, Lithuania, Japan, Taiwan
+Short link: https://sc.mp/y5xv7
+Read the original article on SCMP
+
