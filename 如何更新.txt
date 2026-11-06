@@ -1,3 +1,8 @@
+更好用这个
+git add .
+git commit -m "说明你这次更新了什么内容 scmp"
+git push
+
 
 2. 本地删除和更新了文件
 git add -A
@@ -5,10 +10,7 @@ git commit -m "sync"
 git push
 
 
-更好用这个
-git add .
-git commit -m "说明你这次更新了什么内容 scmp"
-git push
+
 
 
 从github拉回更新的文件到本地

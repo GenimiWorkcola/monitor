@@ -6,7 +6,7 @@ import feedparser
 from google import genai
 from ebooklib import epub
 
-# 確保工作目錄切換到 scmp 文件夹
+# 確保工作目錄切換到 scmp 檔案夾
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # 初始化 Gemini 客戶端（自動讀取 GitHub Secrets 裡的 GEMINI_API_KEY）
@@ -26,18 +26,29 @@ RSS_URLS = list(set([
     "https://feed.quanwenrss.com/feed/scmp-tech.xml"
 ]))
 
-# 包含關鍵字（包含中國、美國或法國）
+# 1. 基础国家/大政方针包含关键词
 INCLUDE_KEYWORDS = [
     'china', 'chinese', 'beijing',
     'us', 'usa', 'united states', 'america', 'american', 'washington',
     'france', 'french', 'paris'
 ]
 
-# 排除關鍵字（排除香港本地、娛樂、體育相關）
+# 2. 专门针对“中国香港 / 内地与香港关系”的特许包含词（优先保留）
+HK_CHINA_KEYWORDS = [
+    'china hong kong', 'hong kong china', 'mainland-hong kong', 
+    'hong kong-mainland', 'greater bay area', 'central government',
+    'national security law', 'article 23', 'one country, two systems'
+]
+
+# 3. 娱乐、体育与纯本地民生/社区的排除关键词（不含通用 hong kong）
 EXCLUDE_KEYWORDS = [
-    'hong kong', 'hk', 'local',
+    # 娱乐、流行文化
     'entertainment', 'celebrity', 'movie', 'film', 'music', 'pop', 'fashion', 'lifestyle',
-    'sport', 'sports', 'football', 'soccer', 'basketball', 'tennis', 'olympics', 'marathon'
+    # 体育
+    'sport', 'sports', 'football', 'soccer', 'basketball', 'tennis', 'olympics', 'marathon',
+    # 纯本地民生/交通/社区事件（过滤无宏观意义的本地新闻）
+    'district council', 'subsidised housing', 'public housing', 'traffic accident',
+    'traffic collision', 'burglary', 'scam victim', 'minor injury'
 ]
 
 def clean_html(raw_html):
@@ -51,14 +62,29 @@ def clean_html(raw_html):
     return '\n'.join(lines)
 
 def is_relevant_article(title, content):
-    """篩選邏輯：必須包含目標國家關鍵字，且不能包含排除關鍵字"""
+    """
+    智能篩選邏輯：
+    1. 含有娛樂、體育、本地微觀治安/民生詞 -> 排除
+    2. 包含“中國香港/大灣區/兩岸/中央”專屬聯動詞 -> 優先保留
+    3. 包含目標國家（中國、美國、法國）關鍵字 -> 保留
+    """
     combined_text = f"{title} {content}".lower()
+    
+    # 优先检测：是否包含硬性排除词（娱乐、体育、微观社区治安）
     for ex_kw in EXCLUDE_KEYWORDS:
         if re.search(r'\b' + re.escape(ex_kw) + r'\b', combined_text):
             return False
+
+    # 特许检测：是否涉及中国香港关系/大湾区/国家安全等重磅议题
+    for hk_cn_kw in HK_CHINA_KEYWORDS:
+        if re.search(r'\b' + re.escape(hk_cn_kw) + r'\b', combined_text):
+            return True
+
+    # 常规检测：是否包含中美法等目标国家词汇
     for inc_kw in INCLUDE_KEYWORDS:
         if re.search(r'\b' + re.escape(inc_kw) + r'\b', combined_text):
             return True
+
     return False
 
 def translate_text(text):
@@ -74,17 +100,21 @@ def translate_text(text):
         "直接輸出翻譯後的中文內容，不要加任何多餘的解釋說明或客套話：\n\n" + text
     )
     
-    for attempt in range(3):
-        try:
-            response = client.models.generate_content(
-                model='gemini-2.0-flash',
-                contents=prompt,
-            )
-            if response and response.text:
-                return response.text.strip()
-        except Exception as e:
-            print(f"[警告] Gemini 翻譯出錯 (嘗試 {attempt+1}/3): {e}")
-            time.sleep(2)
+    # 模型的容错机制
+    candidate_models = ['gemini-3.8-flash', 'gemini-2.5-flash', 'gemini-1.5-flash']
+    
+    for model_name in candidate_models:
+        for attempt in range(2):
+            try:
+                response = client.models.generate_content(
+                    model=model_name,
+                    contents=prompt,
+                )
+                if response and response.text:
+                    return response.text.strip()
+            except Exception as e:
+                print(f"[警告] 嘗試模型 {model_name} (第 {attempt+1} 次) 出錯: {e}")
+                time.sleep(2)
             
     return text
 
@@ -101,7 +131,6 @@ def fetch_and_process():
     
     print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 開始深度抓取 RSS 全文並使用 Gemini 翻譯...")
     for url in RSS_URLS:
-        # 提取簡化的 XML 檔名作為來源標識（例如 scmp-news.xml）
         source_name = url.split('/')[-1]
         try:
             feed = feedparser.parse(url)
@@ -137,7 +166,7 @@ def fetch_and_process():
                         "title_en": title,
                         "summary_zh": summary_zh,
                         "pub_date": pub_date_clean,
-                        "source_xml": source_name  # 記錄所屬 XML 來源
+                        "source_xml": source_name
                     }
                     new_articles.append(article_item)
         except Exception as e:
@@ -170,7 +199,6 @@ def save_to_epub(articles):
             lang='zh'
         )
         
-        # 优化排版：缩小行距 (line-height: 1.25) 和段落间距 (margin-bottom: 0.4em)
         paragraphs = art['summary_zh'].split('\n')
         html_p = ''.join([f'<p style="text-indent: 2em; line-height: 1.25; margin-bottom: 0.4em; margin-top: 0;">{p.strip()}</p>' for p in paragraphs if p.strip()])
         
