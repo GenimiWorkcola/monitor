@@ -33,9 +33,10 @@ jobs:
         cd test
         python test.py
 
-    - name: Commit and push generated PNG
+    - name: Commit and push generated PNGs
       run: |
         git config --global user.name "GitHub Actions Bot"
         git config --global user.email "actions@github.com"
-        git add test/method_a_with_liquidity_colorbar.png
-        git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update liquidity colorbar chart PNG" && git push)
+        # 自动添加 test 文件夹下的所有新增或修改的 png 图片
+        git add test/*.png
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update generated chart PNGs" && git push)
