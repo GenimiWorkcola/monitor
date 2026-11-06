@@ -1,19 +1,18 @@
 import os
-import pandas as pd
+import matplotlib
+# 强制使用无界面后端，防止 GitHub Actions 环境报错
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+import pandas as pd
 
-# 获取当前脚本 (test.py) 所在的绝对目录
+# 获取当前脚本所在的绝对目录 (即 test 文件夹)
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
-# 1. 数据加载与清洗（自动适配路径：如果在 test 文件夹运行，去上一级或当前目录找 CSV）
-# 假设你的 CSV 文件和 test.py 在同一个文件夹，或者在上一级根目录，可自行调整
+# 1. 数据加载与清洗（因为脚本和 CSV 都在 test 文件夹，直接通过当前目录拼接或直接读取文件名）
 exch_path = os.path.join(current_dir, 'EXCHUS.csv')
 sse_path = os.path.join(current_dir, '上证指数历史数据.csv')
 hsi_path = os.path.join(current_dir, '恒生 HistoricalPrices.csv')
-
-# 如果 CSV 在上一级目录，可以改成：
-# exch_path = os.path.join(current_dir, '..', 'EXCHUS.csv')
 
 df_exch = pd.read_csv(exch_path)
 df_exch['observation_date'] = pd.to_datetime(df_exch['observation_date'])
@@ -37,7 +36,7 @@ merged = merged[(merged['Date'] >= '2015-01-01') & (merged['Date'] <= '2026-03-0
 merged['SSE_Norm'] = merged['SSE'] / merged['SSE'].iloc[0] * 100
 merged['HSI_Norm'] = merged['HSI'] / merged['HSI'].iloc[0] * 100
 
-# 2015.1.1 至今的 7 个接续美元流动性区间
+# 定义 2015.1.1 至今的 7 个接续美元流动性区间
 liquidity_periods = [
     ("2015-01-01", "2019-08-31", "P1", "#e41a1c"),
     ("2019-09-01", "2020-02-29", "P2", "#ff7f00"),
@@ -105,7 +104,7 @@ for start, end, code, color in liquidity_periods:
     mid_dt = s_dt + (e_dt - s_dt) / 2
     ax_bar.text(mid_dt, 0.5, code, color='white', fontweight='bold', fontsize=9, ha='center', va='center')
 
-# 关键修改：使用绝对路径将图片精准保存在 test 文件夹中
+# 确保图片稳稳保存在 test 文件夹中与脚本同级
 output_image_path = os.path.join(current_dir, 'method_a_with_liquidity_colorbar.png')
 plt.savefig(output_image_path, dpi=300, bbox_inches='tight')
 print(f"Plot created and saved successfully at: {output_image_path}")
