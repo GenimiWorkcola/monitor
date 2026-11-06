@@ -5,6 +5,7 @@ openpyxl
 pandas-datareader
 feedparser
 google-genai
+ebooklib
 
 
 

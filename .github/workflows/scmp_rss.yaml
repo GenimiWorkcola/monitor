@@ -27,15 +27,17 @@ jobs:
         pip install -r requirements.txt
 
     - name: Run SCMP Collector
+      env:
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }} # 注入 GitHub Secrets 密鑰
       run: |
-        # 進入 scmp 資料夾執行指令碼
+        # 進入 scmp 資料夾執行最新版本的腳本
         cd scmp
         python rss_scmp_collector_v2.py
 
-    - name: Commit and push txt file
+    - name: Commit and push epub file
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        # 僅將 scmp 資料夾中產生的 txt 變更加入並提交
-        git add scmp/scmp_*.txt
-        git diff --quiet && git diff --staged --quiet || (git commit -m "Add latest SCMP daily summary in scmp folder [skip ci]" && git push)
+        # 僅將 scmp 資料夾中產生的 epub 變更加入並提交
+        git add scmp/scmp_*.epub
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Add latest SCMP daily EPUB ebook [skip ci]" && git push)
