@@ -6,7 +6,7 @@ import feedparser
 from google import genai
 from ebooklib import epub
 
-# 確保工作目錄切換到 scmp 資料夾
+# 確保工作目錄切換到 scmp 文件夹
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # 初始化 Gemini 客戶端（自動讀取 GitHub Secrets 裡的 GEMINI_API_KEY）
@@ -44,7 +44,6 @@ def clean_html(raw_html):
     """徹底清除 HTML 標籤，保留純文字結構"""
     if not raw_html:
         return ""
-    # 將換行標籤轉為真實換行，方便後續排版
     raw_html = re.sub(r'</p>|<br\s*/?>', '\n', raw_html)
     clean_re = re.compile('<.*?>')
     text = re.sub(clean_re, '', raw_html)
@@ -77,9 +76,8 @@ def translate_text(text):
     
     for attempt in range(3):
         try:
-            # 使用穩定且推薦的 gemini-1.5-flash 模型
             response = client.models.generate_content(
-                model='gemini-1.5-flash',
+                model='gemini-2.0-flash',
                 contents=prompt,
             )
             if response and response.text:
@@ -88,7 +86,7 @@ def translate_text(text):
             print(f"[警告] Gemini 翻譯出錯 (嘗試 {attempt+1}/3): {e}")
             time.sleep(2)
             
-    return text  # 若多次失敗則降級返回原文
+    return text
 
 def format_pub_date(raw_date):
     """精簡時間格式，僅保留日期（如 Wed, 04 Nov 2026）"""
@@ -103,9 +101,11 @@ def fetch_and_process():
     
     print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 開始深度抓取 RSS 全文並使用 Gemini 翻譯...")
     for url in RSS_URLS:
+        # 提取簡化的 XML 檔名作為來源標識（例如 scmp-news.xml）
+        source_name = url.split('/')[-1]
         try:
             feed = feedparser.parse(url)
-            print(f"成功拉取: {url} (包含 {len(feed.entries)} 條消息)")
+            print(f"成功拉取: {source_name} (包含 {len(feed.entries)} 條消息)")
             for entry in feed.entries:
                 link = getattr(entry, 'link', '')
                 if link in processed_links:
@@ -126,7 +126,7 @@ def fetch_and_process():
                 full_content = clean_html(raw_content)
                 
                 if is_relevant_article(title, full_content):
-                    print(f" -> 匹配成功，正在由 Gemini 完整翻譯: {title[:40]}...")
+                    print(f" -> 匹配成功 [{source_name}]，正在由 Gemini 翻譯: {title[:30]}...")
                     summary_zh = translate_text(full_content)
                     
                     raw_date = getattr(entry, 'published', datetime.now().strftime('%a, %d %b %Y %H:%M:%S +0000'))
@@ -136,7 +136,8 @@ def fetch_and_process():
                         "link": link,
                         "title_en": title,
                         "summary_zh": summary_zh,
-                        "pub_date": pub_date_clean
+                        "pub_date": pub_date_clean,
+                        "source_xml": source_name  # 記錄所屬 XML 來源
                     }
                     new_articles.append(article_item)
         except Exception as e:
@@ -163,16 +164,15 @@ def save_to_epub(articles):
     toc = []
 
     for idx, art in enumerate(articles, start=1):
-        # 建立單個章節的 HTML 檔案
         c = epub.EpubHtml(
             title=art['title_en'], 
             file_name=f'chap_{idx}.xhtml', 
             lang='zh'
         )
         
-        # 處理正文段落，轉成適合電子書閱讀的 HTML P 標籤
+        # 优化排版：缩小行距 (line-height: 1.25) 和段落间距 (margin-bottom: 0.4em)
         paragraphs = art['summary_zh'].split('\n')
-        html_p = ''.join([f'<p style="text-indent: 2em; line-height: 1.6; margin-bottom: 0.8em;">{p.strip()}</p>' for p in paragraphs if p.strip()])
+        html_p = ''.join([f'<p style="text-indent: 2em; line-height: 1.25; margin-bottom: 0.4em; margin-top: 0;">{p.strip()}</p>' for p in paragraphs if p.strip()])
         
         c.content = f"""
         <!DOCTYPE html>
@@ -181,10 +181,11 @@ def save_to_epub(articles):
             <meta charset="utf-8"/>
             <title>{art['title_en']}</title>
         </head>
-        <body style="font-family: sans-serif; padding: 10px;">
-            <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 5px;">{art['title_en']}</h2>
-            <p style="color: #666; font-size: 0.9em;"><strong>發布日期：</strong>{art['pub_date']}</p>
-            <hr/>
+        <body style="font-family: sans-serif; padding: 5px; margin: 0;">
+            <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 4px; margin-bottom: 6px; font-size: 1.2em;">{art['title_en']}</h2>
+            <p style="color: #555; font-size: 0.8em; margin: 2px 0;"><strong>來源欄目：</strong>{art['source_xml']}</p>
+            <p style="color: #555; font-size: 0.8em; margin: 2px 0 8px 0;"><strong>發布日期：</strong>{art['pub_date']}</p>
+            <hr style="border: none; border-top: 1px solid #eee; margin: 5px 0;" />
             <div>{html_p}</div>
         </body>
         </html>
@@ -194,19 +195,13 @@ def save_to_epub(articles):
         chapters.append(c)
         toc.append(c)
 
-    # 設定電子書的目錄樹 (Table of Contents)， Kindle 上點擊目錄可跳轉
     book.toc = tuple(toc)
-
-    # 新增標準的導航檔案 (NCX & NAV)
     book.add_item(epub.EpubNcx())
     book.add_item(epub.EpubNav())
-
-    # 設定閱讀順序
     book.spine = ['nav'] + chapters
 
-    # 寫出 EPUB 檔案
     epub.write_epub(epub_filename, book, {})
-    print(f"已成功生成帶有超連結目錄的 EPUB 檔案: {epub_filename}")
+    print(f"已成功生成 EPUB 檔案: {epub_filename}（行距已收窄，並已標註來源 XML）")
 
 def main():
     print("RSS 全文 Gemini 翻譯 & EPUB 生成服務已啟動...")
