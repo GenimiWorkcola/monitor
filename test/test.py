@@ -45,11 +45,11 @@ merged['HSI_Norm'] = merged['HSI'] / merged['HSI'].iloc[0] * 100
 
 # ----------------- 定义中国外贸出口五大区间（已更新配色方案） -----------------
 export_periods = [
-    ("2015-01-01", "2016-02-29", "E1: Bottoming & Clearing", "#6baed6"),       
-    ("2016-03-01", "2018-06-30", "E2: Moderate Recovery", "#2ca02c"),        
-    ("2018-07-01", "2020-02-29", "E3: Tariff War & Volatility", "#756bb1"),  
+    ("2015-01-01", "2016-02-29", "E1: Bottoming & Clearing", "#6baed6"),       # 筑底清盘：冰冷柔和蓝
+    ("2016-03-01", "2018-06-30", "E2: Moderate Recovery", "#fd8d3c"),        # 温和复苏：琥珀暖橙（已避开绿色）
+    ("2018-07-01", "2020-02-29", "E3: Tariff War & Volatility", "#756bb1"),  # 关税摩擦：深紫博弈色
     ("2020-03-01", "2022-12-31", "E4: Pandemic Boom & Massive Orders", "#4daf4a"), # 与下方 P3 宽松大泛滥绿强共振
-    ("2023-01-01", "2026-03-01", "E5: New Three & High Resilience", "#1f77b4"),  
+    ("2023-01-01", "2026-03-01", "E5: New Three & High Resilience", "#1f77b4"),  # 韧性出海：活力深蓝
 ]
 
 # ----------------- 定义美元流动性细分区间（置于底部色条） -----------------
