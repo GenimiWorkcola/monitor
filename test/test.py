@@ -9,7 +9,7 @@ import pandas as pd
 # 获取当前脚本所在的绝对目录 (即 test 文件夹)
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
-# 1. 数据加载与清洗（因为脚本和 CSV 都在 test 文件夹，直接通过当前目录拼接或直接读取文件名）
+# 1. 数据加载与清洗
 exch_path = os.path.join(current_dir, 'EXCHUS.csv')
 sse_path = os.path.join(current_dir, '上证指数历史数据.csv')
 hsi_path = os.path.join(current_dir, '恒生 HistoricalPrices.csv')
@@ -36,15 +36,19 @@ merged = merged[(merged['Date'] >= '2015-01-01') & (merged['Date'] <= '2026-03-0
 merged['SSE_Norm'] = merged['SSE'] / merged['SSE'].iloc[0] * 100
 merged['HSI_Norm'] = merged['HSI'] / merged['HSI'].iloc[0] * 100
 
-# 定义 2015.1.1 至今的 7 个接续美元流动性区间
+# 定义美元流动性区间：将 P1 细分为 P1-a, P1-b, P1-c，并衔接原有的 P2-P7
 liquidity_periods = [
-    ("2015-01-01", "2019-08-31", "P1", "#e41a1c"),
-    ("2019-09-01", "2020-02-29", "P2", "#ff7f00"),
-    ("2020-03-01", "2022-02-28", "P3", "#4daf4a"),
-    ("2022-03-01", "2023-07-31", "P4", "#984ea3"),
-    ("2023-08-01", "2024-12-31", "P5", "#377eb8"),
-    ("2025-01-01", "2025-11-30", "P6", "#a65628"),
-    ("2025-12-01", "2026-03-01", "P7", "#f781bf"),
+    # P1 细分阶段
+    ("2015-01-01", "2016-02-29", "P1-a", "#990000"),  # 政策前瞻期与首次加息落地
+    ("2016-03-01", "2017-12-31", "P1-b", "#d73027"),  # 宏观喘息窗口与出口复苏
+    ("2018-01-01", "2019-08-31", "P1-c", "#f46d43"),  # 实质性缩表(QT)与抽水
+    # 原有后续区间
+    ("2019-09-01", "2020-02-29", "P2", "#ff7f00"),  # 回购动荡与预防性扩表
+    ("2020-03-01", "2022-02-28", "P3", "#4daf4a"),  # 无限量QE与美元大泛滥
+    ("2022-03-01", "2023-07-31", "P4", "#984ea3"),  # 暴力加息与历史级紧缩
+    ("2023-08-01", "2024-12-31", "P5", "#377eb8"),  # 高利率与RRP缓冲消耗
+    ("2025-01-01", "2025-11-30", "P6", "#a65628"),  # RRP耗尽与QT强约束
+    ("2025-12-01", "2026-03-01", "P7", "#f781bf"),  # 政策拐点与短债注入平衡
 ]
 
 observations = [
@@ -83,7 +87,7 @@ for start, end, label, y_pos, color in observations:
 
 ax1.set_ylabel('Normalized Index Value (2015-01-05 = 100)', fontsize=11)
 ax2.set_ylabel('USD / CNY Rate', fontsize=11)
-ax1.set_title('Hang Seng & SSE Index Normalized Performance (Method A) with USD Liquidity Contiguous Colorbar (2015-2026)', fontsize=14, fontweight='bold', pad=15)
+ax1.set_title('Hang Seng & SSE Index Normalized Performance with Detailed P1 Liquidity Sub-periods (2015-2026)', fontsize=14, fontweight='bold', pad=15)
 
 ax1.set_xlim(pd.to_datetime('2015-01-01'), pd.to_datetime('2026-03-01'))
 ax1.xaxis.set_major_locator(mdates.YearLocator())
@@ -102,7 +106,7 @@ for start, end, code, color in liquidity_periods:
     e_dt = pd.to_datetime(end)
     ax_bar.axvspan(s_dt, e_dt, color=color, alpha=0.85)
     mid_dt = s_dt + (e_dt - s_dt) / 2
-    ax_bar.text(mid_dt, 0.5, code, color='white', fontweight='bold', fontsize=9, ha='center', va='center')
+    ax_bar.text(mid_dt, 0.5, code, color='white', fontweight='bold', fontsize=8, ha='center', va='center')
 
 # 确保图片稳稳保存在 test 文件夹中与脚本同级
 output_image_path = os.path.join(current_dir, 'method_a_with_liquidity_colorbar.png')
