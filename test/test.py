@@ -13,6 +13,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 exch_path = os.path.join(current_dir, 'EXCHUS.csv')
 sse_path = os.path.join(current_dir, '上证指数历史数据.csv')
 hsi_path = os.path.join(current_dir, '恒生 HistoricalPrices.csv')
+val_path = os.path.join(current_dir, 'VALEXPCNM052N.csv')
 
 df_exch = pd.read_csv(exch_path)
 df_exch['observation_date'] = pd.to_datetime(df_exch['observation_date'])
@@ -28,6 +29,9 @@ df_hsi['Close'] = df_hsi['Close'].astype(str).str.replace(',', '').astype(float)
 df_hsi['Date'] = pd.to_datetime(df_hsi['Date'], format='%m/%d/%y')
 df_hsi = df_hsi.sort_values('Date').rename(columns={'Close': 'HSI'})
 
+df_val = pd.read_csv(val_path)
+df_val['observation_date'] = pd.to_datetime(df_val['observation_date'])
+
 # 数据合并 (2015-2026)
 merged = pd.merge(df_sse[['Date', 'SSE']], df_hsi[['Date', 'HSI']], on='Date', how='inner')
 merged = merged[(merged['Date'] >= '2015-01-01') & (merged['Date'] <= '2026-03-01')].copy()
@@ -36,19 +40,26 @@ merged = merged[(merged['Date'] >= '2015-01-01') & (merged['Date'] <= '2026-03-0
 merged['SSE_Norm'] = merged['SSE'] / merged['SSE'].iloc[0] * 100
 merged['HSI_Norm'] = merged['HSI'] / merged['HSI'].iloc[0] * 100
 
-# 定义美元流动性区间：将 P1 细分为 P1-a, P1-b, P1-c，并衔接原有的 P2-P7
+# ----------------- 定义中国外贸出口五大区间（置于图表最上边沿） -----------------
+export_periods = [
+    ("2015-01-01", "2016-02-29", "E1: 筑底盘整与出清", "#6baed6"),
+    ("2016-03-01", "2018-06-30", "E2: 温和复苏", "#2ca02c"),
+    ("2018-07-01", "2020-02-29", "E3: 关税博弈与震荡", "#756bb1"),
+    ("2020-03-01", "2022-12-31", "E4: 疫情红利与天量订单", "#bcbd22"),
+    ("2023-01-01", "2026-03-01", "E5: 新三样出海与韧性新高", "#1f77b4"),
+]
+
+# ----------------- 定义美元流动性细分区间（置于图表最下边沿） -----------------
 liquidity_periods = [
-    # P1 细分阶段
-    ("2015-01-01", "2016-02-29", "P1-a", "#990000"),  # 政策前瞻期与首次加息落地
-    ("2016-03-01", "2017-12-31", "P1-b", "#d73027"),  # 宏观喘息窗口与出口复苏
-    ("2018-01-01", "2019-08-31", "P1-c", "#f46d43"),  # 实质性缩表(QT)与抽水
-    # 原有后续区间
+    ("2015-01-01", "2016-02-29", "P1-a", "#990000"),  # 政策前瞻与首次加息
+    ("2016-03-01", "2017-12-31", "P1-b", "#d73027"),  # 宏观喘息与出口复苏
+    ("2018-01-01", "2019-08-31", "P1-c", "#f46d43"),  # 缩表(QT)与抽水
     ("2019-09-01", "2020-02-29", "P2", "#ff7f00"),  # 回购动荡与预防性扩表
-    ("2020-03-01", "2022-02-28", "P3", "#4daf4a"),  # 无限量QE与美元大泛滥
-    ("2022-03-01", "2023-07-31", "P4", "#984ea3"),  # 暴力加息与历史级紧缩
-    ("2023-08-01", "2024-12-31", "P5", "#377eb8"),  # 高利率与RRP缓冲消耗
-    ("2025-01-01", "2025-11-30", "P6", "#a65628"),  # RRP耗尽与QT强约束
-    ("2025-12-01", "2026-03-01", "P7", "#f781bf"),  # 政策拐点与短债注入平衡
+    ("2020-03-01", "2022-02-28", "P3", "#4daf4a"),  # 无限量QE与大泛滥
+    ("2022-03-01", "2023-07-31", "P4", "#984ea3"),  # 暴力加息与紧缩
+    ("2023-08-01", "2024-12-31", "P5", "#377eb8"),  # 高利率与RRP缓冲
+    ("2025-01-01", "2025-11-30", "P6", "#a65628"),  # RRP耗尽与QT约束
+    ("2025-12-01", "2026-03-01", "P7", "#f781bf"),  # 政策拐点与平衡
 ]
 
 observations = [
@@ -62,16 +73,28 @@ observations = [
     ("2025-09-01", "2026-03-01", "2025.9-Present\nUnderperformed", 85, '#d62728'),
 ]
 
-# 创建图表
-fig, (ax1, ax_bar) = plt.subplots(
-    2, 1, figsize=(16, 9), dpi=300, 
-    gridspec_kw={'height_ratios': [10, 0.8], 'hspace': 0.08}
+# 创建图表：上方外贸色条(ax_export) + 中间主图(ax1) + 底部流动性色条(ax_bar)
+fig, (ax_export, ax1, ax_bar) = plt.subplots(
+    3, 1, figsize=(16, 10), dpi=300, 
+    gridspec_kw={'height_ratios': [0.8, 10, 0.8], 'hspace': 0.12}
 )
 plt.style.use('seaborn-v0_8-whitegrid' if 'seaborn-v0_8-whitegrid' in plt.style.available else 'default')
 plt.rcParams['font.sans-serif'] = ['DejaVu Sans', 'Arial']
 
 ax2 = ax1.twinx()
 
+# 1. 绘制上方外贸色条 (ax_export)
+ax_export.set_xlim(pd.to_datetime('2015-01-01'), pd.to_datetime('2026-03-01'))
+ax_export.set_ylim(0, 1)
+ax_export.axis('off')
+for start, end, code, color in export_periods:
+    s_dt = pd.to_datetime(start)
+    e_dt = pd.to_datetime(end)
+    ax_export.axvspan(s_dt, e_dt, color=color, alpha=0.8)
+    mid_dt = s_dt + (e_dt - s_dt) / 2
+    ax_export.text(mid_dt, 0.5, code, color='white', fontweight='bold', fontsize=8, ha='center', va='center')
+
+# 2. 绘制主图曲线
 line1 = ax1.plot(merged['Date'], merged['HSI_Norm'], color='#1f77b4', linewidth=2, label='Hang Seng Index (Normalized = 100)')
 line2 = ax1.plot(merged['Date'], merged['SSE_Norm'], color='#d62728', linewidth=2, label='SSE Composite Index (Normalized = 100)')
 line3 = ax2.plot(df_exch['observation_date'], df_exch['EXCHUS'], color='black', linestyle=':', linewidth=1.5, alpha=0.7, label='USD/CNY Rate')
@@ -87,7 +110,7 @@ for start, end, label, y_pos, color in observations:
 
 ax1.set_ylabel('Normalized Index Value (2015-01-05 = 100)', fontsize=11)
 ax2.set_ylabel('USD / CNY Rate', fontsize=11)
-ax1.set_title('Hang Seng & SSE Index Normalized Performance with Detailed P1 Liquidity Sub-periods (2015-2026)', fontsize=14, fontweight='bold', pad=15)
+ax1.set_title('Hang Seng & SSE Index with Top Export Cycles (E1-E5) and Bottom USD Liquidity Colorbars (2015-2026)', fontsize=13, fontweight='bold', pad=15)
 
 ax1.set_xlim(pd.to_datetime('2015-01-01'), pd.to_datetime('2026-03-01'))
 ax1.xaxis.set_major_locator(mdates.YearLocator())
@@ -97,6 +120,7 @@ ax2.set_ylim(6.0, 7.6)
 lines = line1 + line2 + line3
 ax1.legend(lines, [l.get_label() for l in lines], loc='upper left', frameon=True, facecolor='white')
 
+# 3. 绘制底部流动性色条 (ax_bar)
 ax_bar.set_xlim(pd.to_datetime('2015-01-01'), pd.to_datetime('2026-03-01'))
 ax_bar.set_ylim(0, 1)
 ax_bar.axis('off')
@@ -108,7 +132,7 @@ for start, end, code, color in liquidity_periods:
     mid_dt = s_dt + (e_dt - s_dt) / 2
     ax_bar.text(mid_dt, 0.5, code, color='white', fontweight='bold', fontsize=8, ha='center', va='center')
 
-# 确保图片稳稳保存在 test 文件夹中与脚本同级
+# 保存图片至 test 文件夹
 output_image_path = os.path.join(current_dir, 'method_a_with_liquidity_colorbar.png')
 plt.savefig(output_image_path, dpi=300, bbox_inches='tight')
 print(f"Plot created and saved successfully at: {output_image_path}")
