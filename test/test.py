@@ -4,17 +4,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-import matplotlib.font_manager as fm
 import pandas as pd
-
-# 自动配置 GitHub Actions 容器内的中文字体（Droid Sans Fallback）
-chinese_font_path = '/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf'
-if os.path.exists(chinese_font_path):
-    prop = fm.FontProperties(fname=chinese_font_path)
-    plt.rcParams['font.sans-serif'] = ['Droid Sans Fallback', 'DejaVu Sans', 'Arial']
-else:
-    plt.rcParams['font.sans-serif'] = ['DejaVu Sans', 'Arial']
-plt.rcParams['axes.unicode_minus'] = False # 正常显示负号
 
 # 获取当前脚本所在的绝对目录 (即 test 文件夹)
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -53,16 +43,16 @@ merged = merged[(merged['Date'] >= '2015-01-01') & (merged['Date'] <= '2026-03-0
 merged['SSE_Norm'] = merged['SSE'] / merged['SSE'].iloc[0] * 100
 merged['HSI_Norm'] = merged['HSI'] / merged['HSI'].iloc[0] * 100
 
-# ----------------- 定义中国外贸出口五大区间（置于图表最上边沿） -----------------
+# ----------------- 定义中国外贸出口五大区间（全英文，放置于上方外贸子图） -----------------
 export_periods = [
-    ("2015-01-01", "2016-02-29", "E1: 筑底盘整与出清", "#6baed6"),
-    ("2016-03-01", "2018-06-30", "E2: 温和复苏", "#2ca02c"),
-    ("2018-07-01", "2020-02-29", "E3: 关税博弈与震荡", "#756bb1"),
-    ("2020-03-01", "2022-12-31", "E4: 疫情红利与天量订单", "#bcbd22"),
-    ("2023-01-01", "2026-03-01", "E5: 新三样出海与韧性新高", "#1f77b4"),
+    ("2015-01-01", "2016-02-29", "E1: Bottoming & Clearing", "#6baed6"),
+    ("2016-03-01", "2018-06-30", "E2: Moderate Recovery", "#2ca02c"),
+    ("2018-07-01", "2020-02-29", "E3: Tariff War & Volatility", "#756bb1"),
+    ("2020-03-01", "2022-12-31", "E4: Pandemic Boom & Massive Orders", "#bcbd22"),
+    ("2023-01-01", "2026-03-01", "E5: New Three & High Resilience", "#1f77b4"),
 ]
 
-# ----------------- 定义美元流动性细分区间（置于图表最下边沿） -----------------
+# ----------------- 定义美元流动性细分区间（置于底部色条） -----------------
 liquidity_periods = [
     ("2015-01-01", "2016-02-29", "P1-a", "#990000"),
     ("2016-03-01", "2017-12-31", "P1-b", "#d73027"),
@@ -86,35 +76,36 @@ observations = [
     ("2025-09-01", "2026-03-01", "2025.9-Present\nUnderperformed", 85, '#d62728'),
 ]
 
-# 创建图表：上方外贸色条(ax_export) + 中间主图(ax1) + 底部流动性色条(ax_bar)
+# 创建图表：上方外贸独立子图(ax_export) + 中间主图(ax1) + 底部流动性色条(ax_bar)
 fig, (ax_export, ax1, ax_bar) = plt.subplots(
-    3, 1, figsize=(16, 10), dpi=300, 
-    gridspec_kw={'height_ratios': [0.8, 10, 0.8], 'hspace': 0.12}
+    3, 1, figsize=(16, 12), dpi=300, 
+    gridspec_kw={'height_ratios': [2.5, 8, 0.8], 'hspace': 0.15},
+    sharex=True # 强制横轴绝对对齐
 )
 plt.style.use('seaborn-v0_8-whitegrid' if 'seaborn-v0_8-whitegrid' in plt.style.available else 'default')
+plt.rcParams['font.sans-serif'] = ['DejaVu Sans', 'Arial']
 
-# 双右轴设置：ax2 负责 USD/CNY 汇率，ax3 负责出口 YoY 增速
 ax2 = ax1.twinx()
-ax3 = ax1.twinx()
-# 将 ax3 的坐标轴往右偏移，避免与 ax2 重叠
-ax3.spines['right'].set_position(('outward', 60))
 
-# 1. 绘制上方外贸色条 (ax_export)
-ax_export.set_xlim(pd.to_datetime('2015-01-01'), pd.to_datetime('2026-03-01'))
-ax_export.set_ylim(0, 1)
-ax_export.axis('off')
+# 1. 绘制上方外贸独立图 (ax_export)：展示中国出口金额绝对值及 E1-E5 背景标注
 for start, end, code, color in export_periods:
     s_dt = pd.to_datetime(start)
     e_dt = pd.to_datetime(end)
-    ax_export.axvspan(s_dt, e_dt, color=color, alpha=0.8)
+    ax_export.axvspan(s_dt, e_dt, color=color, alpha=0.15)
     mid_dt = s_dt + (e_dt - s_dt) / 2
-    ax_export.text(mid_dt, 0.5, code, color='white', fontweight='bold', fontsize=8, ha='center', va='center')
+    ax_export.text(mid_dt, 0.85, code, color=color, fontweight='bold', fontsize=9, ha='center', va='center',
+                   bbox=dict(boxstyle='round,pad=0.2', facecolor='white', edgecolor=color, alpha=0.85))
 
-# 2. 绘制主图曲线（恒指、沪指、汇率及出口 YoY）
+ax_export.plot(df_val['observation_date'], df_val['VALEXPCNM052N'], color='#2ca02c', linewidth=2, label='China Export Value (USD Million)')
+ax_export.set_ylabel('Export Value ($M)', fontsize=10, color='#2ca02c')
+ax_export.set_title('China Export Dynamics (E1-E5) & Market Performance with USD Liquidity (2015-2026)', fontsize=14, fontweight='bold', pad=12)
+ax_export.legend(loc='upper left', frameon=True, facecolor='white')
+ax_export.set_xlim(pd.to_datetime('2015-01-01'), pd.to_datetime('2026-03-01'))
+
+# 2. 绘制中间主图 (ax1 & ax2)
 line1 = ax1.plot(merged['Date'], merged['HSI_Norm'], color='#1f77b4', linewidth=2, label='Hang Seng Index (Normalized = 100)')
 line2 = ax1.plot(merged['Date'], merged['SSE_Norm'], color='#d62728', linewidth=2, label='SSE Composite Index (Normalized = 100)')
 line3 = ax2.plot(df_exch['observation_date'], df_exch['EXCHUS'], color='black', linestyle=':', linewidth=1.5, alpha=0.7, label='USD/CNY Rate')
-line4 = ax3.plot(df_val['observation_date'], df_val['Export_YoY'], color='#2ca02c', linestyle='--', linewidth=1.2, alpha=0.8, label='China Export YoY (%)')
 
 for start, end, label, y_pos, color in observations:
     s_dt = pd.to_datetime(start)
@@ -126,21 +117,16 @@ for start, end, label, y_pos, color in observations:
                  bbox=dict(boxstyle='round,pad=0.3', facecolor='white', edgecolor=color, alpha=0.85))
 
 ax1.set_ylabel('Normalized Index Value (2015-01-05 = 100)', fontsize=11)
-ax2.set_ylabel('USD / CNY Rate', fontsize=11, color='black')
-ax3.set_ylabel('China Export YoY Growth (%)', fontsize=11, color='#2ca02c')
-ax1.set_title('Hang Seng & SSE Index with Top Export Cycles (E1-E5), Export YoY & Bottom USD Liquidity Colorbars', fontsize=13, fontweight='bold', pad=15)
+ax2.set_ylabel('USD / CNY Rate', fontsize=11)
 
-ax1.set_xlim(pd.to_datetime('2015-01-01'), pd.to_datetime('2026-03-01'))
 ax1.xaxis.set_major_locator(mdates.YearLocator())
 ax1.xaxis.set_major_formatter(mdates.DateFormatter('%Y'))
 ax2.set_ylim(6.0, 7.6)
-ax3.set_ylim(-40, 60) # 覆盖出口增速波动范围
 
-lines = line1 + line2 + line3 + line4
+lines = line1 + line2 + line3
 ax1.legend(lines, [l.get_label() for l in lines], loc='upper left', frameon=True, facecolor='white')
 
 # 3. 绘制底部流动性色条 (ax_bar)
-ax_bar.set_xlim(pd.to_datetime('2015-01-01'), pd.to_datetime('2026-03-01'))
 ax_bar.set_ylim(0, 1)
 ax_bar.axis('off')
 
