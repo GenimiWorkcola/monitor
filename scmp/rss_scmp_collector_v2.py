@@ -1,21 +1,11 @@
-import time
 import os
 import re
 from datetime import datetime
 import feedparser
-from google import genai
 from ebooklib import epub
 
 # 確保工作目錄切換到 scmp 檔案夾
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
-
-# 初始化 Gemini 客戶端（自動讀取 GitHub Secrets 裡的 GEMINI_API_KEY）
-api_key = os.environ.get("GEMINI_API_KEY")
-if not api_key:
-    print("[警告] 未檢測到 GEMINI_API_KEY，將無法進行翻譯。")
-    client = None
-else:
-    client = genai.Client(api_key=api_key)
 
 # 訂閱源列表（自動去重）
 RSS_URLS = list(set([
@@ -42,8 +32,11 @@ HK_CHINA_KEYWORDS = [
 
 # 3. 娱乐、体育与纯本地民生/社区的排除关键词（不含通用 hong kong）
 EXCLUDE_KEYWORDS = [
+    # 娱乐、流行文化
     'entertainment', 'celebrity', 'movie', 'film', 'music', 'pop', 'fashion', 'lifestyle',
+    # 体育
     'sport', 'sports', 'football', 'soccer', 'basketball', 'tennis', 'olympics', 'marathon',
+    # 纯本地民生/交通/社区事件（过滤无宏观意义的本地新闻）
     'district council', 'subsidised housing', 'public housing', 'traffic accident',
     'traffic collision', 'burglary', 'scam victim', 'minor injury'
 ]
@@ -67,62 +60,22 @@ def is_relevant_article(title, content):
     """
     combined_text = f"{title} {content}".lower()
     
+    # 优先检测：是否包含硬性排除词（娱乐、体育、微观社区治安）
     for ex_kw in EXCLUDE_KEYWORDS:
         if re.search(r'\b' + re.escape(ex_kw) + r'\b', combined_text):
             return False
 
+    # 特许检测：是否涉及中国香港关系/大湾区/国家安全等重磅议题
     for hk_cn_kw in HK_CHINA_KEYWORDS:
         if re.search(r'\b' + re.escape(hk_cn_kw) + r'\b', combined_text):
             return True
 
+    # 常规检测：是否包含中美法等目标国家词汇
     for inc_kw in INCLUDE_KEYWORDS:
         if re.search(r'\b' + re.escape(inc_kw) + r'\b', combined_text):
             return True
 
     return False
-
-def translate_text(text):
-    """使用 Gemini API 進行翻譯：嚴格限定最多嘗試 1 次，失敗直接返回 None"""
-    if not text:
-        return ""
-    if not client:
-        print("[錯誤] 未檢測到 GEMINI_API_KEY，無法翻譯。")
-        return None
-    
-    prompt = (
-        "請將以下英文新聞全文翻譯為專業、流暢、地道的中文新聞。 "
-        "直接輸出翻譯後的中文內容，不要加任何多餘的解釋說明或客套話：\n\n" + text
-    )
-    
-    # 動態獲取可用 flash 模型名称
-    target_model = None
-    try:
-        models = client.models.list()
-        for m in models:
-            model_name = getattr(m, 'name', '')
-            if 'flash' in model_name.lower():
-                target_model = model_name
-                break
-    except Exception as e:
-        print(f"[提示] 自動獲取模型清單失敗，使用默認名稱: {e}")
-
-    if not target_model:
-        target_model = 'gemini-3.8-flash'
-        
-    print(f" -> 正在使用 Gemini 模型 (僅嘗試 1 次): {target_model}")
-
-    # 嚴格只嘗試 1 次，任何異常直接捕獲并返回 None
-    try:
-        response = client.models.generate_content(
-            model=target_model,
-            contents=prompt,
-        )
-        if response and response.text:
-            return response.text.strip()
-    except Exception as e:
-        print(f"[錯誤] Gemini 翻譯失敗 (僅嘗試 1 次，已觸發熔斷機制): {e}")
-        
-    return None  # 翻譯失敗直接返回 None
 
 def format_pub_date(raw_date):
     """精簡時間格式，僅保留日期（如 Wed, 04 Nov 2026）"""
@@ -135,7 +88,7 @@ def fetch_and_process():
     processed_links = set()
     new_articles = []
     
-    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 開始深度抓取 RSS 全文並使用 Gemini 翻譯...")
+    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 開始深度抓取 RSS 全文（保留英文原文）...")
     for url in RSS_URLS:
         source_name = url.split('/')[-1]
         try:
@@ -161,13 +114,7 @@ def fetch_and_process():
                 full_content = clean_html(raw_content)
                 
                 if is_relevant_article(title, full_content):
-                    print(f" -> 匹配成功 [{source_name}]，正在由 Gemini 翻譯: {title[:30]}...")
-                    summary_zh = translate_text(full_content)
-                    
-                    # 若單次翻譯失敗（返回 None），立刻中止流程，不生成 EPUB
-                    if summary_zh is None:
-                        print(f"[熔斷止損] 文章《{title[:30]}...》翻譯失敗，程序中止，本次将不生成 EPUB 檔案。")
-                        return None
+                    print(f" -> 匹配成功 [{source_name}]: {title[:30]}...")
                     
                     raw_date = getattr(entry, 'published', datetime.now().strftime('%a, %d %b %Y %H:%M:%S +0000'))
                     pub_date_clean = format_pub_date(raw_date)
@@ -175,7 +122,7 @@ def fetch_and_process():
                     article_item = {
                         "link": link,
                         "title_en": title,
-                        "summary_zh": summary_zh,
+                        "content_en": full_content,
                         "pub_date": pub_date_clean,
                         "source_xml": source_name
                     }
@@ -187,10 +134,6 @@ def fetch_and_process():
 
 def save_to_epub(articles):
     """把文章打包成帶有超連結目錄 (TOC) 的 EPUB 電子書"""
-    if articles is None:
-        print("[提示] 由於存在翻譯失敗的文章，跳過 EPUB 生成。")
-        return
-        
     if not articles:
         print("本次沒有篩選出符合條件的新文章。")
         return
@@ -201,7 +144,7 @@ def save_to_epub(articles):
     book = epub.EpubBook()
     book.set_identifier(f'scmp-daily-{today_str}')
     book.set_title(f'SCMP 每日精選新聞 - {today_str}')
-    book.set_language('zh')
+    book.set_language('en')
     book.add_author('SCMP Auto Collector')
 
     chapters = []
@@ -211,11 +154,12 @@ def save_to_epub(articles):
         c = epub.EpubHtml(
             title=art['title_en'], 
             file_name=f'chap_{idx}.xhtml', 
-            lang='zh'
+            lang='en'
         )
         
-        paragraphs = art['summary_zh'].split('\n')
-        html_p = ''.join([f'<p style="text-indent: 2em; line-height: 1.25; margin-bottom: 0.4em; margin-top: 0;">{p.strip()}</p>' for p in paragraphs if p.strip()])
+        paragraphs = art['content_en'].split('\n')
+        # 行距已設定為 1 (line-height: 1;)
+        html_p = ''.join([f'<p style="text-indent: 2em; line-height: 1; margin-bottom: 0.4em; margin-top: 0;">{p.strip()}</p>' for p in paragraphs if p.strip()])
         
         c.content = f"""
         <!DOCTYPE html>
@@ -226,10 +170,14 @@ def save_to_epub(articles):
         </head>
         <body style="font-family: sans-serif; padding: 5px; margin: 0;">
             <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 4px; margin-bottom: 6px; font-size: 1.2em;">{art['title_en']}</h2>
-            <p style="color: #555; font-size: 0.8em; margin: 2px 0;"><strong>來源欄目：</strong>{art['source_xml']}</p>
-            <p style="color: #555; font-size: 0.8em; margin: 2px 0 8px 0;"><strong>發布日期：</strong>{art['pub_date']}</p>
+            <p style="color: #555; font-size: 0.8em; margin: 2px 0;"><strong>Source:</strong> {art['source_xml']}</p>
+            <p style="color: #555; font-size: 0.8em; margin: 2px 0 8px 0;"><strong>Date:</strong> {art['pub_date']}</p>
             <hr style="border: none; border-top: 1px solid #eee; margin: 5px 0;" />
             <div>{html_p}</div>
+            <div style="margin-top: 20px; text-align: center;">
+                <hr style="border: none; border-top: 1px dashed #ccc; margin: 10px 0;" />
+                <a href="nav.xhtml" style="font-size: 0.9em; text-decoration: none; color: #0066cc;">返回目錄 (Table of Contents)</a>
+            </div>
         </body>
         </html>
         """
@@ -244,10 +192,10 @@ def save_to_epub(articles):
     book.spine = ['nav'] + chapters
 
     epub.write_epub(epub_filename, book, {})
-    print(f"已成功生成 EPUB 檔案: {epub_filename}（行距已收窄，並已標註來源 XML）")
+    print(f"已成功生成 EPUB 檔案: {epub_filename}（行距已設為 1，已移除翻譯並在文末添加返回目錄連結）")
 
 def main():
-    print("RSS 全文 Gemini 翻譯 & EPUB 生成服務已啟動...")
+    print("RSS 全文抓取 & EPUB 生成服務已啟動...")
     articles = fetch_and_process()
     save_to_epub(articles)
 
