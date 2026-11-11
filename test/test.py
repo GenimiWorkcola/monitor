@@ -56,6 +56,8 @@ df_kospi = df_kospi[['Date', 'KOSPI']].dropna().sort_values('Date')
 
 # ---------------------------------------------------------
 # 3. 讀取並解析 《利率.xlsx》 (針對 Strict OpenXML 格式的穩定解析)
+#    注意：此檔案表頭與資料欄位錯位一欄（日期在A欄，表頭「日期」在B1），
+#    故採用固定位置映射：A=日期, B=SOFR, C=IORB, D=CP, E=1D, F=3M
 # ---------------------------------------------------------
 rates_path = os.path.join(current_dir, '利率.xlsx')
 with zipfile.ZipFile(rates_path, 'r') as z:
@@ -81,39 +83,50 @@ for row in tree.iter():
                 col_r = cell.attrib['r']
                 t = cell.attrib.get('t', '')
                 val = None
-                for v in cell.iter():
-                    if v.tag.endswith('v'):
-                        val = v.text
-                        break
+                t_attr = cell.attrib.get('t', '')
+                if t_attr == 'inlineStr':
+                    # inlineStr: <is><t>text</t></is>
+                    for is_elem in cell.iter():
+                        if is_elem.tag.endswith('is'):
+                            texts = [tt.text or '' for tt in is_elem.iter() if tt.tag.endswith('t')]
+                            val = ''.join(texts)
+                            break
+                if val is None:
+                    for v in cell.iter():
+                        if v.tag.endswith('v'):
+                            val = v.text
+                            break
                 if val is not None:
                     if t == 's':
                         val = shared_strings[int(val)]
                     row_vals[col_r] = val
         rows_dict[row_idx] = row_vals
 
-header_row = rows_dict.get(1, {})
-data_list = []
+COLMAP = {'A': 'Date', 'B': 'SOFR', 'C': 'IORB', 'D': 'CP', 'E': 'Implied_1D', 'F': 'Implied_3M'}
+
+recs = []
 for r in sorted(rows_dict.keys()):
     if r == 1:
         continue
-    row_data = {}
-    for col_key, val in rows_dict[r].items():
-        col_name = header_row.get(col_key[0] + '1', col_key)
-        row_data[col_name] = val
-    data_list.append(row_data)
+    rv = rows_dict[r]
+    rec = {}
+    for col_letter, name in COLMAP.items():
+        rec[name] = rv.get(col_letter + str(r))
+    recs.append(rec)
 
-df_rates = pd.DataFrame(data_list)
-date_col_name = df_rates.columns[0]
-df_rates['Date'] = pd.to_datetime(df_rates[date_col_name], errors='coerce')
-
-for col in df_rates.columns:
-    if col != 'Date' and col != date_col_name:
-        df_rates[col] = pd.to_numeric(df_rates[col], errors='coerce')
-
-df_rates = df_rates.dropna(subset=['Date']).sort_values('Date')
+df_rates = pd.DataFrame(recs)
+df_rates['Date'] = pd.to_datetime(df_rates['Date'], errors='coerce')
+for col in ['SOFR', 'IORB', 'CP', 'Implied_1D', 'Implied_3M']:
+    df_rates[col] = pd.to_numeric(df_rates[col], errors='coerce')
+df_rates = df_rates.dropna(subset=['Date']).sort_values('Date').reset_index(drop=True)
 
 # ---------------------------------------------------------
-# 4. 數據切片 (2026年至今) 與基準歸一化 (Normalization = 100)
+# 4. 計算 1D 隱含利率 與 CP 之間的差異 (1D Implied - CP)
+# ---------------------------------------------------------
+df_rates['Diff_1D_minus_CP'] = df_rates['Implied_1D'] - df_rates['CP']
+
+# ---------------------------------------------------------
+# 5. 數據切片 (2026年至今) 與基準歸一化 (Normalization = 100)
 # ---------------------------------------------------------
 start_date = '2026-01-01'
 
@@ -127,11 +140,12 @@ if not df_kospi_2026.empty:
     df_kospi_2026['KOSPI_Norm'] = df_kospi_2026['KOSPI'] / df_kospi_2026['KOSPI'].iloc[0] * 100
 
 # ---------------------------------------------------------
-# 5. 繪圖（上下雙子圖 - 移除IORB，KOSPI改用韓國國旗藍 #0047A0）
+# 6. 繪圖（上下雙子圖 - 移除IORB，KOSPI改用韓國國旗藍 #0047A0；
+#    上圖疊加 1D-CP 差異柱狀色塊）
 # ---------------------------------------------------------
 fig, (ax1, ax2) = plt.subplots(
-    2, 1, figsize=(14, 10), dpi=300, 
-    sharex=True, 
+    2, 1, figsize=(14, 10), dpi=300,
+    sharex=True,
     gridspec_kw={'height_ratios': [1, 1], 'hspace': 0.12}
 )
 
@@ -144,39 +158,61 @@ if not df_kospi_2026.empty:
 ax1.axhline(100, color='gray', linestyle='--', linewidth=0.8, alpha=0.7)
 ax1.set_ylabel('Normalized Index (2026 YTD = 100)', fontsize=11, fontweight='bold')
 ax1.set_title('2026 YTD Gold & KOSPI Normalized Performance with USD Liquidity Rates', fontsize=14, fontweight='bold', pad=12)
-ax1.legend(loc='upper left', frameon=True, facecolor='white', prop={'weight': 'bold'})
 ax1.grid(True, linestyle=':', alpha=0.6)
+
+# --- 上圖疊加：1D Implied Rate - CP Rate 利差柱狀色塊 ---
+# 觀測點為離散數據：對 1D 隱含利率與 CP 利率分別做線性插值，
+# 在逐日網格上對齊後計算利差，使每個交易日都有利差值
+daily_idx = pd.date_range(df_rates_2026['Date'].min(), df_rates_2026['Date'].max(), freq='D')
+s_1d = df_rates_2026.set_index('Date')['Implied_1D'].reindex(daily_idx).interpolate(method='linear')
+s_cp = df_rates_2026.set_index('Date')['CP'].reindex(daily_idx).interpolate(method='linear')
+df_diff = pd.DataFrame({'Date': daily_idx, 'Diff_1D_minus_CP': s_1d.values - s_cp.values}).dropna()
+
+if not df_diff.empty:
+    # 使用雙Y軸繪製利差柱狀，不影響歸一化指數的刻度
+    ax1b = ax1.twinx()
+    bar_width = 1.2  # 柱寬（天）
+    colors = np.where(df_diff['Diff_1D_minus_CP'] >= 0, '#e41a1c', '#1b9e77')  # 正：紅 / 負：綠
+    ax1b.bar(df_diff['Date'], df_diff['Diff_1D_minus_CP'],
+             width=bar_width, color=colors, alpha=0.35, edgecolor='none', zorder=0)
+    ax1b.axhline(0, color='gray', linewidth=0.8, alpha=0.6)
+    ax1b.set_ylabel('1D Implied - CP Rate Diff (%) [Interpolated]', fontsize=11, fontweight='bold', color='#555555')
+    ax1b.tick_params(axis='y', labelcolor='#555555')
+    # 圖例：手動加入代表色塊
+    from matplotlib.patches import Patch
+    legend_patches = [
+        Patch(facecolor='#e41a1c', alpha=0.5, label='1D Implied - CP > 0 (Interpolated)'),
+        Patch(facecolor='#1b9e77', alpha=0.5, label='1D Implied - CP < 0 (Interpolated)'),
+    ]
+    handles, labels_ = ax1.get_legend_handles_labels()
+    handles += legend_patches
+    labels_ += [p.get_label() for p in legend_patches]
+    ax1.legend(handles, labels_, loc='upper left', frameon=True, facecolor='white', prop={'weight': 'bold'})
+else:
+    ax1.legend(loc='upper left', frameon=True, facecolor='white', prop={'weight': 'bold'})
 
 # --- 下半部分：Interest Rates (Removed IORB) ---
 cols = df_rates.columns
 
 # 2. SOFR: #1f77b4, solid, linewidth=1.4
-col_sofr = next((c for c in cols if 'sofr' in str(c).lower()), None)
-if col_sofr:
-    ax2.plot(df_rates_2026['Date'], df_rates_2026[col_sofr], color='#1f77b4', linewidth=1.4, label='SOFR (Secured Overnight Financing Rate)')
+ax2.plot(df_rates_2026['Date'], df_rates_2026['SOFR'], color='#1f77b4', linewidth=1.4, label='SOFR (Secured Overnight Financing Rate)')
 
 # 3. 30-Day AA Financial CP (Interpolated): #2ca02c, solid, linewidth=2
-col_cp = next((c for c in cols if 'cp' in str(c).lower() or '贴现率' in str(c)), None)
-if col_cp:
-    cp_series = df_rates_2026[col_cp].interpolate(method='linear')
-    ax2.plot(df_rates_2026['Date'], cp_series, color='#2ca02c', linewidth=2, label='30-Day AA Financial CP Discount Rate (Interpolated)')
-    
-    # 4. CP Actual Data Points: scatter, #145a1e, s=36, white edge #fff, linewidths=0.5
-    df_cp_actual = df_rates_2026.dropna(subset=[col_cp])
-    ax2.scatter(df_cp_actual['Date'], df_cp_actual[col_cp], color='#145a1e', s=36, 
-                edgecolors='#ffffff', linewidths=0.5, label='CP Rate (Actual Data Points)', zorder=5)
+cp_series = df_rates_2026['CP'].interpolate(method='linear')
+ax2.plot(df_rates_2026['Date'], cp_series, color='#2ca02c', linewidth=2, label='30-Day AA Financial CP Discount Rate (Interpolated)')
+
+# 4. CP Actual Data Points: scatter, #145a1e, s=36, white edge #fff, linewidths=0.5
+df_cp_actual = df_rates_2026.dropna(subset=['CP'])
+ax2.scatter(df_cp_actual['Date'], df_cp_actual['CP'], color='#145a1e', s=36,
+            edgecolors='#ffffff', linewidths=0.5, label='CP Rate (Actual Data Points)', zorder=5)
 
 # 5. 1D Implied Rate (USD.CNY): #c62828, dashed, linewidth=1.8, marker='o', markersize=5
-col_1d = next((c for c in cols if '1d' in str(c).lower()), None)
-if col_1d:
-    ax2.plot(df_rates_2026['Date'], df_rates_2026[col_1d], linestyle='--', color='#c62828', 
-             linewidth=1.8, marker='o', markersize=5, label='1D Implied Rate (USD.CNY)')
+ax2.plot(df_rates_2026['Date'], df_rates_2026['Implied_1D'], linestyle='--', color='#c62828',
+         linewidth=1.8, marker='o', markersize=5, label='1D Implied Rate (USD.CNY)')
 
 # 6. 3M Implied Rate (USD.CNY): #f4b6c2, dashed, linewidth=1.1, marker='o', markersize=3.5
-col_3m = next((c for c in cols if '3m' in str(c).lower()), None)
-if col_3m:
-    ax2.plot(df_rates_2026['Date'], df_rates_2026[col_3m], linestyle='--', color='#f4b6c2', 
-             linewidth=1.1, marker='o', markersize=3.5, label='3M Implied Rate (USD.CNY)')
+ax2.plot(df_rates_2026['Date'], df_rates_2026['Implied_3M'], linestyle='--', color='#f4b6c2',
+         linewidth=1.1, marker='o', markersize=3.5, label='3M Implied Rate (USD.CNY)')
 
 ax2.set_ylabel('Interest Rate (%)', fontsize=11, fontweight='bold')
 ax2.legend(loc='upper right', frameon=True, facecolor='white', fontsize=9, prop={'weight': 'bold'})
@@ -193,4 +229,6 @@ fig.autofmt_xdate()
 output_path = os.path.join(current_dir, 'gold_kospi_rates_comparison_en_bold.png')
 plt.savefig(output_path, dpi=300, bbox_inches='tight')
 print(f"Chart successfully generated and saved to: {output_path}")
+print(f"Diff stats (1D Implied - CP, interpolated daily, 2026): n={len(df_diff)}, "
+      f"mean={df_diff['Diff_1D_minus_CP'].mean():.3f}, min={df_diff['Diff_1D_minus_CP'].min():.3f}, max={df_diff['Diff_1D_minus_CP'].max():.3f}")
 plt.show()
