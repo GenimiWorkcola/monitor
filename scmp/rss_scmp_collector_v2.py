@@ -103,7 +103,7 @@ def batch_translate_articles(articles):
 
     try:
         response = client.models.generate_content(
-            model='gemini-3.8-flash',
+            model='gemini-2.5-flash',
             contents=prompt,
             config=types.GenerateContentConfig(
                 temperature=0.3,
@@ -113,7 +113,7 @@ def batch_translate_articles(articles):
 
         success_count = 0
         for idx, art in enumerate(articles, start=1):
-            pattern = rf'--- ARTICLE {idx} ---\s*TITLE:\s*(.*?)\s*CONTENT:\s*(.*?)(?=(?:--- ARTICLE \d+ ---)|$)'
+            pattern = rf'--- ARTICLE {idx} ---\s*TITLE:\s*(.*?)\s*CONTENT:\s*(.*?)(?=(?:--- ARTICLE \d+ ---)|\$)'
             match = re.search(pattern, response_text, re.DOTALL)
             
             if match:
@@ -121,14 +121,12 @@ def batch_translate_articles(articles):
                 art['content_display'] = match.group(2).strip()
                 success_count += 1
             else:
-                # 單篇解析失敗時降級保留原文
                 art['title_display'] = art['title_en']
                 art['content_display'] = art['content_en']
 
         print(f"批量翻譯完成！成功解析 {success_count}/{len(articles)} 篇。")
 
     except Exception as e:
-        # 整體呼叫失敗時的降級防護：保留英文全文輸出，不中斷程式
         print(f"[警告] 批量呼叫 Gemini API 發生錯誤 ({e})。已啟動降級機制，全面保留英文原文輸出！")
         for art in articles:
             art['title_display'] = art['title_en']
@@ -142,10 +140,10 @@ def fetch_and_process():
     
     print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 開始深度抓取 RSS 全文...")
     for url in RSS_URLS:
-        source_name = url.split('/')[-1]
+        source_name = url.split('/')[-1].replace('scmp-', '').replace('.xml', '')
         try:
             feed = feedparser.parse(url)
-            print(f"成功拉取: {source_name} (包含 {len(feed.entries)} 條消息)")
+            print(f"成功拉取: {url.split('/')[-1]} (包含 {len(feed.entries)} 條消息)")
             for entry in feed.entries:
                 link = getattr(entry, 'link', '')
                 if link in processed_links:
@@ -166,7 +164,7 @@ def fetch_and_process():
                 full_content = clean_html(raw_content)
                 
                 if is_relevant_article(title, full_content):
-                    print(f" -> 命中文章: {title[:30]}...")
+                    print(f" -> 命中文章 [{source_name}]: {title[:30]}...")
                     
                     raw_date = getattr(entry, 'published', datetime.now().strftime('%a, %d %b %Y %H:%M:%S +0000'))
                     pub_date_clean = format_pub_date(raw_date)
@@ -174,80 +172,15 @@ def fetch_and_process():
                     article_item = {
                         "title_en": title,
                         "content_en": full_content,
-                        "pub_date": pub_date_clean
+                        "pub_date": pub_date_clean,
+                        "source_tag": source_name  # 記錄來源標籤 (news, opinion, economy, country-reports, tech)
                     }
                     raw_articles.append(article_item)
         except Exception as e:
             print(f"[錯誤] 解析 {url} 失敗: {e}")
 
-    # 進行批量翻譯（內含 API 異常時保留英文原文的降級防護）
     processed_articles = batch_translate_articles(raw_articles)
     return processed_articles
 
 def save_to_epub(articles):
-    """把文章打包成帶有超連結目錄 (TOC) 的 EPUB 電子書（不含任何 source 網址）"""
-    if not articles:
-        print("本次沒有篩選出符合條件的新文章。")
-        return
-        
-    today_str = datetime.now().strftime('%Y-%m-%d')
-    epub_filename = f"scmp_{today_str}.epub"
-    
-    book = epub.EpubBook()
-    book.set_identifier(f'scmp-daily-{today_str}')
-    book.set_title(f'SCMP 每日精選新聞 - {today_str}')
-    book.set_language('zh')
-    book.add_author('Gemini Auto Collector')
-
-    chapters = []
-    toc = []
-
-    for idx, art in enumerate(articles, start=1):
-        c = epub.EpubHtml(
-            title=art['title_display'], 
-            file_name=f'chap_{idx}.xhtml', 
-            lang='zh'
-        )
-        
-        paragraphs = art['content_display'].split('\n')
-        html_p = ''.join([f'<p style="text-indent: 2em; line-height: 1.6; margin-bottom: 0.6em; margin-top: 0;">{p.strip()}</p>' for p in paragraphs if p.strip()])
-        
-        c.content = f"""
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="utf-8"/>
-            <title>{art['title_display']}</title>
-        </head>
-        <body style="font-family: sans-serif; padding: 10px; margin: 0;">
-            <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 4px; margin-bottom: 6px; font-size: 1.2em;">{art['title_display']}</h2>
-            <p style="color: #555; font-size: 0.8em; margin: 2px 0 12px 0;"><strong>發布日期:</strong> {art['pub_date']}</p>
-            <hr style="border: none; border-top: 1px solid #eee; margin: 5px 0;" />
-            <div style="margin-top: 10px;">{html_p}</div>
-            <div style="margin-top: 30px; text-align: center;">
-                <hr style="border: none; border-top: 1px dashed #ccc; margin: 10px 0;" />
-                <a href="nav.xhtml" style="font-size: 0.9em; text-decoration: none; color: #0066cc;">返回目錄 (Table of Contents)</a>
-            </div>
-        </body>
-        </html>
-        """
-        
-        book.add_item(c)
-        chapters.append(c)
-        toc.append(c)
-
-    book.toc = tuple(toc)
-    book.add_item(epub.EpubNcx())
-    book.add_item(epub.EpubNav())
-    book.spine = ['nav'] + chapters
-
-    epub.write_epub(epub_filename, book, {})
-    print(f"已成功生成 EPUB 檔案: {epub_filename}（未包含任何來源網址）")
-
-def main():
-    print("RSS 全文處理服務已啟動...")
-    articles = fetch_and_process()
-    save_to_epub(articles)
-
-if __name__ == "__main__":
-    main()
+    """把文章打包成帶有來源
