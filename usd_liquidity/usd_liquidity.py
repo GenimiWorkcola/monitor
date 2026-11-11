@@ -114,10 +114,10 @@ def choose_sheet(excel_file: pd.ExcelFile, preferred: str | None = None) -> str:
 def read_csv_with_fallback(path: Path) -> pd.DataFrame:
     for encoding in ["utf-8-sig", "utf-8", "gb18030", "gbk"]:
         try:
-            return pd.read_csv(path, dtype=object, encoding=encoding)
-        except UnicodeDecodeError:
+            return pd.read_csv(path, dtype=object, encoding=encoding, sep=None, engine="python")
+        except Exception:
             continue
-    return pd.read_csv(path, dtype=object)
+    return pd.read_csv(path, dtype=object, sep=None, engine="python")
 
 
 def read_raw_table(path: Path, preferred_sheet: str | None = None) -> tuple[pd.DataFrame, str]:
@@ -174,13 +174,10 @@ def merge_and_deduplicate_implied(base_implied_path: Path, daily_path: Path) -> 
     combined_raw = pd.concat(dfs, ignore_index=True)
     combined_raw = combined_raw.dropna(axis=0, how="all").dropna(axis=1, how="all")
 
-    # 根据关键列进行去重（如日期、期限、货币对等若存在则联合去重）
-    # 基于长表常规特征：按所有列或核心标识去重
     before_len = len(combined_raw)
     combined_raw = combined_raw.drop_duplicates(keep="last")
     print(f"去重完成：合并前 {before_len} 行，去重后 {len(combined_raw)} 行。")
 
-    # 写回覆盖 imply.xlsx
     temp_path = base_implied_path.with_name(base_implied_path.stem + ".tmp.xlsx")
     combined_raw.to_excel(temp_path, index=False)
     os.replace(temp_path, base_implied_path)
