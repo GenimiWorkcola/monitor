@@ -10,11 +10,11 @@ import matplotlib.dates as mdates
 current_dir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(current_dir)
 
-# 設定中文字體與負號顯示
-plt.rcParams['font.sans-serif'] = ['SimHei', 'Microsoft YaHei', 'DejaVu Sans', 'Arial']
+# 設定英文字體與粗體，關閉負號亂碼
+plt.rcParams['font.sans-serif'] = ['DejaVu Sans', 'Arial']
 plt.rcParams['axes.unicode_minus'] = False
 
-print("正在讀取並解析資料檔案...")
+print("Reading and parsing data files...")
 
 # ---------------------------------------------------------
 # 1. 讀取並解析 《国内现货黄金价格.txt》
@@ -62,7 +62,6 @@ with zipfile.ZipFile(rates_path, 'r') as z:
     sheet_xml = z.read('xl/worksheets/sheet1.xml')
     strings_xml = z.read('xl/sharedStrings.xml') if 'xl/sharedStrings.xml' in z.namelist() else None
 
-# 解析 sharedStrings
 shared_strings = []
 if strings_xml:
     tree_s = ET.fromstring(strings_xml)
@@ -70,7 +69,6 @@ if strings_xml:
         if elem.tag.endswith('t'):
             shared_strings.append(elem.text or '')
 
-# 解析 cell 資料
 tree = ET.fromstring(sheet_xml)
 rows_dict = {}
 
@@ -93,25 +91,18 @@ for row in tree.iter():
                     row_vals[col_r] = val
         rows_dict[row_idx] = row_vals
 
-# 整理成 DataFrame
 header_row = rows_dict.get(1, {})
-columns = [header_row.get(col_key, col_key) for col_key in sorted(header_row.keys())]
-
 data_list = []
 for r in sorted(rows_dict.keys()):
     if r == 1:
         continue
     row_data = {}
     for col_key, val in rows_dict[r].items():
-        # 對應欄位名稱
         col_name = header_row.get(col_key[0] + '1', col_key)
         row_data[col_name] = val
     data_list.append(row_data)
 
 df_rates = pd.DataFrame(data_list)
-
-# 重新命名與清理欄位型態
-# 依據實際結構：第一欄通常為日期 (A欄/A行)
 date_col_name = df_rates.columns[0]
 df_rates['Date'] = pd.to_datetime(df_rates[date_col_name], errors='coerce')
 
@@ -130,14 +121,13 @@ df_gold_2026 = df_gold[df_gold['Date'] >= start_date].copy()
 df_kospi_2026 = df_kospi[df_kospi['Date'] >= start_date].copy()
 df_rates_2026 = df_rates[df_rates['Date'] >= start_date].copy()
 
-# 基准歸一化處理（今年首個有效交易日為 100）
 if not df_gold_2026.empty:
     df_gold_2026['Gold_Norm'] = df_gold_2026['Gold'] / df_gold_2026['Gold'].iloc[0] * 100
 if not df_kospi_2026.empty:
     df_kospi_2026['KOSPI_Norm'] = df_kospi_2026['KOSPI'] / df_kospi_2026['KOSPI'].iloc[0] * 100
 
 # ---------------------------------------------------------
-# 5. 繪圖（上下雙子圖）
+# 5. 繪圖（上下雙子圖 - 移除IORB，KOSPI改用韓國國旗藍 #0047A0）
 # ---------------------------------------------------------
 fig, (ax1, ax2) = plt.subplots(
     2, 1, figsize=(14, 10), dpi=300, 
@@ -145,63 +135,62 @@ fig, (ax1, ax2) = plt.subplots(
     gridspec_kw={'height_ratios': [1, 1], 'hspace': 0.12}
 )
 
-# --- 上半部分：黃金 & KOSPI 歸一化走勢 ---
+# --- 上半部分：Gold & KOSPI Normalized Performance ---
 if not df_gold_2026.empty:
-    ax1.plot(df_gold_2026['Date'], df_gold_2026['Gold_Norm'], label='国内现货黄金 (Normalized = 100)', color='#ff7f0e', linewidth=2)
+    ax1.plot(df_gold_2026['Date'], df_gold_2026['Gold_Norm'], label='Domestic Gold Spot (Normalized = 100)', color='#ff7f0e', linewidth=2)
 if not df_kospi_2026.empty:
-    ax1.plot(df_kospi_2026['Date'], df_kospi_2026['KOSPI_Norm'], label='KOSPI 指数 (Normalized = 100)', color='#17becf', linewidth=2)
+    # 韓國國旗藍 (Korean Flag Blue: #0047A0)
+    ax1.plot(df_kospi_2026['Date'], df_kospi_2026['KOSPI_Norm'], label='KOSPI Index (Normalized = 100)', color='#0047A0', linewidth=2)
 ax1.axhline(100, color='gray', linestyle='--', linewidth=0.8, alpha=0.7)
-ax1.set_ylabel('归一化指数 (2026年初 = 100)', fontsize=11)
-ax1.set_title('2026年至今 黄金与KOSPI走势对比及美元流动性利率', fontsize=14, fontweight='bold', pad=12)
-ax1.legend(loc='upper left', frameon=True, facecolor='white')
+ax1.set_ylabel('Normalized Index (2026 YTD = 100)', fontsize=11, fontweight='bold')
+ax1.set_title('2026 YTD Gold & KOSPI Normalized Performance with USD Liquidity Rates', fontsize=14, fontweight='bold', pad=12)
+ax1.legend(loc='upper left', frameon=True, facecolor='white', prop={'weight': 'bold'})
 ax1.grid(True, linestyle=':', alpha=0.6)
 
-# --- 下半部分：利率曲線（嚴格按要求格式與配色定義） ---
+# --- 下半部分：Interest Rates (Removed IORB) ---
 cols = df_rates.columns
 
-# 1. IORB（准备金利率）：#d62728，阶梯线（step: 'end'），线宽 2
-col_iorb = next((c for c in cols if 'iorb' in str(c).lower() or 'ioer' in str(c).lower()), None)
-if col_iorb:
-    ax2.step(df_rates_2026['Date'], df_rates_2026[col_iorb], where='post', color='#d62728', linewidth=2, label='IORB（准备金利率）')
-
-# 2. SOFR（担保隔夜融资利率）：#1f77b4，实线，线宽 1.4
+# 2. SOFR: #1f77b4, solid, linewidth=1.4
 col_sofr = next((c for c in cols if 'sofr' in str(c).lower()), None)
 if col_sofr:
-    ax2.plot(df_rates_2026['Date'], df_rates_2026[col_sofr], color='#1f77b4', linewidth=1.4, label='SOFR（担保隔夜融资利率）')
+    ax2.plot(df_rates_2026['Date'], df_rates_2026[col_sofr], color='#1f77b4', linewidth=1.4, label='SOFR (Secured Overnight Financing Rate)')
 
-# 3. 30天AA金融CP贴现率（平滑插值）：#2ca02c，实线，线宽 2
+# 3. 30-Day AA Financial CP (Interpolated): #2ca02c, solid, linewidth=2
 col_cp = next((c for c in cols if 'cp' in str(c).lower() or '贴现率' in str(c)), None)
 if col_cp:
     cp_series = df_rates_2026[col_cp].interpolate(method='linear')
-    ax2.plot(df_rates_2026['Date'], cp_series, color='#2ca02c', linewidth=2, label='30天AA金融CP贴现率（平滑插值）')
+    ax2.plot(df_rates_2026['Date'], cp_series, color='#2ca02c', linewidth=2, label='30-Day AA Financial CP Discount Rate (Interpolated)')
     
-    # 4. CP贴现率（实际无空值数据点）：散点图，#145a1e，符号大小 6 (s=36)，白色边框 #fff，宽度 0.5
+    # 4. CP Actual Data Points: scatter, #145a1e, s=36, white edge #fff, linewidths=0.5
     df_cp_actual = df_rates_2026.dropna(subset=[col_cp])
     ax2.scatter(df_cp_actual['Date'], df_cp_actual[col_cp], color='#145a1e', s=36, 
-                edgecolors='#ffffff', linewidths=0.5, label='CP贴现率（实际数据点）', zorder=5)
+                edgecolors='#ffffff', linewidths=0.5, label='CP Rate (Actual Data Points)', zorder=5)
 
-# 5. 1D隐含利率（USD.CNY）：#c62828，虚线，线宽 1.8，大小 5 圆形点
+# 5. 1D Implied Rate (USD.CNY): #c62828, dashed, linewidth=1.8, marker='o', markersize=5
 col_1d = next((c for c in cols if '1d' in str(c).lower()), None)
 if col_1d:
     ax2.plot(df_rates_2026['Date'], df_rates_2026[col_1d], linestyle='--', color='#c62828', 
-             linewidth=1.8, marker='o', markersize=5, label='1D隐含利率（USD.CNY）')
+             linewidth=1.8, marker='o', markersize=5, label='1D Implied Rate (USD.CNY)')
 
-# 6. 3M隐含利率（USD.CNY）：#f4b6c2，虚线，线宽 1.1，大小 3.5 圆形点
+# 6. 3M Implied Rate (USD.CNY): #f4b6c2, dashed, linewidth=1.1, marker='o', markersize=3.5
 col_3m = next((c for c in cols if '3m' in str(c).lower()), None)
 if col_3m:
     ax2.plot(df_rates_2026['Date'], df_rates_2026[col_3m], linestyle='--', color='#f4b6c2', 
-             linewidth=1.1, marker='o', markersize=3.5, label='3M隐含利率（USD.CNY）')
+             linewidth=1.1, marker='o', markersize=3.5, label='3M Implied Rate (USD.CNY)')
 
-ax2.set_ylabel('利率 (%)', fontsize=11)
-ax2.legend(loc='upper right', frameon=True, facecolor='white', fontsize=9)
+ax2.set_ylabel('Interest Rate (%)', fontsize=11, fontweight='bold')
+ax2.legend(loc='upper right', frameon=True, facecolor='white', fontsize=9, prop={'weight': 'bold'})
 ax2.grid(True, linestyle=':', alpha=0.6)
 
-# 横軸時間格式化
+# Format X-axis dates and bold labels
 ax2.xaxis.set_major_locator(mdates.MonthLocator())
 ax2.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
+for label in (ax1.get_xticklabels() + ax1.get_yticklabels() + ax2.get_xticklabels() + ax2.get_yticklabels()):
+    label.set_fontweight('bold')
+
 fig.autofmt_xdate()
 
-# 儲存圖片
-output_path = os.path.join(current_dir, 'gold_kospi_rates_comparison.png')
+output_path = os.path.join(current_dir, 'gold_kospi_rates_comparison_en_bold.png')
 plt.savefig(output_path, dpi=300, bbox_inches='tight')
-print(f"圖表已成功生成並儲存至: {output_path}")
+print(f"Chart successfully generated and saved to: {output_path}")
+plt.show()
