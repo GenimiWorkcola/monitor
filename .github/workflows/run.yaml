@@ -3,7 +3,7 @@ name: Run Script in Cloud
 on:
   workflow_dispatch: # 允許在 GitHub 網頁上手動觸發執行
   schedule:
-    - cron: '26 1 * * 1-5' # UTC 時間 01:26，對應北京時間 (UTC+8) 週一至週五早上 09:26[cite: 2]
+    - cron: '26 1 * * *' # UTC 時間 01:26，對應北京時間 (UTC+8) 每天早上 09:26
 
 permissions:
   contents: write
@@ -14,25 +14,25 @@ jobs:
     
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4[cite: 2]
+      uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v5[cite: 2]
+      uses: actions/setup-python@v5
       with:
         python-version: '3.10'
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install requests beautifulsoup4 pandas openpyxl pandas-datareader[cite: 2]
+        pip install requests beautifulsoup4 pandas openpyxl pandas-datareader
 
     - name: Run Python scripts
       run: |
-        python .github/workflows/run_all.py[cite: 2]
+        python .github/workflows/run_all.py
 
     - name: Commit and push changes back
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git add .
-        git diff --quiet && git diff --staged --quiet || (git commit -m "Cloud run update data [skip ci]" && git push)[cite: 2]
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Cloud run update data [skip ci]" && git push)
