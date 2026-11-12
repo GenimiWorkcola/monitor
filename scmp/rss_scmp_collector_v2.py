@@ -183,4 +183,11 @@ def fetch_and_process():
     return processed_articles
 
 def save_to_epub(articles):
-    """把文章打包成帶有來源
+    """把文章打包成帶有來源的 EPUB 電子書"""
+    # 這裡可以根據您的需求繼續補全打包成 EPUB 的邏輯
+    pass
+
+if __name__ == "__main__":
+    articles = fetch_and_process()
+    if articles:
+        save_to_epub(articles)

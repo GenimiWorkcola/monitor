@@ -85,7 +85,6 @@ for row in tree.iter():
                 val = None
                 t_attr = cell.attrib.get('t', '')
                 if t_attr == 'inlineStr':
-                    # inlineStr: <is><t>text</t></is>
                     for is_elem in cell.iter():
                         if is_elem.tag.endswith('is'):
                             texts = [tt.text or '' for tt in is_elem.iter() if tt.tag.endswith('t')]
@@ -115,7 +114,21 @@ for r in sorted(rows_dict.keys()):
     recs.append(rec)
 
 df_rates = pd.DataFrame(recs)
-df_rates['Date'] = pd.to_datetime(df_rates['Date'], errors='coerce')
+
+# 支援 Excel 日期序列號與標準日期字串的相容解析
+def parse_date_robust(val):
+    if val is None or pd.isna(val):
+        return pd.NaT
+    val_str = str(val).strip()
+    try:
+        num = float(val_str)
+        if num > 10000:
+            return pd.Timestamp('1899-12-30') + pd.to_timedelta(num, unit='D')
+    except ValueError:
+        pass
+    return pd.to_datetime(val_str, errors='coerce')
+
+df_rates['Date'] = df_rates['Date'].apply(parse_date_robust)
 for col in ['SOFR', 'IORB', 'CP', 'Implied_1D', 'Implied_3M']:
     df_rates[col] = pd.to_numeric(df_rates[col], errors='coerce')
 df_rates = df_rates.dropna(subset=['Date']).sort_values('Date').reset_index(drop=True)
@@ -161,24 +174,20 @@ ax1.set_title('2026 YTD Gold & KOSPI Normalized Performance with USD Liquidity R
 ax1.grid(True, linestyle=':', alpha=0.6)
 
 # --- 上圖疊加：1D Implied Rate - CP Rate 利差柱狀色塊 ---
-# 觀測點為離散數據：對 1D 隱含利率與 CP 利率分別做線性插值，
-# 在逐日網格上對齊後計算利差，使每個交易日都有利差值
 daily_idx = pd.date_range(df_rates_2026['Date'].min(), df_rates_2026['Date'].max(), freq='D')
 s_1d = df_rates_2026.set_index('Date')['Implied_1D'].reindex(daily_idx).interpolate(method='linear')
 s_cp = df_rates_2026.set_index('Date')['CP'].reindex(daily_idx).interpolate(method='linear')
 df_diff = pd.DataFrame({'Date': daily_idx, 'Diff_1D_minus_CP': s_1d.values - s_cp.values}).dropna()
 
 if not df_diff.empty:
-    # 使用雙Y軸繪製利差柱狀，不影響歸一化指數的刻度
     ax1b = ax1.twinx()
-    bar_width = 1.2  # 柱寬（天）
-    colors = np.where(df_diff['Diff_1D_minus_CP'] >= 0, '#e41a1c', '#1b9e77')  # 正：紅 / 負：綠
+    bar_width = 1.2
+    colors = np.where(df_diff['Diff_1D_minus_CP'] >= 0, '#e41a1c', '#1b9e77')
     ax1b.bar(df_diff['Date'], df_diff['Diff_1D_minus_CP'],
              width=bar_width, color=colors, alpha=0.35, edgecolor='none', zorder=0)
     ax1b.axhline(0, color='gray', linewidth=0.8, alpha=0.6)
     ax1b.set_ylabel('1D Implied - CP Rate Diff (%) [Interpolated]', fontsize=11, fontweight='bold', color='#555555')
     ax1b.tick_params(axis='y', labelcolor='#555555')
-    # 圖例：手動加入代表色塊
     from matplotlib.patches import Patch
     legend_patches = [
         Patch(facecolor='#e41a1c', alpha=0.5, label='1D Implied - CP > 0 (Interpolated)'),
@@ -192,25 +201,18 @@ else:
     ax1.legend(loc='upper left', frameon=True, facecolor='white', prop={'weight': 'bold'})
 
 # --- 下半部分：Interest Rates (Removed IORB) ---
-cols = df_rates.columns
-
-# 2. SOFR: #1f77b4, solid, linewidth=1.4
 ax2.plot(df_rates_2026['Date'], df_rates_2026['SOFR'], color='#1f77b4', linewidth=1.4, label='SOFR (Secured Overnight Financing Rate)')
 
-# 3. 30-Day AA Financial CP (Interpolated): #2ca02c, solid, linewidth=2
 cp_series = df_rates_2026['CP'].interpolate(method='linear')
 ax2.plot(df_rates_2026['Date'], cp_series, color='#2ca02c', linewidth=2, label='30-Day AA Financial CP Discount Rate (Interpolated)')
 
-# 4. CP Actual Data Points: scatter, #145a1e, s=36, white edge #fff, linewidths=0.5
 df_cp_actual = df_rates_2026.dropna(subset=['CP'])
 ax2.scatter(df_cp_actual['Date'], df_cp_actual['CP'], color='#145a1e', s=36,
             edgecolors='#ffffff', linewidths=0.5, label='CP Rate (Actual Data Points)', zorder=5)
 
-# 5. 1D Implied Rate (USD.CNY): #c62828, dashed, linewidth=1.8, marker='o', markersize=5
 ax2.plot(df_rates_2026['Date'], df_rates_2026['Implied_1D'], linestyle='--', color='#c62828',
          linewidth=1.8, marker='o', markersize=5, label='1D Implied Rate (USD.CNY)')
 
-# 6. 3M Implied Rate (USD.CNY): #f4b6c2, dashed, linewidth=1.1, marker='o', markersize=3.5
 ax2.plot(df_rates_2026['Date'], df_rates_2026['Implied_3M'], linestyle='--', color='#f4b6c2',
          linewidth=1.1, marker='o', markersize=3.5, label='3M Implied Rate (USD.CNY)')
 
@@ -218,7 +220,6 @@ ax2.set_ylabel('Interest Rate (%)', fontsize=11, fontweight='bold')
 ax2.legend(loc='upper right', frameon=True, facecolor='white', fontsize=9, prop={'weight': 'bold'})
 ax2.grid(True, linestyle=':', alpha=0.6)
 
-# Format X-axis dates and bold labels
 ax2.xaxis.set_major_locator(mdates.MonthLocator())
 ax2.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
 for label in (ax1.get_xticklabels() + ax1.get_yticklabels() + ax2.get_xticklabels() + ax2.get_yticklabels()):
