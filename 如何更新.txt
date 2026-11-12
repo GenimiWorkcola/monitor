@@ -1,6 +1,6 @@
 更好用这个
 git add .
-git commit -m "说明你这次更新了什么内容 自动每日"
+git commit -m "scmp"
 git push
 
 
