@@ -103,7 +103,7 @@ def batch_translate_articles(articles):
 
     try:
         response = client.models.generate_content(
-            model='gemini-2.5-flash',
+            model='gemini-3.8-flash',
             contents=prompt,
             config=types.GenerateContentConfig(
                 temperature=0.3,
@@ -183,10 +183,69 @@ def fetch_and_process():
     return processed_articles
 
 def save_to_epub(articles):
-    """把文章打包成帶有來源的 EPUB 電子書"""
-    pass
+    """把文章打包成帶有超連結目錄 (TOC) 的 EPUB 電子書"""
+    if not articles:
+        print("本次沒有篩選出符合條件的新文章。")
+        return
+        
+    today_str = datetime.now().strftime('%Y-%m-%d')
+    epub_filename = f"scmp_{today_str}.epub"
+    
+    book = epub.EpubBook()
+    book.set_identifier(f'scmp-daily-{today_str}')
+    book.set_title(f'SCMP 每日精選新聞 - {today_str}')
+    book.set_language('zh')
+    book.add_author('SCMP Auto Collector')
+
+    chapters = []
+    toc = []
+
+    for idx, art in enumerate(articles, start=1):
+        title_to_use = art.get('title_display', art['title_en'])
+        content_to_use = art.get('content_display', art['content_en'])
+
+        c = epub.EpubHtml(
+            title=title_to_use, 
+            file_name=f'chap_{idx}.xhtml', 
+            lang='zh'
+        )
+        
+        paragraphs = content_to_use.split('\n')
+        html_p = ''.join([f'<p style="text-indent: 2em; line-height: 1; margin-bottom: 0.4em; margin-top: 0;">{p.strip()}</p>' for p in paragraphs if p.strip()])
+        
+        c.content = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="utf-8"/>
+            <title>{title_to_use}</title>
+        </head>
+        <body style="font-family: sans-serif; padding: 5px; margin: 0;">
+            <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 4px; margin-bottom: 6px; font-size: 1.2em;">{title_to_use}</h2>
+            <p style="color: #555; font-size: 0.8em; margin: 2px 0;"><strong>Source:</strong> {art.get('source_tag', '')}</p>
+            <p style="color: #555; font-size: 0.8em; margin: 2px 0 8px 0;"><strong>Date:</strong> {art['pub_date']}</p>
+            <hr style="border: none; border-top: 1px solid #eee; margin: 5px 0;" />
+            <div>{html_p}</div>
+            <div style="margin-top: 20px; text-align: center;">
+                <hr style="border: none; border-top: 1px dashed #ccc; margin: 10px 0;" />
+                <a href="nav.xhtml" style="font-size: 0.9em; text-decoration: none; color: #0066cc;">返回目錄 (Table of Contents)</a>
+            </div>
+        </body>
+        </html>
+        """
+        
+        book.add_item(c)
+        chapters.append(c)
+        toc.append(c)
+
+    book.toc = tuple(toc)
+    book.add_item(epub.EpubNcx())
+    book.add_item(epub.EpubNav())
+    book.spine = ['nav'] + chapters
+
+    epub.write_epub(epub_filename, book, {})
+    print(f"已成功生成 EPUB 檔案: {epub_filename}")
 
 if __name__ == "__main__":
     articles = fetch_and_process()
-    if articles:
-        save_to_epub(articles)
+    save_to_epub(articles)
