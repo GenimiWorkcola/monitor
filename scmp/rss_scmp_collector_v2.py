@@ -173,7 +173,7 @@ def fetch_and_process():
                         "title_en": title,
                         "content_en": full_content,
                         "pub_date": pub_date_clean,
-                        "source_tag": source_name  # 記錄來源標籤 (news, opinion, economy, country-reports, tech)
+                        "source_tag": source_name  # 記錄來源標籤
                     }
                     raw_articles.append(article_item)
         except Exception as e:
@@ -184,7 +184,6 @@ def fetch_and_process():
 
 def save_to_epub(articles):
     """把文章打包成帶有來源的 EPUB 電子書"""
-    # 這裡可以根據您的需求繼續補全打包成 EPUB 的邏輯
     pass
 
 if __name__ == "__main__":
