@@ -9,8 +9,13 @@ from google.genai import types
 # 確保工作目錄切換到腳本所在資料夾
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-# ==================== 設定 Gemini API ====================
-API_KEY = os.environ.get("GEMINI_API_KEY", "在此處填入您的_GEMINI_API_KEY")
+# ==================== 設定 Gemini API（從 GitHub Secrets 注入的環境變數讀取）====================
+API_KEY = os.environ.get("GEMINI_API_KEY")
+if not API_KEY:
+    raise RuntimeError(
+        "未檢測到 GEMINI_API_KEY 環境變數！"
+        "請在 GitHub Actions workflow 中設定：env: GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}"
+    )
 client = genai.Client(api_key=API_KEY)
 
 # 訂閱源列表（自動去重）
@@ -56,7 +61,7 @@ def clean_html(raw_html):
 
 def is_relevant_article(title, content):
     combined_text = f"{title} {content}".lower()
-    
+
     for ex_kw in EXCLUDE_KEYWORDS:
         if re.search(r'\b' + re.escape(ex_kw) + r'\b', combined_text):
             return False
@@ -113,9 +118,9 @@ def batch_translate_articles(articles):
 
         success_count = 0
         for idx, art in enumerate(articles, start=1):
-            pattern = rf'--- ARTICLE {idx} ---\s*TITLE:\s*(.*?)\s*CONTENT:\s*(.*?)(?=(?:--- ARTICLE \d+ ---)|\$)'
+            pattern = rf'--- ARTICLE {idx} ---\s*TITLE:\s*(.*?)\s*CONTENT:\s*(.*?)(?=(?:--- ARTICLE \d+ ---)|\Z)'
             match = re.search(pattern, response_text, re.DOTALL)
-            
+
             if match:
                 art['title_display'] = match.group(1).strip()
                 art['content_display'] = match.group(2).strip()
@@ -137,43 +142,43 @@ def batch_translate_articles(articles):
 def fetch_and_process():
     processed_links = set()
     raw_articles = []
-    
+
     print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 開始深度抓取 RSS 全文...")
     for url in RSS_URLS:
-        source_name = url.split('/')[-1].replace('scmp-', '').replace('.xml', '')
+        source_xml = url.split('/')[-1]  # 例如 scmp-news.xml
         try:
             feed = feedparser.parse(url)
-            print(f"成功拉取: {url.split('/')[-1]} (包含 {len(feed.entries)} 條消息)")
+            print(f"成功拉取: {source_xml} (包含 {len(feed.entries)} 條消息)")
             for entry in feed.entries:
                 link = getattr(entry, 'link', '')
                 if link in processed_links:
                     continue
                 processed_links.add(link)
-                
+
                 title = getattr(entry, 'title', '')
-                
+
                 raw_content = ""
                 if hasattr(entry, 'content') and entry.content:
                     raw_content = entry.content[0].get('value', '')
                 elif hasattr(entry, 'summary_detail') and entry.summary_detail:
                     raw_content = entry.summary_detail.get('value', '')
-                
+
                 if not raw_content:
                     raw_content = getattr(entry, 'summary', getattr(entry, 'description', ''))
-                
+
                 full_content = clean_html(raw_content)
-                
+
                 if is_relevant_article(title, full_content):
-                    print(f" -> 命中文章 [{source_name}]: {title[:30]}...")
-                    
+                    print(f" -> 命中文章 [{source_xml}]: {title[:30]}...")
+
                     raw_date = getattr(entry, 'published', datetime.now().strftime('%a, %d %b %Y %H:%M:%S +0000'))
                     pub_date_clean = format_pub_date(raw_date)
-                    
+
                     article_item = {
                         "title_en": title,
                         "content_en": full_content,
                         "pub_date": pub_date_clean,
-                        "source_tag": source_name  # 記錄來源標籤
+                        "source_tag": source_xml  # 記錄來源 xml 檔名
                     }
                     raw_articles.append(article_item)
         except Exception as e:
@@ -187,10 +192,10 @@ def save_to_epub(articles):
     if not articles:
         print("本次沒有篩選出符合條件的新文章。")
         return
-        
+
     today_str = datetime.now().strftime('%Y-%m-%d')
     epub_filename = f"scmp_{today_str}.epub"
-    
+
     book = epub.EpubBook()
     book.set_identifier(f'scmp-daily-{today_str}')
     book.set_title(f'SCMP 每日精選新聞 - {today_str}')
@@ -198,21 +203,22 @@ def save_to_epub(articles):
     book.add_author('SCMP Auto Collector')
 
     chapters = []
-    toc = []
+    nav_links = []  # 目錄條目：標題 + 來源 xml
 
     for idx, art in enumerate(articles, start=1):
         title_to_use = art.get('title_display', art['title_en'])
         content_to_use = art.get('content_display', art['content_en'])
+        source_xml = art.get('source_tag', '')
 
         c = epub.EpubHtml(
             title=title_to_use, 
             file_name=f'chap_{idx}.xhtml', 
             lang='zh'
         )
-        
+
         paragraphs = content_to_use.split('\n')
         html_p = ''.join([f'<p style="text-indent: 2em; line-height: 1; margin-bottom: 0.4em; margin-top: 0;">{p.strip()}</p>' for p in paragraphs if p.strip()])
-        
+
         c.content = f"""
         <!DOCTYPE html>
         <html>
@@ -222,7 +228,7 @@ def save_to_epub(articles):
         </head>
         <body style="font-family: sans-serif; padding: 5px; margin: 0;">
             <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 4px; margin-bottom: 6px; font-size: 1.2em;">{title_to_use}</h2>
-            <p style="color: #555; font-size: 0.8em; margin: 2px 0;"><strong>Source:</strong> {art.get('source_tag', '')}</p>
+            <p style="color: #555; font-size: 0.8em; margin: 2px 0;"><strong>Source:</strong> {source_xml}</p>
             <p style="color: #555; font-size: 0.8em; margin: 2px 0 8px 0;"><strong>Date:</strong> {art['pub_date']}</p>
             <hr style="border: none; border-top: 1px solid #eee; margin: 5px 0;" />
             <div>{html_p}</div>
@@ -233,12 +239,45 @@ def save_to_epub(articles):
         </body>
         </html>
         """
-        
+
         book.add_item(c)
         chapters.append(c)
-        toc.append(c)
 
-    book.toc = tuple(toc)
+        # 目錄條目：文章標題後方標註來源 xml
+        toc_label = f"{title_to_use} <{source_xml}>" if source_xml else title_to_use
+        nav_links.append(epub.Link(f'chap_{idx}.xhtml', toc_label, f'chap_{idx}'))
+
+    # ==================== 自訂可點擊目錄頁（每條目後附來源 xml）====================
+    toc_page = epub.EpubHtml(title='目錄 Table of Contents', file_name='nav.xhtml', lang='zh')
+    toc_items = []
+    for idx, art in enumerate(articles, start=1):
+        title_to_use = art.get('title_display', art['title_en'])
+        source_xml = art.get('source_tag', '')
+        date_str = art.get('pub_date', '')
+        source_badge = f'<span style="color: #0066cc; font-size: 0.75em;">[{source_xml}]</span>' if source_xml else ''
+        date_badge = f'<span style="color: #888; font-size: 0.75em;">{date_str}</span>' if date_str else ''
+        toc_items.append(
+            f'<li style="margin-bottom: 8px; line-height: 1.5;">'
+            f'<a href="chap_{idx}.xhtml" style="text-decoration: none; color: #333;">{idx}. {title_to_use}</a> '
+            f'{source_badge} {date_badge}</li>'
+        )
+    toc_page.content = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>目錄 Table of Contents</title>
+    </head>
+    <body style="font-family: sans-serif; padding: 10px; margin: 0;">
+        <h2 style="border-bottom: 2px solid #0066cc; padding-bottom: 6px;">目錄（共 {len(articles)} 篇）</h2>
+        <ol style="padding-left: 20px;">{''.join(toc_items)}</ol>
+    </body>
+    </html>
+    """
+    book.add_item(toc_page)
+
+    # EPUB3 導航 (nav.xhtml) 與 NCX 目錄：條目同樣附來源 xml
+    book.toc = tuple(nav_links)
     book.add_item(epub.EpubNcx())
     book.add_item(epub.EpubNav())
     book.spine = ['nav'] + chapters
