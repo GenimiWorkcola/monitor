@@ -3,7 +3,7 @@ name: SCMP RSS Collector
 on:
   workflow_dispatch: # 支援在 GitHub 網頁上手動觸發
   schedule:
-    - cron: '0 */3 * * *' # 每隔 3 小時執行一次
+    - cron: '0 */4 * * *' # 每隔 4 小時執行一次
 
 permissions:
   contents: write
