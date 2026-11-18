@@ -3,9 +3,20 @@ import re
 from datetime import datetime
 import feedparser
 from ebooklib import epub
+from google import genai
+from google.genai import types
 
 # 確保工作目錄切換到腳本所在資料夾
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
+# ==================== 設定 Gemini API（從 GitHub Secrets 注入的環境變數讀取）====================
+API_KEY = os.environ.get("GEMINI_API_KEY")
+if not API_KEY:
+    raise RuntimeError(
+        "未檢測到 GEMINI_API_KEY 環境變數！"
+        "請在 GitHub Actions workflow 中設定：env: GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}"
+    )
+client = genai.Client(api_key=API_KEY)
 
 # 訂閱源列表（自動去重）
 RSS_URLS = list(set([
@@ -23,19 +34,39 @@ INCLUDE_KEYWORDS = [
     'france', 'french', 'paris'
 ]
 
-# 2. 专门针对“中国香港 / 内地与香港关系”的特许包含词（优先保留）
-HK_CHINA_KEYWORDS = [
-    'china hong kong', 'hong kong china', 'mainland-hong kong', 
-    'hong kong-mainland', 'greater bay area', 'central government',
-    'national security law', 'article 23', 'one country, two systems'
+# 2. 严格中港跨境/宏观互动特许词（最高优先级放行）
+HK_CHINA_STRICT_KEYWORDS = [
+    'central government', 'beijing-hong kong', 
+    'one country, two systems', 'national development', 'five-year plan',
+    'stock connect', 'bond connect', 'wealth management connect'
 ]
 
-# 3. 娱乐、体育与纯本地民生/社区的排除关键词
-EXCLUDE_KEYWORDS = [
-    'entertainment', 'celebrity', 'movie', 'film', 'music', 'pop', 'fashion', 'lifestyle',
+# 3A. 绝对排除词（无需绑定香港，出现即排除，如纯粹娱乐体育）
+GLOBAL_EXCLUDE_KEYWORDS = [
+    'entertainment', 'celebrity', 'movie', 'film', 'music', 'pop', 'fashion', 'lifestyle','singer',
     'sport', 'sports', 'football', 'soccer', 'basketball', 'tennis', 'olympics', 'marathon',
-    'district council', 'subsidised housing', 'public housing', 'traffic accident',
-    'traffic collision', 'burglary', 'scam victim', 'minor injury'
+    'rugby sevens', 'horse racing', 'jockey club'
+]
+
+# 3B. 香港地域锚点词（用于识别文章是否与香港有关）
+HK_GEO_ANCHORS = [
+    'hong kong', 'hongkong', 'hk', 'kowloon', 'lantau',
+    'wan chai', 'tsim sha tsui', 'mong kok', 'causeway bay'
+]
+
+# 3C. 条件排除词（必须同时命中【HK_GEO_ANCHORS】才触发过滤，彻底避免误伤美/法/内地新闻）
+HK_CONTEXT_EXCLUDE_KEYWORDS = [
+    # 行政长官与本地施政/立法会日常
+    'chief executive', 'john lee', 'policy address', 'legco', 'legislative council',
+    'executive council', 'exco', 'financial secretary', 'paul chan',
+    'secretary for', 'bureau', 'civil servant', 'government headquarters',
+
+    # 本地司法、警务、海关、消防与社会民生
+    'district council', 'subsidised housing', 'public housing', 'mtr', 'kmb',
+    'hospital authority', 'education bureau', 'dse', 'university of hong kong', 'hku',
+    'traffic accident', 'traffic collision', 'burglary', 'scam victim', 'minor injury',
+    'high court', 'district court', 'magistrates', 'icac', 'customs', 'fire services',
+    'typhoon', 'black rainstorm', 'observatory', 'police'
 ]
 
 def clean_html(raw_html):
@@ -70,6 +101,63 @@ def format_pub_date(raw_date):
         return datetime.now().strftime('%Y-%m-%d')
     cleaned = re.sub(r'\s+\d{2}:\d{2}:\d{2}.*', '', raw_date)
     return cleaned.strip()
+
+def batch_translate_articles(articles):
+    """將所有篩選出的文章打包成單一 Prompt 一次性翻譯；若失敗則自動保留英文原文"""
+    if not articles:
+        return articles
+
+    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 正在將 {len(articles)} 篇文章打包，發送至 Gemini 進行批量翻譯...")
+
+    combined_input = ""
+    for idx, art in enumerate(articles, start=1):
+        combined_input += f"--- ARTICLE {idx} ---\n"
+        combined_input += f"TITLE: {art['title_en']}\n"
+        combined_input += f"CONTENT:\n{art['content_en']}\n\n"
+
+    prompt = f"""
+你是一位專業的新聞翻譯家。請將以下多篇英文新聞標題與內文全部翻譯成專業、流暢、信實的繁體中文。
+【格式嚴格要求】
+1. 請維持與原本相對應的編號格式（例如 `--- ARTICLE 1 ---`、`TITLE:`、`CONTENT:`）。
+2. 每篇文章請明確標示對應的 `--- ARTICLE X ---`。
+3. 確保所有文章都被完整翻譯，不要省略任何文章或內文段落。
+
+待翻譯內容：
+{combined_input}
+"""
+
+    try:
+        response = client.models.generate_content(
+            model='gemini-3.8-flash',
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                temperature=0.3,
+            )
+        )
+        response_text = response.text
+
+        success_count = 0
+        for idx, art in enumerate(articles, start=1):
+            pattern = rf'--- ARTICLE {idx} ---\s*TITLE:\s*(.*?)\s*CONTENT:\s*(.*?)(?=(?:--- ARTICLE \d+ ---)|\Z)'
+            match = re.search(pattern, response_text, re.DOTALL)
+
+            if match:
+                art['title_display'] = match.group(1).strip()
+                art['content_display'] = match.group(2).strip()
+                success_count += 1
+            else:
+                art['title_display'] = art['title_en']
+                art['content_display'] = art['content_en']
+
+        print(f"批量翻譯完成！成功解析 {success_count}/{len(articles)} 篇。")
+
+    except Exception as e:
+        print(f"[警告] 批量呼叫 Gemini API 發生錯誤 ({e})。已啟動降級機制，全面保留英文原文輸出！")
+        for art in articles:
+            art['title_display'] = art['title_en']
+            art['content_display'] = art['content_en']
+
+    return articles
 
 def fetch_and_process():
     processed_links = set()
@@ -116,7 +204,8 @@ def fetch_and_process():
         except Exception as e:
             print(f"[錯誤] 解析 {url} 失敗: {e}")
 
-    return raw_articles
+    processed_articles = batch_translate_articles(raw_articles)
+    return processed_articles
 
 def save_to_epub(articles):
     """把文章打包成帶有超連結目錄 (TOC) 的 EPUB 電子書"""
@@ -130,21 +219,21 @@ def save_to_epub(articles):
     book = epub.EpubBook()
     book.set_identifier(f'scmp-daily-{today_str}')
     book.set_title(f'SCMP 每日精選新聞 - {today_str}')
-    book.set_language('en')
+    book.set_language('zh')
     book.add_author('SCMP Auto Collector')
 
     chapters = []
     nav_links = []  # 目錄條目：標題 + 來源 xml
 
     for idx, art in enumerate(articles, start=1):
-        title_to_use = art['title_en']
-        content_to_use = art['content_en']
+        title_to_use = art.get('title_display', art['title_en'])
+        content_to_use = art.get('content_display', art['content_en'])
         source_xml = art.get('source_tag', '')
 
         c = epub.EpubHtml(
-            title=title_to_use,
-            file_name=f'chap_{idx}.xhtml',
-            lang='en'
+            title=title_to_use, 
+            file_name=f'chap_{idx}.xhtml', 
+            lang='zh'
         )
 
         paragraphs = content_to_use.split('\n')
@@ -157,7 +246,7 @@ def save_to_epub(articles):
             <meta charset="utf-8"/>
             <title>{title_to_use}</title>
         </head>
-        <body style="font-family: 'Times New Roman', Times, serif; padding: 5px; margin: 0;">
+        <body style="font-family: Times New Roman; padding: 5px; margin: 0;">
             <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 4px; margin-bottom: 6px; font-size: 1.2em;">{title_to_use}</h2>
             <p style="color: #555; font-size: 0.8em; margin: 2px 0;"><strong>Source:</strong> {source_xml}</p>
             <p style="color: #555; font-size: 0.8em; margin: 2px 0 8px 0;"><strong>Date:</strong> {art['pub_date']}</p>
@@ -179,7 +268,7 @@ def save_to_epub(articles):
         nav_links.append(epub.Link(f'chap_{idx}.xhtml', toc_label, f'chap_{idx}'))
 
     # ==================== 自訂可點擊目錄頁（每條目後附來源 xml）====================
-    toc_page = epub.EpubHtml(title='Table of Contents', file_name='nav.xhtml', lang='en')
+    toc_page = epub.EpubHtml(title='目錄 Table of Contents', file_name='nav.xhtml', lang='zh')
     toc_items = []
     for idx, art in enumerate(articles, start=1):
         title_to_use = art.get('title_display', art['title_en'])
@@ -199,7 +288,7 @@ def save_to_epub(articles):
         <meta charset="utf-8"/>
         <title>目錄 Table of Contents</title>
     </head>
-    <body style="font-family: 'Times New Roman', Times, serif; padding: 10px; margin: 0;">
+    <body style="font-family: sans-serif; padding: 10px; margin: 0;">
         <h2 style="border-bottom: 2px solid #0066cc; padding-bottom: 6px;">目錄（共 {len(articles)} 篇）</h2>
         <ol style="padding-left: 20px;">{''.join(toc_items)}</ol>
     </body>
