@@ -1,5 +1,6 @@
 import os
 import re
+import json
 from datetime import datetime
 import feedparser
 from ebooklib import epub
@@ -17,6 +18,10 @@ if not API_KEY:
         "請在 GitHub Actions workflow 中設定：env: GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}"
     )
 client = genai.Client(api_key=API_KEY)
+
+# ==================== 歷史文章庫設定 ====================
+# 當日所有已抓取文章的累積存檔（JSON 格式，作為去重比對的依據）
+ARCHIVE_FILE = "scmp_archive.json"
 
 # 訂閱源列表（自動去重）
 RSS_URLS = list(set([
@@ -36,14 +41,14 @@ INCLUDE_KEYWORDS = [
 
 # 2. 严格中港跨境/宏观互动特许词（最高优先级放行）
 HK_CHINA_STRICT_KEYWORDS = [
-    'central government', 'beijing-hong kong', 
+    'central government', 'beijing-hong kong',
     'one country, two systems', 'national development', 'five-year plan',
     'stock connect', 'bond connect', 'wealth management connect'
 ]
 
 # 3A. 绝对排除词（无需绑定香港，出现即排除，如纯粹娱乐体育）
 GLOBAL_EXCLUDE_KEYWORDS = [
-    'entertainment', 'celebrity', 'movie', 'film', 'music', 'pop', 'fashion', 'lifestyle','singer',
+    'entertainment', 'celebrity', 'movie', 'film', 'music', 'pop', 'fashion', 'lifestyle', 'singer',
     'sport', 'sports', 'football', 'soccer', 'basketball', 'tennis', 'olympics', 'marathon',
     'rugby sevens', 'horse racing', 'jockey club'
 ]
@@ -82,16 +87,29 @@ def clean_html(raw_html):
 def is_relevant_article(title, content):
     combined_text = f"{title} {content}".lower()
 
-    for ex_kw in EXCLUDE_KEYWORDS:
-        if re.search(r'\b' + re.escape(ex_kw) + r'\b', combined_text):
-            return False
-
-    for hk_cn_kw in HK_CHINA_KEYWORDS:
-        if re.search(r'\b' + re.escape(hk_cn_kw) + r'\b', combined_text):
+    # 1. 最高優先級：中港跨境/宏觀互動特許詞，出現即放行
+    for kw in HK_CHINA_STRICT_KEYWORDS:
+        if re.search(r'\b' + re.escape(kw) + r'\b', combined_text):
             return True
 
-    for inc_kw in INCLUDE_KEYWORDS:
-        if re.search(r'\b' + re.escape(inc_kw) + r'\b', combined_text):
+    # 2. 絕對排除詞：出現即排除（無需綁定香港）
+    for kw in GLOBAL_EXCLUDE_KEYWORDS:
+        if re.search(r'\b' + re.escape(kw) + r'\b', combined_text):
+            return False
+
+    # 3. 條件排除：必須同時命中香港地域錨點 + 本地議題詞才排除
+    has_hk_anchor = any(
+        re.search(r'\b' + re.escape(kw) + r'\b', combined_text)
+        for kw in HK_GEO_ANCHORS
+    )
+    if has_hk_anchor:
+        for kw in HK_CONTEXT_EXCLUDE_KEYWORDS:
+            if re.search(r'\b' + re.escape(kw) + r'\b', combined_text):
+                return False
+
+    # 4. 基礎國家/大政方針關鍵詞
+    for kw in INCLUDE_KEYWORDS:
+        if re.search(r'\b' + re.escape(kw) + r'\b', combined_text):
             return True
 
     return False
@@ -102,12 +120,45 @@ def format_pub_date(raw_date):
     cleaned = re.sub(r'\s+\d{2}:\d{2}:\d{2}.*', '', raw_date)
     return cleaned.strip()
 
+# ==================== 歷史文章庫讀寫 ====================
+def load_archive():
+    """讀取當日歷史文章庫；若檔案不存在或損毀則回傳空列表"""
+    if not os.path.exists(ARCHIVE_FILE):
+        return []
+    try:
+        with open(ARCHIVE_FILE, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        if isinstance(data, list):
+            print(f"已載入歷史文章庫：共 {len(data)} 篇舊文章。")
+            return data
+    except Exception as e:
+        print(f"[警告] 讀取歷史文章庫失敗 ({e})，將從空庫開始。")
+    return []
+
+def save_archive(articles):
+    """把完整文章庫（舊 + 新）寫回 JSON，供下次執行時比對去重"""
+    with open(ARCHIVE_FILE, 'w', encoding='utf-8') as f:
+        json.dump(articles, f, ensure_ascii=False, indent=2)
+    print(f"歷史文章庫已更新：共 {len(articles)} 篇。")
+
+def build_known_keys(archive):
+    """建立已存在文章的指紋集合，用 link 與標題雙重比對"""
+    keys = set()
+    for art in archive:
+        link = art.get('link', '')
+        title = art.get('title_en', '').strip().lower()
+        if link:
+            keys.add(('link', link))
+        if title:
+            keys.add(('title', title))
+    return keys
+
 def batch_translate_articles(articles):
-    """將所有篩選出的文章打包成單一 Prompt 一次性翻譯；若失敗則自動保留英文原文"""
+    """將所有篩選出的「新」文章打包成單一 Prompt 一次性翻譯；若失敗則自動保留英文原文"""
     if not articles:
         return articles
 
-    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 正在將 {len(articles)} 篇文章打包，發送至 Gemini 進行批量翻譯...")
+    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 正在將 {len(articles)} 篇「新」文章打包，發送至 Gemini 進行批量翻譯...")
 
     combined_input = ""
     for idx, art in enumerate(articles, start=1):
@@ -159,9 +210,10 @@ def batch_translate_articles(articles):
 
     return articles
 
-def fetch_and_process():
+def fetch_new_articles(known_keys):
+    """抓取 RSS，並與歷史文章庫比對，只回傳「不重複的新文章」"""
     processed_links = set()
-    raw_articles = []
+    new_articles = []
 
     print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 開始深度抓取 RSS 全文...")
     for url in RSS_URLS:
@@ -171,11 +223,15 @@ def fetch_and_process():
             print(f"成功拉取: {source_xml} (包含 {len(feed.entries)} 條消息)")
             for entry in feed.entries:
                 link = getattr(entry, 'link', '')
+                title = getattr(entry, 'title', '')
+
+                # ===== 去重比對：與本次已處理 + 歷史文章庫 雙重比對 =====
                 if link in processed_links:
                     continue
-                processed_links.add(link)
-
-                title = getattr(entry, 'title', '')
+                if ('link', link) in known_keys:
+                    continue
+                if ('title', title.strip().lower()) in known_keys:
+                    continue
 
                 raw_content = ""
                 if hasattr(entry, 'content') and entry.content:
@@ -189,28 +245,33 @@ def fetch_and_process():
                 full_content = clean_html(raw_content)
 
                 if is_relevant_article(title, full_content):
-                    print(f" -> 命中文章 [{source_xml}]: {title[:30]}...")
+                    print(f" -> 新文章命中 [{source_xml}]: {title[:30]}...")
 
                     raw_date = getattr(entry, 'published', datetime.now().strftime('%a, %d %b %Y %H:%M:%S +0000'))
                     pub_date_clean = format_pub_date(raw_date)
 
                     article_item = {
+                        "link": link,                      # 歸檔用：去重指紋
                         "title_en": title,
                         "content_en": full_content,
                         "pub_date": pub_date_clean,
-                        "source_tag": source_xml  # 記錄來源 xml 檔名
+                        "source_tag": source_xml,          # 記錄來源 xml 檔名
+                        "fetched_at": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                     }
-                    raw_articles.append(article_item)
+                    new_articles.append(article_item)
+
+                # 無論是否入選，都標記為本次已處理（同一次執行內不重複檢查）
+                processed_links.add(link)
         except Exception as e:
             print(f"[錯誤] 解析 {url} 失敗: {e}")
 
-    processed_articles = batch_translate_articles(raw_articles)
-    return processed_articles
+    print(f"本次抓取完成：共發現 {len(new_articles)} 篇不重複的新文章。")
+    return new_articles
 
 def save_to_epub(articles):
-    """把文章打包成帶有超連結目錄 (TOC) 的 EPUB 電子書"""
+    """把「完整文章庫（當日所有歷史文章 + 最新文章）」打包成帶有超連結目錄 (TOC) 的 EPUB"""
     if not articles:
-        print("本次沒有篩選出符合條件的新文章。")
+        print("本次沒有任何文章，未生成 EPUB。")
         return
 
     today_str = datetime.now().strftime('%Y-%m-%d')
@@ -218,7 +279,7 @@ def save_to_epub(articles):
 
     book = epub.EpubBook()
     book.set_identifier(f'scmp-daily-{today_str}')
-    book.set_title(f'SCMP 每日精選新聞 - {today_str}')
+    book.set_title(f'SCMP 每日精選新聞 - {today_str}（共 {len(articles)} 篇）')
     book.set_language('zh')
     book.add_author('SCMP Auto Collector')
 
@@ -231,8 +292,8 @@ def save_to_epub(articles):
         source_xml = art.get('source_tag', '')
 
         c = epub.EpubHtml(
-            title=title_to_use, 
-            file_name=f'chap_{idx}.xhtml', 
+            title=title_to_use,
+            file_name=f'chap_{idx}.xhtml',
             lang='zh'
         )
 
@@ -303,8 +364,26 @@ def save_to_epub(articles):
     book.spine = ['nav'] + chapters
 
     epub.write_epub(epub_filename, book, {})
-    print(f"已成功生成 EPUB 檔案: {epub_filename}")
+    print(f"已成功生成完整 EPUB 檔案: {epub_filename}（含歷史文章共 {len(articles)} 篇）")
 
 if __name__ == "__main__":
-    articles = fetch_and_process()
-    save_to_epub(articles)
+    # 1. 讀取當日歷史文章庫（先前已抓取並翻譯過的文章）
+    archive = load_archive()
+
+    # 2. 建立已存在文章的指紋（link + 標題），用於去重比對
+    known_keys = build_known_keys(archive)
+
+    # 3. 抓取 RSS，只保留「不重複的新文章」
+    new_articles = fetch_new_articles(known_keys)
+
+    # 4. 僅對新文章進行翻譯（無新文章時跳過 API 呼叫）
+    if new_articles:
+        new_articles = batch_translate_articles(new_articles)
+        # 5. 把新文章「追加」進歷史文章庫，並寫回存檔
+        archive.extend(new_articles)
+        save_archive(archive)
+    else:
+        print("本次沒有新文章，歷史文章庫維持不變。")
+
+    # 6. 每次都重新生成完整大 EPUB：當日所有歷史文章 + 最新文章
+    save_to_epub(archive)

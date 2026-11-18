@@ -3,7 +3,7 @@ name: SCMP RSS Collector
 on:
   workflow_dispatch: # 支援在 GitHub 網頁上手動觸發
   schedule:
-    - cron: '0 */4 * * *' # 每隔 4 小時執行一次
+    - cron: '0 */4 * * *' # 每隔 4 小時執行一次（你也可以按需改回 '0 */3 * * *'）
 
 permissions:
   contents: write
@@ -32,12 +32,15 @@ jobs:
       run: |
         # 進入 scmp 資料夾執行最新版本的腳本
         cd scmp
-        python rss_scmp_collector_v2.py
+        python rss_scmp_collector_v3.py
 
-    - name: Commit and push epub file
+    - name: Commit and push changes
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        # 僅將 scmp 資料夾中產生的 epub 變更加入並提交
-        git add scmp/scmp_*.epub
-        git diff --quiet && git diff --staged --quiet || (git commit -m "Add latest SCMP daily EPUB ebook [skip ci]" && git push)
+        
+        # 同時將 scmp 資料夾內的 json 歷史庫與 epub 檔案加入版本控制
+        git add scmp/scmp_archive.json scmp/scmp_*.epub
+        
+        # 如果沒有任何變更則跳過提交，有變更則自動 commit 並 push
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update SCMP archive and EPUB ebook [skip ci]" && git push)
