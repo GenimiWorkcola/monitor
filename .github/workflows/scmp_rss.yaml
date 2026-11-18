@@ -32,7 +32,7 @@ jobs:
       run: |
         # 進入 scmp 資料夾執行最新版本的腳本
         cd scmp
-        python rss_scmp_collector_v3.py
+        python rss_scmp_collector_v2.py
 
     - name: Commit and push changes
       run: |
