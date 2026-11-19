@@ -1,3 +1,5 @@
+import socket
+import requests
 import os
 import re
 import json
@@ -14,6 +16,9 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 # 以香港時間（UTC+8，無夏令時）判定「當天」
 LOCAL_TZ = timezone(timedelta(hours=8))
 
+# 限制底層網路連線預設逾時（秒），避免 RSS 抓取或網路請求無限掛起
+socket.setdefaulttimeout(20)
+
 # ==================== 設定 Gemini API（從 GitHub Secrets 注入的環境變數讀取）====================
 API_KEY = os.environ.get("GEMINI_API_KEY")
 if not API_KEY:
@@ -21,7 +26,10 @@ if not API_KEY:
         "未檢測到 GEMINI_API_KEY 環境變數！"
         "請在 GitHub Actions workflow 中設定：env: GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}"
     )
-client = genai.Client(api_key=API_KEY)
+client = genai.Client(
+    api_key=API_KEY,
+    http_options=types.HttpOptions(timeout=60000),
+)
 
 # ==================== 歷史文章庫設定 ====================
 # 當日所有已抓取文章的累積存檔（JSON 格式，作為去重比對的依據）

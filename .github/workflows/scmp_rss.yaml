@@ -5,6 +5,11 @@ on:
   schedule:
     - cron: '0 */4 * * *' # 每隔 4 小時執行一次（你也可以按需改回 '0 */3 * * *'）
 
+# 同一工作流/分支同時只保留一個執行實例，避免前次未結束時排隊堆積
+concurrency:
+  group: scmp-rss-collector-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
