@@ -1,8 +1,8 @@
 name: Run Script in Cloud
 
 on:
-  workflow_dispatch: # 允許在 GitHub 網頁上手動觸發執行
-  schedule:
+    workflow_dispatch: # 允許在 GitHub 網頁上手動觸發 
+schedule:
     - cron: '26 1 * * *' # UTC 時間 01:26，對應北京時間 (UTC+8) 每天早上 09:26
 
 permissions:
