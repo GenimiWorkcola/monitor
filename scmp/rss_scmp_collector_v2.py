@@ -155,24 +155,38 @@ def is_published_today(entry):
 
 # ==================== 歷史文章庫讀寫 ====================
 def load_archive():
-    """讀取當日歷史文章庫；若檔案不存在或損毀則回傳空列表"""
-    if not os.path.exists(ARCHIVE_FILE):
-        return []
-    try:
-        with open(ARCHIVE_FILE, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-        if isinstance(data, list):
-            print(f"已載入歷史文章庫：共 {len(data)} 篇舊文章。")
-            return data
-    except Exception as e:
-        print(f"[警告] 讀取歷史文章庫失敗 ({e})，將從空庫開始。")
+  """讀取當日歷史文章庫；自動剔除非「今天（UTC+8）」的舊文章"""
+  if not os.path.exists(ARCHIVE_FILE):
     return []
+  today_str = datetime.now(LOCAL_TZ).strftime('%Y-%m-%d')
+  try:
+    with open(ARCHIVE_FILE, 'r', encoding='utf-8') as f:
+      data = json.load(f)
+    if isinstance(data, list):
+      today_data = [
+          art
+          for art in data
+          if str(art.get('fetched_at', '')).startswith(today_str)
+      ]
+      removed_count = len(data) - len(today_data)
+      if removed_count > 0:
+        save_archive(today_data)
+      print(
+          f'已載入當日歷史文章庫：共 {len(today_data)}'
+          f' 篇（已清理 {removed_count} 篇非當日文章）。'
+      )
+      return today_data
+  except Exception as e:
+    print(f'[警告] 讀取歷史文章庫失敗 ({e})，將從空庫開始。')
+  return []
+
 
 def save_archive(articles):
-    """把完整文章庫（舊 + 新）寫回 JSON，供下次執行時比對去重"""
-    with open(ARCHIVE_FILE, 'w', encoding='utf-8') as f:
-        json.dump(articles, f, ensure_ascii=False, indent=2)
-    print(f"歷史文章庫已更新：共 {len(articles)} 篇。")
+  """把完整文章庫（舊 + 新）寫回 JSON，供下次執行時比對去重"""
+  with open(ARCHIVE_FILE, 'w', encoding='utf-8') as f:
+    json.dump(articles, f, ensure_ascii=False, indent=2)
+  print(f'歷史文章庫已更新：共 {len(articles)} 篇。')
+ 
 
 def build_known_keys(archive):
     """建立已存在文章的指紋集合，用 link 與標題雙重比對"""
