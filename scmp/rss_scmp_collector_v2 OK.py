@@ -1,7 +1,9 @@
+import socket
+import requests
 import os
 import re
 import json
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 import feedparser
 from ebooklib import epub
 from google import genai
@@ -10,6 +12,13 @@ from google.genai import types
 # 確保工作目錄切換到腳本所在資料夾
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
+# ==================== 時區設定 ====================
+# 以香港時間（UTC+8，無夏令時）判定「當天」
+LOCAL_TZ = timezone(timedelta(hours=8))
+
+# 限制底層網路連線預設逾時（秒），避免 RSS 抓取或網路請求無限掛起
+socket.setdefaulttimeout(20)
+
 # ==================== 設定 Gemini API（從 GitHub Secrets 注入的環境變數讀取）====================
 API_KEY = os.environ.get("GEMINI_API_KEY")
 if not API_KEY:
@@ -17,7 +26,10 @@ if not API_KEY:
         "未檢測到 GEMINI_API_KEY 環境變數！"
         "請在 GitHub Actions workflow 中設定：env: GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}"
     )
-client = genai.Client(api_key=API_KEY)
+client = genai.Client(
+    api_key=API_KEY,
+    http_options=types.HttpOptions(timeout=60000),
+)
 
 # ==================== 歷史文章庫設定 ====================
 # 當日所有已抓取文章的累積存檔（JSON 格式，作為去重比對的依據）
@@ -116,30 +128,65 @@ def is_relevant_article(title, content):
 
 def format_pub_date(raw_date):
     if not raw_date:
-        return datetime.now().strftime('%Y-%m-%d')
+        return datetime.now(LOCAL_TZ).strftime('%Y-%m-%d')
     cleaned = re.sub(r'\s+\d{2}:\d{2}:\d{2}.*', '', raw_date)
     return cleaned.strip()
 
+# ==================== 當天日期判定 ====================
+def get_entry_datetime(entry):
+    """取出文章發布時間（轉為 UTC 的 datetime）；無法判定則回傳 None"""
+    parsed = getattr(entry, 'published_parsed', None)
+    if not parsed:
+        parsed = getattr(entry, 'updated_parsed', None)
+    if parsed:
+        try:
+            return datetime(*parsed[:6], tzinfo=timezone.utc)
+        except Exception:
+            return None
+    return None
+
+def is_published_today(entry):
+    """僅接受「當天（香港時間）發布」的文章"""
+    pub_dt = get_entry_datetime(entry)
+    if pub_dt is None:
+        return False
+    today = datetime.now(LOCAL_TZ).date()
+    return pub_dt.astimezone(LOCAL_TZ).date() == today
+
 # ==================== 歷史文章庫讀寫 ====================
 def load_archive():
-    """讀取當日歷史文章庫；若檔案不存在或損毀則回傳空列表"""
-    if not os.path.exists(ARCHIVE_FILE):
-        return []
-    try:
-        with open(ARCHIVE_FILE, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-        if isinstance(data, list):
-            print(f"已載入歷史文章庫：共 {len(data)} 篇舊文章。")
-            return data
-    except Exception as e:
-        print(f"[警告] 讀取歷史文章庫失敗 ({e})，將從空庫開始。")
+  """讀取當日歷史文章庫；自動剔除非「今天（UTC+8）」的舊文章"""
+  if not os.path.exists(ARCHIVE_FILE):
     return []
+  today_str = datetime.now(LOCAL_TZ).strftime('%Y-%m-%d')
+  try:
+    with open(ARCHIVE_FILE, 'r', encoding='utf-8') as f:
+      data = json.load(f)
+    if isinstance(data, list):
+      today_data = [
+          art
+          for art in data
+          if str(art.get('fetched_at', '')).startswith(today_str)
+      ]
+      removed_count = len(data) - len(today_data)
+      if removed_count > 0:
+        save_archive(today_data)
+      print(
+          f'已載入當日歷史文章庫：共 {len(today_data)}'
+          f' 篇（已清理 {removed_count} 篇非當日文章）。'
+      )
+      return today_data
+  except Exception as e:
+    print(f'[警告] 讀取歷史文章庫失敗 ({e})，將從空庫開始。')
+  return []
+
 
 def save_archive(articles):
-    """把完整文章庫（舊 + 新）寫回 JSON，供下次執行時比對去重"""
-    with open(ARCHIVE_FILE, 'w', encoding='utf-8') as f:
-        json.dump(articles, f, ensure_ascii=False, indent=2)
-    print(f"歷史文章庫已更新：共 {len(articles)} 篇。")
+  """把完整文章庫（舊 + 新）寫回 JSON，供下次執行時比對去重"""
+  with open(ARCHIVE_FILE, 'w', encoding='utf-8') as f:
+    json.dump(articles, f, ensure_ascii=False, indent=2)
+  print(f'歷史文章庫已更新：共 {len(articles)} 篇。')
+ 
 
 def build_known_keys(archive):
     """建立已存在文章的指紋集合，用 link 與標題雙重比對"""
@@ -158,7 +205,7 @@ def batch_translate_articles(articles):
     if not articles:
         return articles
 
-    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 正在將 {len(articles)} 篇「新」文章打包，發送至 Gemini 進行批量翻譯...")
+    print(f"[{datetime.now(LOCAL_TZ).strftime('%Y-%m-%d %H:%M:%S')}] 正在將 {len(articles)} 篇「新」文章打包，發送至 Gemini 進行批量翻譯...")
 
     combined_input = ""
     for idx, art in enumerate(articles, start=1):
@@ -211,11 +258,13 @@ def batch_translate_articles(articles):
     return articles
 
 def fetch_new_articles(known_keys):
-    """抓取 RSS，並與歷史文章庫比對，只回傳「不重複的新文章」"""
+    """抓取 RSS，只保留「當天發布」且「不重複」的新文章"""
     processed_links = set()
     new_articles = []
+    skipped_not_today = 0   # 非當天發布而跳過的數量
+    skipped_no_date = 0     # 無法判定日期而跳過的數量
 
-    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 開始深度抓取 RSS 全文...")
+    print(f"[{datetime.now(LOCAL_TZ).strftime('%Y-%m-%d %H:%M:%S')}] 開始深度抓取 RSS 全文...")
     for url in RSS_URLS:
         source_xml = url.split('/')[-1]  # 例如 scmp-news.xml
         try:
@@ -233,6 +282,16 @@ def fetch_new_articles(known_keys):
                 if ('title', title.strip().lower()) in known_keys:
                     continue
 
+                # ===== 只抓取「當天（香港時間）發布」的文章 =====
+                if not is_published_today(entry):
+                    if get_entry_datetime(entry) is None:
+                        skipped_no_date += 1
+                        print(f" -> 跳過（無法判定發布日期）[{source_xml}]: {title[:30]}...")
+                    else:
+                        skipped_not_today += 1
+                    processed_links.add(link)
+                    continue
+
                 raw_content = ""
                 if hasattr(entry, 'content') and entry.content:
                     raw_content = entry.content[0].get('value', '')
@@ -247,7 +306,7 @@ def fetch_new_articles(known_keys):
                 if is_relevant_article(title, full_content):
                     print(f" -> 新文章命中 [{source_xml}]: {title[:30]}...")
 
-                    raw_date = getattr(entry, 'published', datetime.now().strftime('%a, %d %b %Y %H:%M:%S +0000'))
+                    raw_date = getattr(entry, 'published', datetime.now(LOCAL_TZ).strftime('%a, %d %b %Y %H:%M:%S +0000'))
                     pub_date_clean = format_pub_date(raw_date)
 
                     article_item = {
@@ -256,7 +315,7 @@ def fetch_new_articles(known_keys):
                         "content_en": full_content,
                         "pub_date": pub_date_clean,
                         "source_tag": source_xml,          # 記錄來源 xml 檔名
-                        "fetched_at": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                        "fetched_at": datetime.now(LOCAL_TZ).strftime('%Y-%m-%d %H:%M:%S')
                     }
                     new_articles.append(article_item)
 
@@ -265,7 +324,8 @@ def fetch_new_articles(known_keys):
         except Exception as e:
             print(f"[錯誤] 解析 {url} 失敗: {e}")
 
-    print(f"本次抓取完成：共發現 {len(new_articles)} 篇不重複的新文章。")
+    print(f"本次抓取完成：共發現 {len(new_articles)} 篇當天發布且不重複的新文章。")
+    print(f"（跳過：非當天發布 {skipped_not_today} 篇 / 無法判定日期 {skipped_no_date} 篇）")
     return new_articles
 
 def save_to_epub(articles):
@@ -274,7 +334,7 @@ def save_to_epub(articles):
         print("本次沒有任何文章，未生成 EPUB。")
         return
 
-    today_str = datetime.now().strftime('%Y-%m-%d')
+    today_str = datetime.now(LOCAL_TZ).strftime('%Y-%m-%d')
     epub_filename = f"scmp_{today_str}.epub"
 
     book = epub.EpubBook()
@@ -300,6 +360,7 @@ def save_to_epub(articles):
         paragraphs = content_to_use.split('\n')
         html_p = ''.join([f'<p style="text-indent: 2em; line-height: 1; margin-bottom: 0.4em; margin-top: 0;">{p.strip()}</p>' for p in paragraphs if p.strip()])
 
+        # 文章內「返回目錄」連結：直接定位到目錄頁中本文章所在的位置（錨點 #article-N）
         c.content = f"""
         <!DOCTYPE html>
         <html>
@@ -315,7 +376,7 @@ def save_to_epub(articles):
             <div>{html_p}</div>
             <div style="margin-top: 20px; text-align: center;">
                 <hr style="border: none; border-top: 1px dashed #ccc; margin: 10px 0;" />
-                <a href="nav.xhtml" style="font-size: 0.9em; text-decoration: none; color: #0066cc;">返回目錄 (Table of Contents)</a>
+                <a href="nav.xhtml#article-{idx}" style="font-size: 0.9em; text-decoration: none; color: #0066cc;">返回目錄 (Table of Contents)</a>
             </div>
         </body>
         </html>
@@ -328,7 +389,7 @@ def save_to_epub(articles):
         toc_label = f"{title_to_use} <{source_xml}>" if source_xml else title_to_use
         nav_links.append(epub.Link(f'chap_{idx}.xhtml', toc_label, f'chap_{idx}'))
 
-    # ==================== 自訂可點擊目錄頁（每條目後附來源 xml）====================
+    # ==================== 自訂可點擊目錄頁（每條目後附來源 xml，並設置錨點 id="article-N"）====================
     toc_page = epub.EpubHtml(title='目錄 Table of Contents', file_name='nav.xhtml', lang='zh')
     toc_items = []
     for idx, art in enumerate(articles, start=1):
@@ -337,8 +398,9 @@ def save_to_epub(articles):
         date_str = art.get('pub_date', '')
         source_badge = f'<span style="color: #0066cc; font-size: 0.75em;">[{source_xml}]</span>' if source_xml else ''
         date_badge = f'<span style="color: #888; font-size: 0.75em;">{date_str}</span>' if date_str else ''
+        # 每個目錄條目加上錨點 id="article-N"，供文章頁「返回目錄」精確定位
         toc_items.append(
-            f'<li style="margin-bottom: 8px; line-height: 1.5;">'
+            f'<li id="article-{idx}" style="margin-bottom: 8px; line-height: 1.5;">'
             f'<a href="chap_{idx}.xhtml" style="text-decoration: none; color: #333;">{idx}. {title_to_use}</a> '
             f'{source_badge} {date_badge}</li>'
         )
@@ -373,7 +435,7 @@ if __name__ == "__main__":
     # 2. 建立已存在文章的指紋（link + 標題），用於去重比對
     known_keys = build_known_keys(archive)
 
-    # 3. 抓取 RSS，只保留「不重複的新文章」
+    # 3. 抓取 RSS，只保留「當天發布」且「不重複」的新文章
     new_articles = fetch_new_articles(known_keys)
 
     # 4. 僅對新文章進行翻譯（無新文章時跳過 API 呼叫）

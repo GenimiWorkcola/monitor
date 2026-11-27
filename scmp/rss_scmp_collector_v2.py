@@ -186,7 +186,7 @@ def save_archive(articles):
   with open(ARCHIVE_FILE, 'w', encoding='utf-8') as f:
     json.dump(articles, f, ensure_ascii=False, indent=2)
   print(f'歷史文章庫已更新：共 {len(articles)} 篇。')
- 
+
 
 def build_known_keys(archive):
     """建立已存在文章的指紋集合，用 link 與標題雙重比對"""
@@ -337,6 +337,11 @@ def save_to_epub(articles):
     today_str = datetime.now(LOCAL_TZ).strftime('%Y-%m-%d')
     epub_filename = f"scmp_{today_str}.epub"
 
+    # 自訂目錄頁的檔名。注意：不可使用 nav.xhtml！
+    # ebooklib 的 EpubNav() 自動產生的 EPUB3 導航頁預設檔名也是 nav.xhtml，
+    # 同名會在寫入 EPUB 時互相覆蓋，導致「返回目錄」錨點 (#article-N) 全部失效。
+    TOC_FILENAME = 'toc.xhtml'
+
     book = epub.EpubBook()
     book.set_identifier(f'scmp-daily-{today_str}')
     book.set_title(f'SCMP 每日精選新聞 - {today_str}（共 {len(articles)} 篇）')
@@ -360,7 +365,8 @@ def save_to_epub(articles):
         paragraphs = content_to_use.split('\n')
         html_p = ''.join([f'<p style="text-indent: 2em; line-height: 1; margin-bottom: 0.4em; margin-top: 0;">{p.strip()}</p>' for p in paragraphs if p.strip()])
 
-        # 文章內「返回目錄」連結：直接定位到目錄頁中本文章所在的位置（錨點 #article-N）
+        # 文章內「返回目錄」連結：指向自訂目錄頁中本文章所在的位置（錨點 #article-N）
+        toc_back_href = f'{TOC_FILENAME}#article-{idx}'
         c.content = f"""
         <!DOCTYPE html>
         <html>
@@ -369,6 +375,9 @@ def save_to_epub(articles):
             <title>{title_to_use}</title>
         </head>
         <body style="font-family: Times New Roman; padding: 5px; margin: 0;">
+            <p style="margin: 0 0 6px 0; font-size: 0.85em;">
+                <a href="{toc_back_href}" style="text-decoration: none; color: #0066cc;">&#8617; 返回目錄</a>
+            </p>
             <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 4px; margin-bottom: 6px; font-size: 1.2em;">{title_to_use}</h2>
             <p style="color: #555; font-size: 0.8em; margin: 2px 0;"><strong>Source:</strong> {source_xml}</p>
             <p style="color: #555; font-size: 0.8em; margin: 2px 0 8px 0;"><strong>Date:</strong> {art['pub_date']}</p>
@@ -376,7 +385,7 @@ def save_to_epub(articles):
             <div>{html_p}</div>
             <div style="margin-top: 20px; text-align: center;">
                 <hr style="border: none; border-top: 1px dashed #ccc; margin: 10px 0;" />
-                <a href="nav.xhtml#article-{idx}" style="font-size: 0.9em; text-decoration: none; color: #0066cc;">返回目錄 (Table of Contents)</a>
+                <a href="{toc_back_href}" style="font-size: 0.9em; text-decoration: none; color: #0066cc;">返回目錄 (Table of Contents)</a>
             </div>
         </body>
         </html>
@@ -390,7 +399,7 @@ def save_to_epub(articles):
         nav_links.append(epub.Link(f'chap_{idx}.xhtml', toc_label, f'chap_{idx}'))
 
     # ==================== 自訂可點擊目錄頁（每條目後附來源 xml，並設置錨點 id="article-N"）====================
-    toc_page = epub.EpubHtml(title='目錄 Table of Contents', file_name='nav.xhtml', lang='zh')
+    toc_page = epub.EpubHtml(uid='toc-page', title='目錄 Table of Contents', file_name=TOC_FILENAME, lang='zh')
     toc_items = []
     for idx, art in enumerate(articles, start=1):
         title_to_use = art.get('title_display', art['title_en'])
@@ -423,7 +432,10 @@ def save_to_epub(articles):
     book.toc = tuple(nav_links)
     book.add_item(epub.EpubNcx())
     book.add_item(epub.EpubNav())
-    book.spine = ['nav'] + chapters
+
+    # 自訂目錄頁必須加入 spine：EPUB3 規範下，spine 以外的文件不允許被內部連結指向，
+    # 否則嚴格的閱讀器會拒絕跳轉。目錄頁放最前面，開書即見目錄；'nav'（自動導航頁）放最後。
+    book.spine = [toc_page] + chapters + ['nav']
 
     epub.write_epub(epub_filename, book, {})
     print(f"已成功生成完整 EPUB 檔案: {epub_filename}（含歷史文章共 {len(articles)} 篇）")
