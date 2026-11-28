@@ -3,6 +3,7 @@ import requests
 import os
 import re
 import json
+import html as _html
 from datetime import datetime, timezone, timedelta
 import feedparser
 from ebooklib import epub
@@ -329,27 +330,36 @@ def fetch_new_articles(known_keys):
     return new_articles
 
 def save_to_epub(articles):
-    """把「完整文章庫（當日所有歷史文章 + 最新文章）」打包成帶有超連結目錄 (TOC) 的 EPUB"""
+    """把「完整文章庫（當日所有歷史文章 + 最新文章）」打包成帶有可點擊目錄 (TOC) 的 EPUB。
+
+    Kindle 相容設計重點：
+    1. 自訂目錄頁「本身就是 EPUB3 導航文檔」（nav.xhtml + properties="nav"），
+       並放在 spine 第一位。這是 v2 在 Kindle 上驗證可正常跳轉的結構；
+       普通內容頁充當目錄在 Kindle（Send to Kindle / KFX 轉換）上連結會失效。
+    2. 目錄頁內含 <nav epub:type="toc">（Kindle「前往目錄」功能所需），
+       每個條目帶 id="article-N" 錨點，供文章頁「返回目錄」精確定位。
+    3. 字體用外層 <div style="font-family:..."> 設定：
+       ebooklib 會丟棄 <body> 標籤上的屬性，寫在 body 上的樣式不會生效。
+    4. 目錄連結保持預設樣式（不加 text-decoration:none），
+       在 Kindle 電子墨水屏上才能被清楚識別為可點擊連結。
+    """
     if not articles:
         print("本次沒有任何文章，未生成 EPUB。")
         return
 
     today_str = datetime.now(LOCAL_TZ).strftime('%Y-%m-%d')
     epub_filename = f"scmp_{today_str}.epub"
-
-    # 自訂目錄頁的檔名。注意：不可使用 nav.xhtml！
-    # ebooklib 的 EpubNav() 自動產生的 EPUB3 導航頁預設檔名也是 nav.xhtml，
-    # 同名會在寫入 EPUB 時互相覆蓋，導致「返回目錄」錨點 (#article-N) 全部失效。
-    TOC_FILENAME = 'toc.xhtml'
+    book_title = f'SCMP 每日精選新聞 - {today_str}（共 {len(articles)} 篇）'
+    FONT_STYLE = "font-family: 'Times New Roman', Times, serif;"
 
     book = epub.EpubBook()
     book.set_identifier(f'scmp-daily-{today_str}')
-    book.set_title(f'SCMP 每日精選新聞 - {today_str}（共 {len(articles)} 篇）')
+    book.set_title(book_title)
     book.set_language('zh')
     book.add_author('SCMP Auto Collector')
 
     chapters = []
-    nav_links = []  # 目錄條目：標題 + 來源 xml
+    nav_links = []  # NCX / 閱讀器側邊欄目錄條目
 
     for idx, art in enumerate(articles, start=1):
         title_to_use = art.get('title_display', art['title_en'])
@@ -363,79 +373,71 @@ def save_to_epub(articles):
         )
 
         paragraphs = content_to_use.split('\n')
-        html_p = ''.join([f'<p style="text-indent: 2em; line-height: 1; margin-bottom: 0.4em; margin-top: 0;">{p.strip()}</p>' for p in paragraphs if p.strip()])
+        html_p = ''.join([f'<p style="text-indent: 2em; line-height: 1; margin-bottom: 0.4em; margin-top: 0;">{_html.escape(p.strip())}</p>' for p in paragraphs if p.strip()])
 
-        # 文章內「返回目錄」連結：指向自訂目錄頁中本文章所在的位置（錨點 #article-N）
-        toc_back_href = f'{TOC_FILENAME}#article-{idx}'
+        # 文章內「返回目錄」連結：指向目錄頁（nav.xhtml）中本文章所在的位置（錨點 #article-N）
+        toc_back_href = f'nav.xhtml#article-{idx}'
+        # 注意：內容只給 body 片段（ebooklib 會自動包成完整 XHTML 文件），
+        # 樣式一律寫在內部元素上，不要寫在 <body> 標籤上（會被 ebooklib 丟棄）。
         c.content = f"""
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="utf-8"/>
-            <title>{title_to_use}</title>
-        </head>
-        <body style="font-family: Times New Roman; padding: 5px; margin: 0;">
+        <div style="{FONT_STYLE} padding: 5px;">
             <p style="margin: 0 0 6px 0; font-size: 0.85em;">
-                <a href="{toc_back_href}" style="text-decoration: none; color: #0066cc;">&#8617; 返回目錄</a>
+                <a href="{toc_back_href}" style="color: #0066cc;">&#8617; 返回目錄</a>
             </p>
-            <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 4px; margin-bottom: 6px; font-size: 1.2em;">{title_to_use}</h2>
-            <p style="color: #555; font-size: 0.8em; margin: 2px 0;"><strong>Source:</strong> {source_xml}</p>
-            <p style="color: #555; font-size: 0.8em; margin: 2px 0 8px 0;"><strong>Date:</strong> {art['pub_date']}</p>
+            <h2 style="border-bottom: 1px solid #ccc; padding-bottom: 4px; margin-bottom: 6px; font-size: 1.2em;">{_html.escape(title_to_use)}</h2>
+            <p style="color: #555; font-size: 0.8em; margin: 2px 0;"><strong>Source:</strong> {_html.escape(source_xml)}</p>
+            <p style="color: #555; font-size: 0.8em; margin: 2px 0 8px 0;"><strong>Date:</strong> {_html.escape(art['pub_date'])}</p>
             <hr style="border: none; border-top: 1px solid #eee; margin: 5px 0;" />
             <div>{html_p}</div>
             <div style="margin-top: 20px; text-align: center;">
                 <hr style="border: none; border-top: 1px dashed #ccc; margin: 10px 0;" />
-                <a href="{toc_back_href}" style="font-size: 0.9em; text-decoration: none; color: #0066cc;">返回目錄 (Table of Contents)</a>
+                <a href="{toc_back_href}" style="font-size: 0.9em; color: #0066cc;">返回目錄 (Table of Contents)</a>
             </div>
-        </body>
-        </html>
+        </div>
         """
 
         book.add_item(c)
         chapters.append(c)
 
-        # 目錄條目：文章標題後方標註來源 xml
+        # NCX 條目：文章標題後方標註來源 xml
         toc_label = f"{title_to_use} <{source_xml}>" if source_xml else title_to_use
         nav_links.append(epub.Link(f'chap_{idx}.xhtml', toc_label, f'chap_{idx}'))
 
-    # ==================== 自訂可點擊目錄頁（每條目後附來源 xml，並設置錨點 id="article-N"）====================
-    toc_page = epub.EpubHtml(uid='toc-page', title='目錄 Table of Contents', file_name=TOC_FILENAME, lang='zh')
+    # ==================== 目錄頁 = EPUB3 導航文檔（Kindle 相容關鍵）====================
+    # 排版與 v2 在 Kindle 上實際顯示的一致：標題 + 有序列表，條目為「標題 <來源xml>」
+    toc_page = epub.EpubHtml(uid='nav', title='目錄 Table of Contents', file_name='nav.xhtml', lang='zh')
+    toc_page.properties.append('nav')  # 宣告為 EPUB3 導航文檔（content.opf 中 properties="nav"）
+
     toc_items = []
     for idx, art in enumerate(articles, start=1):
         title_to_use = art.get('title_display', art['title_en'])
         source_xml = art.get('source_tag', '')
-        date_str = art.get('pub_date', '')
-        source_badge = f'<span style="color: #0066cc; font-size: 0.75em;">[{source_xml}]</span>' if source_xml else ''
-        date_badge = f'<span style="color: #888; font-size: 0.75em;">{date_str}</span>' if date_str else ''
-        # 每個目錄條目加上錨點 id="article-N"，供文章頁「返回目錄」精確定位
+        toc_label = f"{title_to_use} <{source_xml}>" if source_xml else title_to_use
+        # 每個目錄條目加上錨點 id="article-N"，供文章頁「返回目錄」精確定位；
+        # 標籤必須 HTML 轉義，否則 <scmp-news.xml> 會被當成標籤吃掉
         toc_items.append(
             f'<li id="article-{idx}" style="margin-bottom: 8px; line-height: 1.5;">'
-            f'<a href="chap_{idx}.xhtml" style="text-decoration: none; color: #333;">{idx}. {title_to_use}</a> '
-            f'{source_badge} {date_badge}</li>'
+            f'<a href="chap_{idx}.xhtml">{_html.escape(toc_label)}</a></li>'
         )
     toc_page.content = f"""
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="utf-8"/>
-        <title>目錄 Table of Contents</title>
-    </head>
-    <body style="font-family: sans-serif; padding: 10px; margin: 0;">
-        <h2 style="border-bottom: 2px solid #0066cc; padding-bottom: 6px;">目錄（共 {len(articles)} 篇）</h2>
-        <ol style="padding-left: 20px;">{''.join(toc_items)}</ol>
-    </body>
-    </html>
+    <div style="{FONT_STYLE} padding: 10px;">
+        <nav epub:type="toc" role="doc-toc">
+            <h2>{_html.escape(book_title)}</h2>
+            <ol>{''.join(toc_items)}</ol>
+        </nav>
+    </div>
     """
     book.add_item(toc_page)
 
-    # EPUB3 導航 (nav.xhtml) 與 NCX 目錄：條目同樣附來源 xml
+    # NCX 目錄（供 Kindle「前往」選單與舊式閱讀器使用）；不再需要 EpubNav（目錄頁本身就是 nav）
     book.toc = tuple(nav_links)
     book.add_item(epub.EpubNcx())
-    book.add_item(epub.EpubNav())
 
-    # 自訂目錄頁必須加入 spine：EPUB3 規範下，spine 以外的文件不允許被內部連結指向，
-    # 否則嚴格的閱讀器會拒絕跳轉。目錄頁放最前面，開書即見目錄；'nav'（自動導航頁）放最後。
-    book.spine = [toc_page] + chapters + ['nav']
+    # 目錄頁放 spine 第一位：開書即見目錄
+    book.spine = [toc_page] + chapters
+
+    # guide 宣告目錄位置，讓 Kindle「前往 → 目錄」直接定位到目錄頁
+    book.guide = [{'type': 'toc', 'title': '目錄 Table of Contents', 'href': 'nav.xhtml'}]
 
     epub.write_epub(epub_filename, book, {})
     print(f"已成功生成完整 EPUB 檔案: {epub_filename}（含歷史文章共 {len(articles)} 篇）")
